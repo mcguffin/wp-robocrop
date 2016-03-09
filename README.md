@@ -19,7 +19,8 @@ Use the WordPress JS-Uploader to make the plugin work.
 
 Browser Support
 ---------------
-- unknown yet -
+Known Browser support
+ - Chrome 48
 
 
 ToDo:
@@ -33,6 +34,8 @@ ToDo:
  	- [x] adapt media-view
  - [x] wp-upload
  	- [x] show modal message while analyzing and cropping
+ - [ ] Error Handling
+ 	- [ ] Define Error cases
  - [ ] media-view
  	- [x] set wp defalt crop if no cropdata present.
  	- [x] implement analyze
@@ -49,8 +52,11 @@ ToDo:
  	- [x] autosmartcrop on edit post
  	- [ ] Test with no cropped images available (upload image, add another image size)
  	- [ ] Test together with SayCheese
+ 	- [ ] Test in FF, Safari, Edge
  - [ ] Efficency
- 	- [ ] Serverside: only re-crop image that have been changed
+ 	- [-] Serverside: only re-crop images that have been changed
+ 		  *Not possible due to WP image cropping internals*
+ 	- [ ] Minify and combine JS
  - [X] Code refactoring
  	- [x] Put main functionality in `include/` only load on `is_admin()`
  	- [x] add settings class
