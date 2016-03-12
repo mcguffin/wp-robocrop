@@ -71,6 +71,7 @@ ToDo:
  	- [x] Open img > AutoCrop > open another img > autocrop : btns don't not get re-enabled
 	- [x] Min height/width should be largest size, not smallest
 	- [x] Smartcrop always cropping squares
+	- [x] Smartcrop: use naturalWidth / Height in _cancrop()
  - [ ] Future
  	- [ ] Autocropping modes:
  		- [ ] Define focus point before upload

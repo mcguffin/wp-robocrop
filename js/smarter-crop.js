@@ -170,7 +170,7 @@
 			}
 		},
 		_cancrop: function( img ) {
-			return img.width >= this.size.min_width && img.height >= this.size.min_height 
+			return img.naturalWidth >= this.size.min_width && img.naturalHeight >= this.size.min_height 
 		},
 		cropFile: function(file) {
 			this._init(_getFileUid( file ));
