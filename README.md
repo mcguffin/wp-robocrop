@@ -49,6 +49,7 @@ ToDo:
 	- [x] Make croptool available from library view (extend wp.media.view.Attachment.Details);
 	- [-] UX: start upload after an image has been processed
 			*Not possible*
+	- [ ] Kickout faces
  - [ ] Test 
  	- [x] autosmartcrop on edit post
  	- [ ] Test with no cropped images available (upload image, add another image size)
