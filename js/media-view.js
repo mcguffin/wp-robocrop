@@ -5,7 +5,9 @@
 		l10n = window.wp_smartcrop.l10n,
 		options = window.wp_smartcrop.options,
 		cropBtnHTML = '<button type="button" class="button smartcrop-attachment">'+l10n.cropImage+'</button>',
-		previous_mode = null;
+		cropLinkHTML = '<button type="button" class="button-link smartcrop-attachment">'+l10n.cropImage+'</button>',
+		previous_mode = null,
+		smartcrop_model = null;
 	// 
 	
 	var smartcropStateExtend = {
@@ -20,27 +22,18 @@
 		}
 	};
 	
-	_.extend( wp.media.view.MediaFrame.ImageDetails.prototype, {
-		_parentCreateStates: wp.media.view.MediaFrame.ImageDetails.prototype.createStates
-	}, smartcropStateExtend );
-	
-	_.extend( wp.media.view.Attachment.Details.prototype, {
-		_parentCreateStates: wp.media.view.Attachment.Details.prototype.createStates
-	}, smartcropStateExtend );
-
-	
-	
-	var smartcropHandlersExtend = {
+	var smartcropBindHandlersExtend = {
 		bindHandlers: function() {
-			this._parentBindHandlers.apply(this,arguments);
+			this._parentBindHandlers.apply( this, arguments );
 			this.on( 'content:create:smartcrop-image', this.smartcropImageMode, this );
 			this.on( 'content:render:smartcrop-image', this.smartcropImageModeRender, this );
-		},
+		}
+	};
+	
+	var smartcropHandlersExtend = {
 		smartcropImageMode: function( contentRegion ) {
-//console.log(this.model,this.image.attachment);
-			var model = !! this.model ? this.model : ( !! this.image && !! this.image.attachment ? this.image.attachment : null );
 			var smartcropImageController = new wp.media.controller.SmartcropImage( {
-				model: 			model,
+				model: 			smartcrop_model,
 				frame: 			this,
 				content:		this.content
 			} );
@@ -49,7 +42,7 @@
 			smartcropImageController._menu = function() {};
 			
 			contentRegion.view = new wp.media.view.SmartcropImage( {
-				model: 		model,
+				model: 		smartcrop_model,
 				frame: 		this,
 				controller:	smartcropImageController
 			});
@@ -59,53 +52,61 @@
 		}
 	};
 
-	_.extend( wp.media.view.MediaFrame.EditAttachments.prototype, {
-		_parentBindHandlers: wp.media.view.MediaFrame.EditAttachments.prototype.bindHandlers
-	}, smartcropHandlersExtend );
 
+	// media library and grid view
+	_.extend(	wp.media.view.MediaFrame.EditAttachments.prototype, 
+				{ _parentBindHandlers: wp.media.view.MediaFrame.EditAttachments.prototype.bindHandlers }, 
+				smartcropHandlersExtend, 
+				smartcropBindHandlersExtend 
+	);
 
-	// 
-	_.extend( wp.media.view.MediaFrame.ImageDetails.prototype, {
-		_parentBindHandlers: wp.media.view.MediaFrame.ImageDetails.prototype.bindHandlers
-	}, smartcropHandlersExtend );
-
-
-
-
-	/**
-	 *	Add Crop button to attachment editor
-	 */
-	wp.media.view.Attachment.Details.TwoColumn.prototype._parentRender = wp.media.view.Attachment.Details.TwoColumn.prototype.render;
-	wp.media.view.Attachment.Details.TwoColumn.prototype.render = function(){
-		this._parentRender.apply(this,arguments);
-		this.$('.attachment-actions').append(cropBtnHTML);
-	}
-	// add smartcrop action
-	wp.media.view.Attachment.Details.TwoColumn.prototype.smartcropAttachment = function( event ) {
-		event.preventDefault();
-		previous_mode = this.controller.content.mode();
-		this.controller.content.mode( 'smartcrop-image' );
-	}
-	// register action
-	wp.media.view.Attachment.Details.TwoColumn.prototype.events['click .smartcrop-attachment'] = 'smartcropAttachment';
+	// Inline MediaLibrary
+	_.extend(	wp.media.view.MediaFrame.Select.prototype, 
+				{ _parentBindHandlers: wp.media.view.MediaFrame.Select.prototype.bindHandlers }, 
+				smartcropHandlersExtend, 
+				smartcropBindHandlersExtend
+	);
 
 
 
-	/**
-	 *	Add Crop button to Image attachment editor (edit post screen)
-	 */
-	wp.media.view.ImageDetails.prototype._parentPostRender = wp.media.view.ImageDetails.prototype.postRender;
-	wp.media.view.ImageDetails.prototype.postRender = function(){
-		this._parentPostRender.apply(this,arguments);
-		this.$el.find('.actions').append(cropBtnHTML);
-	}
-	wp.media.view.ImageDetails.prototype.smartcropAttachment = function( event ) {
-		event.preventDefault();
-		previous_mode = this.controller.content.mode();
-		this.controller.content.mode( 'smartcrop-image' );
-	}
+
+	// post inline image editor
+	_.extend( wp.media.view.ImageDetails.prototype, {
+		_parentPostRender: wp.media.view.ImageDetails.prototype.postRender,
+		postRender: function() {
+			this._parentPostRender.apply(this,arguments);
+			this.$el.find('.actions').append(cropBtnHTML);
+		},
+		smartcropAttachment: function( event ) {
+			event.preventDefault();
+			previous_mode = this.controller.content.mode();
+			smartcrop_model = this.controller.image.attachment;
+			this.controller.content.mode( 'smartcrop-image' );
+		}
+	});
 	wp.media.view.ImageDetails.prototype.events['click .smartcrop-attachment'] = 'smartcropAttachment';
 
+	// media library screen (grid) AND uploader modal
+	_.extend( wp.media.view.Attachment.Details.prototype, {
+		_parentRender: wp.media.view.Attachment.Details.prototype.render,
+		render: function(){
+			this._parentRender.apply(this,arguments);
+			// media library screen
+ 			this.$('.attachment-actions').append(cropBtnHTML);
+ 			// uploader modal
+ 			$( cropLinkHTML ).insertAfter( this.$el.find( 'a.edit-attachment' ) );
+		},
+		smartcropAttachment: function( event ) {
+			event.preventDefault();
+			previous_mode = this.controller.content.mode();
+			smartcrop_model = this.model;
+			this.controller.content.mode( 'smartcrop-image' );
+		},
+		_parentCreateStates: wp.media.view.Attachment.Details.prototype.createStates
+	}, smartcropStateExtend );
+	
+	wp.media.view.Attachment.Details.prototype.events['click .smartcrop-attachment'] = 'smartcropAttachment';
+	
 
 	
 	/**

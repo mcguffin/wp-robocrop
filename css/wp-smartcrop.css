@@ -78,3 +78,12 @@ WP Smart Crop
 .smartcrop-select-item label strong {
 	font-size:20px;
 }
+
+
+
+
+
+.attachment-info .smartcrop-attachment {
+	display:block;
+    color:#0073aa;
+}

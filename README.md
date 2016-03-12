@@ -46,12 +46,13 @@ ToDo:
  - [ ] UX
  	- [x] Croptool: disable save button when there is nothing to save.
 	- [x] Make croptool available from edit post media modal
- 	- [ ] Revert
+	- [x] Make croptool available from library view (extend wp.media.view.Attachment.Details);
 	- [-] UX: start upload after an image has been processed
-			*(Not possible)*
+			*Not possible*
  - [ ] Test 
  	- [x] autosmartcrop on edit post
  	- [ ] Test with no cropped images available (upload image, add another image size)
+ 		- [ ] disable autocrop, if cannot crop
  	- [ ] Test together with SayCheese
  	- [ ] Test in FF, Safari, Edge
  - [ ] Efficency
