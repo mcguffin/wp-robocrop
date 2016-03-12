@@ -44,8 +44,9 @@ ToDo:
  	- [x] JS: Force reload Thumbnail after saving crop
  	- [x] JS: Ratios list: Grey out / hide unaffected imagesizes
  - [ ] UX
- 	- [ ] Croptool: disable save button when there is nothing to save.
-	- [ ] Make croptool available from edit post media modal
+ 	- [x] Croptool: disable save button when there is nothing to save.
+	- [x] Make croptool available from edit post media modal
+ 	- [ ] Revert
 	- [-] UX: start upload after an image has been processed
 			*(Not possible)*
  - [ ] Test 
@@ -66,7 +67,7 @@ ToDo:
  - [x] Security
  	- [x] serverside cropdata validation
  - [-] make smartercrop.js more robust
- - [x] Bugs: 
+ - [ ] Bugs: 
  	- [x] First call of media-view dows not set crop rect
  	- [x] Open img > AutoCrop > open another img > autocrop : btns don't not get re-enabled
 	- [x] Min height/width should be largest size, not smallest

@@ -3,199 +3,114 @@
 	var image_ratios = window.wp_smartcrop.image_ratios,
 		image_sizes  = window.wp_smartcrop.image_sizes,
 		l10n = window.wp_smartcrop.l10n,
-		options = window.wp_smartcrop.options;
+		options = window.wp_smartcrop.options,
+		cropBtnHTML = '<button type="button" class="button smartcrop-attachment">'+l10n.cropImage+'</button>',
+		previous_mode = null;
 	// 
-	// media view Attachment details - add smartcrop state
-	var parentCreateStates = wp.media.view.Attachment.Details.prototype.createStates;
-	wp.media.view.Attachment.Details.prototype.createStates = function() {
-		parentCreateStates.apply(this,arguments);
-		this.states.add(
-			new wp.media.controller.SmartcropImage( {
-				image: this.image,
-				selection: this.options.selection
-			} )
-		);
+	
+	var smartcropStateExtend = {
+		createStates: function() {
+			this._parentCreateStates.apply(this,arguments);
+			this.states.add(
+				new wp.media.controller.SmartcropImage( {
+					model: this.model,
+					selection: this.options.selection
+				} )
+			);
+		}
 	};
 	
-	// media frame: bind smartcrop events
-	var parentBindHandlers = wp.media.view.MediaFrame.EditAttachments.prototype.bindHandlers;
-	wp.media.view.MediaFrame.EditAttachments.prototype.bindHandlers = function(){
-		parentBindHandlers.apply(this,arguments);
-		this.on( 'content:create:smartcrop-image', this.smartcropImageMode, this );
-		this.on( 'content:render:smartcrop-image', this.smartcropImageModeRender, this );
-	}
-	wp.media.view.MediaFrame.EditAttachments.prototype.smartcropImageMode = function( contentRegion ) {
-		var smartcropImageController = new wp.media.controller.SmartcropImage( {
-			model: this.model,
-			frame: this,
-			content:this.content
-		} );
-		smartcropImageController._toolbar = function() {};
-		smartcropImageController._router = function() {};
-		smartcropImageController._menu = function() {};
+	_.extend( wp.media.view.MediaFrame.ImageDetails.prototype, {
+		_parentCreateStates: wp.media.view.MediaFrame.ImageDetails.prototype.createStates
+	}, smartcropStateExtend );
+	
+	_.extend( wp.media.view.Attachment.Details.prototype, {
+		_parentCreateStates: wp.media.view.Attachment.Details.prototype.createStates
+	}, smartcropStateExtend );
 
-		contentRegion.view = new wp.media.view.SmartcropImage( {
-			model: this.model,
-			frame: this,
-			controller: smartcropImageController
-		});
-	}
-	wp.media.view.MediaFrame.EditAttachments.prototype.smartcropImageModeRenderer = function( view ) {
-		view.on( 'ready', view.loadEditor );
-	}
 	
 	
-	
+	var smartcropHandlersExtend = {
+		bindHandlers: function() {
+			this._parentBindHandlers.apply(this,arguments);
+			this.on( 'content:create:smartcrop-image', this.smartcropImageMode, this );
+			this.on( 'content:render:smartcrop-image', this.smartcropImageModeRender, this );
+		},
+		smartcropImageMode: function( contentRegion ) {
+//console.log(this.model,this.image.attachment);
+			var model = !! this.model ? this.model : ( !! this.image && !! this.image.attachment ? this.image.attachment : null );
+			var smartcropImageController = new wp.media.controller.SmartcropImage( {
+				model: 			model,
+				frame: 			this,
+				content:		this.content
+			} );
+			smartcropImageController._toolbar = function() {};
+			smartcropImageController._router = function() {};
+			smartcropImageController._menu = function() {};
+			
+			contentRegion.view = new wp.media.view.SmartcropImage( {
+				model: 		model,
+				frame: 		this,
+				controller:	smartcropImageController
+			});
+		},
+		smartcropImageModeRenderer: function( view ) {
+			view.on( 'ready', view.loadEditor );
+		}
+	};
+
+	_.extend( wp.media.view.MediaFrame.EditAttachments.prototype, {
+		_parentBindHandlers: wp.media.view.MediaFrame.EditAttachments.prototype.bindHandlers
+	}, smartcropHandlersExtend );
+
+
+	// 
+	_.extend( wp.media.view.MediaFrame.ImageDetails.prototype, {
+		_parentBindHandlers: wp.media.view.MediaFrame.ImageDetails.prototype.bindHandlers
+	}, smartcropHandlersExtend );
+
+
+
+
 	/**
 	 *	Add Crop button to attachment editor
 	 */
-	wp.media.view.Attachment.Details.TwoColumn.prototype.old_render = wp.media.view.Attachment.Details.TwoColumn.prototype.render;
+	wp.media.view.Attachment.Details.TwoColumn.prototype._parentRender = wp.media.view.Attachment.Details.TwoColumn.prototype.render;
 	wp.media.view.Attachment.Details.TwoColumn.prototype.render = function(){
-		this.old_render.apply(this,arguments);
-		var btn = '<button type="button" class="button smartcrop-attachment">'+l10n.cropImage+'</button>';
-		this.$('.attachment-actions').append(btn);
+		this._parentRender.apply(this,arguments);
+		this.$('.attachment-actions').append(cropBtnHTML);
 	}
-	// register action
-	wp.media.view.Attachment.Details.TwoColumn.prototype.events['click .smartcrop-attachment'] = 'smartcropAttachment';
-	
 	// add smartcrop action
 	wp.media.view.Attachment.Details.TwoColumn.prototype.smartcropAttachment = function( event ) {
 		event.preventDefault();
+		previous_mode = this.controller.content.mode();
 		this.controller.content.mode( 'smartcrop-image' );
 	}
+	// register action
+	wp.media.view.Attachment.Details.TwoColumn.prototype.events['click .smartcrop-attachment'] = 'smartcropAttachment';
+
 
 
 	/**
-	 *	Modal message
+	 *	Add Crop button to Image attachment editor (edit post screen)
 	 */
-// 	wp.media.view.SmartcropModal = wp.media.View.extend({
-// 		tagName:  'div',
-// 		template: wp.template('smartcrop-modal'),
-// 		className: 'smartcrop-modal',
-// 
-// 		attributes: {
-// 			tabindex: 0
-// 		},
-// 
-// 		events: {
-// 		},
-// 
-// 		initialize: function() {
-// 			_.defaults( this.options, {
-// 				container: document.body,
-// 				title:     '',
-// 				freeze:    true
-// 			});
-// 		},
-// 		/**
-// 		 * @returns {wp.media.view.Modal} Returns itself to allow chaining
-// 		 */
-// 		attach: function() {
-// 			if ( this.views.attached ) {
-// 				return this;
-// 			}
-// 
-// 			if ( ! this.views.rendered ) {
-// 				this.render();
-// 			}
-// 
-// 			this.$el.appendTo( this.options.container );
-// 
-// 			// Manually mark the view as attached and trigger ready.
-// 			this.views.attached = true;
-// 			this.views.ready();
-// 
-// 			return this;//.propagate('attach');
-// 		},
-// 
-// 		/**
-// 		 * @returns {wp.media.view.Modal} Returns itself to allow chaining
-// 		 */
-// 		detach: function() {
-// 			if ( this.$el.is(':visible') ) {
-// 				this.close();
-// 			}
-// 
-// 			this.$el.detach();
-// 			this.views.attached = false;
-// 			return this;//.propagate('detach');
-// 		},
-// 		setMessage:function( msgText ) {
-// 			this.$el.find('.message').text( msgText );
-// 		},
-// 		setTitle:function( titleText ) {
-// 			this.$el.find('.title').text( titleText );
-// 		},
-// 		/**
-// 		 * @returns {wp.media.view.Modal} Returns itself to allow chaining
-// 		 */
-// 		open: function() {
-// 			var $el = this.$el,
-// 				options = this.options,
-// 				mceEditor;
-// 
-// 			if ( $el.is(':visible') ) {
-// 				return this;
-// 			}
-// 
-// 			if ( ! this.views.attached ) {
-// 				this.attach();
-// 			}
-// 
-// 			// If the `freeze` option is set, record the window's scroll position.
-// 			if ( options.freeze ) {
-// 				this._freeze = {
-// 					scrollTop: $( window ).scrollTop()
-// 				};
-// 			}
-// 
-// 			// Disable page scrolling.
-// 			$( 'body' ).addClass( 'modal-open' );
-// 
-// 			$el.show();
-// 
-// 			this.$el.focus();
-// 
-// 			return this;//.propagate('open');
-// 		},
-// 
-// 		/**
-// 		 * @param {Object} options
-// 		 * @returns {wp.media.view.Modal} Returns itself to allow chaining
-// 		 */
-// 		close: function( options ) {
-// 			var freeze = this._freeze;
-// 
-// 			if ( ! this.views.attached || ! this.$el.is(':visible') ) {
-// 				return this;
-// 			}
-// 
-// 			// Enable page scrolling.
-// 			$( 'body' ).removeClass( 'modal-open' );
-// 
-// 			// If the `freeze` option is set, restore the container's scroll position.
-// 			if ( freeze ) {
-// 				$( window ).scrollTop( freeze.scrollTop );
-// 			}
-// 
-// 			if ( options && options.escape ) {
-// 				this;//.propagate('escape');
-// 			}
-// 
-// 			return this;
-// 		},
-// 
-// 		/**
-// 		 * @param {Array|Object} content Views to register to '.media-modal-content'
-// 		 * @returns {wp.media.view.Modal} Returns itself to allow chaining
-// 		 */
-// 		content: function( content ) {
-// 			this.views.set( '.media-modal-content', content );
-// 			return this;
-// 		}
-// 	});
+	wp.media.view.ImageDetails.prototype._parentPostRender = wp.media.view.ImageDetails.prototype.postRender;
+	wp.media.view.ImageDetails.prototype.postRender = function(){
+		this._parentPostRender.apply(this,arguments);
+		this.$el.find('.actions').append(cropBtnHTML);
+	}
+	wp.media.view.ImageDetails.prototype.smartcropAttachment = function( event ) {
+		event.preventDefault();
+		previous_mode = this.controller.content.mode();
+		this.controller.content.mode( 'smartcrop-image' );
+	}
+	wp.media.view.ImageDetails.prototype.events['click .smartcrop-attachment'] = 'smartcropAttachment';
+
 
 	
+	/**
+	 *	Ratio select list
+	 */
 	wp.media.view.SmartcropRatioSelect = wp.media.View.extend({
 		className: 'smartcrop-select',
 		template: wp.template('smartcrop-select'),
@@ -263,20 +178,20 @@
 	});
 	
 	wp.media.view.SmartcropImage = wp.media.view.EditImage.extend({
-		className: 'image-smartcrop',
-		template:  wp.template('smartcrop'),
-		image_ratios:    image_ratios,
-		image_sizes:     image_sizes,
-		events:    {
+		className:		'image-smartcrop',
+		template:		wp.template('smartcrop'),
+		image_ratios:	image_ratios,
+		image_sizes:	image_sizes,
+		_croppers:		null,
+		events: {
 			'click .smartcrop-autocrop' : 'autocrop',
 			'click .smartcrop-cancel'   : 'cancel',
 			'click .smartcrop-save'     : 'save'
 		},
-		_croppers:null,
-		initialize: function(){
-			wp.media.view.EditImage.prototype.initialize.apply(this,arguments);
+		initialize: function( options ) {
+			wp.media.view.EditImage.prototype.initialize.apply( this, arguments );
 			this._croppers = {}
-//			this.controller.on('smartcrop:croprect', this.hasCropRect, this);
+			this.sizeToSelect = ( !! options.frame && !! options.frame.image ) ? options.frame.image.attributes.size : false;
 		},
 		dispose:function() {
 			var areaSelect = this.$areaSelect()
@@ -290,8 +205,7 @@
 		},
 		render: function() {
 			var self = this;
-			
-			wp.Backbone.View.prototype.render.apply(this,arguments);
+			wp.media.view.EditImage.prototype.render.apply(this,arguments);
 			this.$img = this.$el.find('img');
 
 			this.$img.imgAreaSelect({
@@ -335,8 +249,16 @@
 			return this;
 		},
 		ready: function() {
+			var currentRatio;
 			wp.media.view.EditImage.prototype.ready.apply(this,arguments);
-			this.selectRatio.setRatio( _.first(_.keys( this.image_ratios )) ); 
+			if ( !! this.sizeToSelect ) {
+				currentRatio = _.find( this.image_ratios, function( ratio ){
+					return ratio.sizes.indexOf( this.sizeToSelect ) > -1;
+				}, this ).name;
+			} else {
+				currentRatio = _.first(_.keys( this.image_ratios ));
+			}
+			this.selectRatio.setRatio( currentRatio ); 
 			return this;
 		},
 		faces : function() {
@@ -352,22 +274,30 @@
 			var data = {
 					attachments:{}
 				}, id = this.model.get('id'),
-				$btns = this.$saveButton.add(this.$cancelButton).add( this.$autocropButton ).prop('disabled',true);
+				$btns = this.$saveButton.add(this.$cancelButton).add( this.$autocropButton ).prop('disabled',true),
+				self = this;
 			data.attachments[id] = { sizes:this.model.get('sizes') };
 			this.model.saveCompat( data, {} ).done( function( resp ) {
-				// force reload thumbnail
-				var $thumb = $('[data-id="'+resp.id+'"] .thumbnail img'),
-					src = $thumb.attr('src'), d = new Date();
-				if ( src ) {	
-					src = src.replace(/\?.+$/,'');
-					$thumb.attr('src',src+'?'+d.getTime());
-				}
+				var d = new Date();
+				
+				// force reload image ...
+				_.each( self.model.attributes.sizes, function( size, sizename ) {
+					// ... unless it's fullsize ...
+					if ( sizename !== 'full' ) {
+						// ... even inside iframes!
+						$(document).add($('iframe').contents())
+							.find( 'img[src^="'+size.url+'"]' )
+							.each( function(){
+								$(this).attr( 'src', size.url+'?'+d.getTime() );
+							} );
+					}
+				}, self );
 				$btns.prop('disabled',false)
 			});
 			return this;
 		},
 		cancel:function() {
-			this.controller.attributes.content.mode('edit-metadata');
+			this.controller.attributes.content.mode( previous_mode );
 			return this;
 		},
 		onselect: function( ) {
@@ -434,8 +364,7 @@
 		},
 		autocrop: function( event ) {
 			
-			var self = this, 
-				cropper, 
+			var self = this, cropper, 
 				btns = this.$saveButton.add( this.$autocropButton ).prop('disabled',true).get(),
 				ratio = {};
 
@@ -450,7 +379,6 @@
 			}
 			cropper = this._croppers[this.current_ratio.name];
 			cropper.cropImage( this.$el.find('img').get(0) );
-			
 			return this;
 		},
 		selectCrop:function( rect ) {
@@ -552,6 +480,11 @@
 	});
 	
 	
+	
+	
+	
+	
+	
 	// controller state
 	wp.media.controller.SmartcropImage = wp.media.controller.State.extend({
 		defaults: {
@@ -606,6 +539,11 @@
 // 		}
 	});
 
-
+	
+	
+	
+	
+	
+	
 
 })(wp,jQuery,SmarterCrop,tracking);
