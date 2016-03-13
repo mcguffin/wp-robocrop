@@ -5,13 +5,27 @@
 class WPSmartCropAdmin {
 
 	/**
-	 *	Default rounding precision for image ratios
+	 *	Singleton instance
+	 */
+	private static $_instance	= null;
+
+	/**
+	 *	(uint) Default rounding precision for image ratios
 	 *	Add a filter for this later
 	 */
-	private $ratio_precision = 4;
-	private static $_instance = null;
-	private $_crops = array();
-	private $_changed_crops = array();
+	private $ratio_precision 	= 4;
+
+	/**
+	 *	(assoc) crops gotten from request
+	 */
+	private $_crops				= array();
+
+	/**
+	 *	(assoc) crops gotten from request
+	 */
+	private $_focuspoint		= null;
+
+
 	/**
 	 *	Get singleton instance
 	 */
@@ -95,6 +109,29 @@ class WPSmartCropAdmin {
 	}
 	
 	/**
+	 *	Enable client side image resize.
+	 *
+	 *	@filter 'plupload_init'
+	 */
+	function plupload_init( $params ) {
+		// get biggest possible image
+		$sizes = $this->get_image_sizes();
+		$largest = array( 'width'=>0 , 'height'=>0 );
+		foreach ( $sizes as $size ) {
+			$largest['width'] = max($size['width'],$largest['width']);
+			$largest['height'] = max($size['height'],$largest['height']);
+		}
+		$params['resize'] = array(
+			'enabled' => true,
+			'width'		=> intval($largest['width']),
+			'height'	=> intval($largest['height']),
+			'quality'	=> 90
+		);
+		return $params;
+	}
+
+
+	/**
 	 *	Read cropdata from our Cropping tool and keep it for later use.
 	 *	We're expecting absolute coords (x, y, width and height in pixel) here.
 	 *
@@ -102,22 +139,35 @@ class WPSmartCropAdmin {
 	 */
 	function edit_attachment( $attachment_ID ) {
 
-		if ( wp_attachment_is_image( $attachment_ID ) &&
-			isset( $_REQUEST[ 'attachments' ], $_REQUEST[ 'attachments' ][$attachment_ID], $_REQUEST[ 'attachments' ][$attachment_ID]['sizes'] ) 
-		) {
-
+		if ( wp_attachment_is_image( $attachment_ID ) ) {
 			$previous_metadata = wp_get_attachment_metadata( $attachment_ID );
+			if ( isset( $_REQUEST[ 'attachments' ], $_REQUEST[ 'attachments' ][$attachment_ID] ) ) {
+				if ( isset( $_REQUEST[ 'attachments' ][$attachment_ID]['sizes'] ) ) {
 
-			$this->_changed_crops = array();
-			// store crop information from user request
-			foreach ( $_REQUEST[ 'attachments' ][$attachment_ID]['sizes'] as $sizeslug => $size ) {
-				if ( isset( $size['cropdata'] ) ) {
-					// sanitize cropdata
-					array_map( 'floatval', $size['cropdata'] );
-					$this->_crops[$sizeslug] = $size['cropdata'];
+					// store crop information from user request
+					foreach ( $_REQUEST[ 'attachments' ][$attachment_ID]['sizes'] as $sizeslug => $size ) {
+						if ( isset( $size['cropdata'] ) ) {
+							// sanitize cropdata
+							$size_cropdata = array_map( 'floatval', $size['cropdata'] );
+							$this->_crops[$sizeslug] = $size_cropdata;
+						}
+					}
 				}
 			}
-
+			if ( isset( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'] ) ) {
+				$focuspoint = wp_parse_args( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'], array(
+					'x' => 0,
+					'y' => 0,
+				));
+				array_
+				// sanitize
+				$this->_focuspoint = array(
+					'x' => min( max( $focuspoint['x'], -1), 1),
+					'y' => min( max( $focuspoint['y'], -1), 1),
+				);
+			}
+			
+			
 			// trigger sizes regeneration
 			$fullsizepath = get_attached_file( $attachment_ID );
 			$metadata = wp_generate_attachment_metadata( $attachment_ID, $fullsizepath );
@@ -155,29 +205,6 @@ class WPSmartCropAdmin {
 	}
 
 	/**
-	 *	Enable client side image resize.
-	 *
-	 *	@filter 'plupload_init'
-	 */
-	function plupload_init( $params ) {
-		// get biggest possible image
-		$sizes = $this->get_image_sizes();
-		$largest = array( 'width'=>0 , 'height'=>0 );
-		foreach ( $sizes as $size ) {
-			$largest['width'] = max($size['width'],$largest['width']);
-			$largest['height'] = max($size['height'],$largest['height']);
-		}
-		$params['resize'] = array(
-			'enabled' => true,
-			'width'		=> intval($largest['width']),
-			'height'	=> intval($largest['height']),
-			'quality'	=> 90
-		);
-		return $params;
-	}
-
-
-	/**
 	 *	Add crop data to image metadata
 	 *
 	 *	@filter 'wp_generate_attachment_metadata'
@@ -189,6 +216,9 @@ class WPSmartCropAdmin {
 					$metadata['sizes'][$sizeslug]['cropdata'] = $this->_crops[$sizeslug];
 				}
 			}
+		}
+		if ( isset( $this->_focuspoint ) ) {
+			$metadata['focuspoint'] = $this->_focuspoint;
 		}
 		return $metadata;
 	}
