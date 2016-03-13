@@ -1,4 +1,4 @@
-(function(wp,$,SmarterCrop,t) {
+(function(wp,$,SmarterCrop) {
 
 	var image_ratios = window.wp_smartcrop.image_ratios,
 		image_sizes  = window.wp_smartcrop.image_sizes,
@@ -21,7 +21,7 @@
 			);
 		}
 	};
-	
+
 	var smartcropBindHandlersExtend = {
 		bindHandlers: function() {
 			this._parentBindHandlers.apply( this, arguments );
@@ -29,7 +29,7 @@
 			this.on( 'content:render:smartcrop-image', this.smartcropImageModeRender, this );
 		}
 	};
-	
+
 	var smartcropHandlersExtend = {
 		smartcropImageMode: function( contentRegion ) {
 			var smartcropImageController = new wp.media.controller.SmartcropImage( {
@@ -262,15 +262,6 @@
 			this.selectRatio.setRatio( currentRatio ); 
 			return this;
 		},
-		faces : function() {
-			var img = this.$el.find('img').get(0),
-			facedetect = new tracking.ObjectTracker('face');
-			tracking.track( img, facedetect );
-			facedetect.on('track',function(event) {
-				console.log('faces:',event.data,event.data.length);
-			});
-			return this;
-		},
 		save: function() {
 			var data = {
 					attachments:{}
@@ -358,9 +349,6 @@
 			} else {
 				this.selectCrop(rect);
 			}
-//
-			
-//			setTimeout(function(){  },50);
 			return this;
 		},
 		autocrop: function( event ) {
@@ -454,14 +442,6 @@
 				}
 			}
 		},
-// 		_scaleCoords: function( coords, scale ) {
-// 			for ( var s in coords ) {
-// 				if ( 'number'===typeof(coords[s]) ) {
-// 					coords[s] *= scale;
-// 				}
-// 			}
-// 			return coords;
-// 		},
 		_pointToRectCoords:function( points ) {
 			return {
 				x: points.x1,
@@ -510,34 +490,6 @@
 		deactivate: function() {
 			this.stopListening( this.frame );
 		},
-
-		/**
-		 * @since 3.9.0
-		 */
-// 		toolbar: function() {
-// 			console.log("yep, it's me");
-// 			var frame = this.frame,
-// 				lastState = frame.lastState(),
-// 				previous = lastState && lastState.id;
-// 
-// 			frame.toolbar.set( new wp.media.view.Toolbar({
-// 				controller: frame,
-// 				items: {
-// 					back: {
-// 						style: 'primary',
-// 						text:     l10n.back,
-// 						priority: 20,
-// 						click:    function() {
-// 							if ( previous ) {
-// 								frame.setState( previous );
-// 							} else {
-// 								frame.close();
-// 							}
-// 						}
-// 					}
-// 				}
-// 			}) );
-// 		}
 	});
 
 	
@@ -547,4 +499,4 @@
 	
 	
 
-})(wp,jQuery,SmarterCrop,tracking);
+})(wp,jQuery,SmarterCrop);

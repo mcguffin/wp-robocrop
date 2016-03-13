@@ -4,8 +4,6 @@ Smart Crop
 Smart image cropping in WordPress.
 
 Before uploading an image this plugin finds a good cropping rectangle.
-If there are faces in the picture, it attempts to find a crop with as many faces as 
-possible included and as few faces as possible cut in half. 
 
 Requires at least WP 4.4
 
@@ -49,7 +47,8 @@ ToDo:
 	- [x] Make croptool available from library view (extend wp.media.view.Attachment.Details);
 	- [-] UX: start upload after an image has been processed
 			*Not possible*
-	- [ ] Kickout faces
+	- [x] Kickout faces
+	- [ ] Show "SmartCropping" Message
  - [ ] Test 
  	- [x] autosmartcrop on edit post
  	- [ ] Test with no cropped images available (upload image, add another image size)
@@ -68,7 +67,6 @@ ToDo:
  	- [x] detect faces (Default: Off - slow)
  - [x] Security
  	- [x] serverside cropdata validation
- - [-] make smartercrop.js more robust
  - [ ] Bugs: 
  	- [x] First call of media-view dows not set crop rect
  	- [x] Open img > AutoCrop > open another img > autocrop : btns don't not get re-enabled
@@ -78,6 +76,7 @@ ToDo:
  - [ ] Future
  	- [ ] Autocropping modes:
  		- [ ] Define focus point before upload
+
 
 Support
 -------

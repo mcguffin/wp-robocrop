@@ -1,9 +1,3 @@
 [submodule "sources/smartcrop.js"]
 	path = sources/smartcrop.js
 	url = git@github.com:jwagner/smartcrop.js.git
-[submodule "sources/jquery.facedetection"]
-	path = sources/jquery.facedetection
-	url = git@github.com:jaysalvat/jquery.facedetection.git
-[submodule "sources/tracking.js"]
-	path = sources/tracking.js
-	url = git@github.com:eduardolundgren/tracking.js.git

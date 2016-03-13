@@ -56,17 +56,17 @@
 				};
 			}
 			for (s in image_ratios) {
+				crops[ file.name ][ image_ratios[s].name ] = false;
 				croppers[s] = new SmarterCrop(image_ratios[s],options);
-				croppers[s].on('cancrop',function( ratio ) {
-					crops[ file.name ][ ratio.name ] = false;
+				croppers[s].on('cannotcrop',function( ratio ) {
+					delete( crops[ file.name ][ ratio.name ] );
 				});
 				croppers[s].cropFile( file );
 				croppers[s].on('cropresult' , function(cropData,ratio) {
 					if ( !!cropData ) {
-						!crops[ file.name ] && (crops[file.name] = {});
 						crops[ file.name ][ ratio.name ] = mkCropData( cropData.relative, ratio );
 						if ( check() ) {
-							up.start();
+						//	up.start();
 						}
 					}
 				});
@@ -95,7 +95,7 @@
 		}
 		
 		// stop uploader and generate cropdata 
-		this.uploader.uploader.bind('FilesAdded',function(up, files ) {
+		this.uploader.uploader.bind('FilesAdded',function( up, files ) {
 			var images = 0, file;
 			up.stop();
 
@@ -108,18 +108,14 @@
 					}
 				}
 			}
-			if ( !!images ) {
-//				showMessage();
-			} else {
-				console.log('crop:up.start');
+			if ( !images ) {
 				up.start();
 			}
 		});
 		// send cropdata 
 		this.uploader.uploader.bind('BeforeUpload',function(up, file ) {
-//			delete up.settings.multipart_params.cropdata;
 			if ( crops[file.name] ) {
-				up.settings.multipart_params.cropdata = JSON.stringify(crops[file.name]);//crops[file.name]; //escape();
+				up.settings.multipart_params.cropdata = JSON.stringify(crops[file.name]);
 			}
 		});
 		return ret;

@@ -71,23 +71,16 @@ class WPSmartCropAdmin {
 				'Image'				=> __('Image', 'wp-smartcrop'),
 				'ImageSize'			=> __('Image size', 'wp-smartcrop'),
 				'AnalyzingImage'	=> __('Analyzing Image','wp-smartcrop'),
-				'TrackingFaces'		=> __('Tracking faces. Please give me a moment …','wp-smartcrop'),
 			),
 			'options'		=> array(
 				'autocrop'		=> !! get_option('smartcrop_autocrop'),
-				'detect_faces'	=> !! get_option('smartcrop_detect_faces'),
 			),
 		);
 
 		if ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ) {
-			wp_register_script( 'tracking' , plugins_url( 'js/vendor/tracking.js/tracking.js' , dirname(__FILE__) ) , array() , $version );
-			wp_register_script( 'tracking-face' , plugins_url( 'js/vendor/tracking.js/face.js' , dirname(__FILE__) ) , array( 'tracking',  ) , $version );
-			wp_register_script( 'tracking-eye' , plugins_url( 'js/vendor/tracking.js/eye.js' , dirname(__FILE__) ) , array( 'tracking',  ) , $version );
-			wp_register_script( 'tracking-mouth' , plugins_url( 'js/vendor/tracking.js/mouth.js' , dirname(__FILE__) ) , array( 'tracking',  ) , $version );
 			wp_register_script( 'smartcrop' , plugins_url( 'js/vendor/smartcrop/smartcrop.js' , dirname(__FILE__) ) , array() , $version );
 			wp_register_script( 'smartercrop' , plugins_url( 'js/smarter-crop.js' , dirname(__FILE__) ) , array( 
 				'smartcrop',
-				'tracking-face',
 				) , $version );
 			wp_register_script( 'wp-smartcrop-uploader' , plugins_url( 'js/wp-uploader.js' , dirname(__FILE__) ) , array('smartercrop') , $version );
 			wp_register_script( 'wp-smartcrop' , plugins_url( 'js/media-view.js' , dirname(__FILE__) ) , array('media-grid','smartercrop','wp-smartcrop-uploader') , $version );

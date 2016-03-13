@@ -31,7 +31,6 @@ class WPSmartCropSettings {
 
 		// add default options
 		add_option( 'smartcrop_autocrop',     true );
-		add_option( 'smartcrop_detect_faces', true );
 	}
 
 	/**
@@ -45,7 +44,6 @@ class WPSmartCropSettings {
 		$settings_section = 'smartcrop_settings';
 		// more settings go here ...
 		register_setting( $this->optionset , 'smartcrop_autocrop' , 'boolval' );
-		register_setting( $this->optionset , 'smartcrop_detect_faces' , 'boolval' );
 
 		add_settings_section( $settings_section, __( 'WP Smartcrop',  'wp-smartcrop' ), array( &$this, 'settings_description' ), $this->optionset );
 		// ... and here
@@ -59,18 +57,6 @@ class WPSmartCropSettings {
 				'option_name' => 'smartcrop_autocrop',
 				'option_label' => __('If checked images will be cropped automatically before they are uploaded','wp-smartcrop'),
 				'option_description' => __('Depending on Your image sizes this may slow down the upload process.','wp-smartcrop')
-			)
-		);
-		add_settings_field(
-			'smartcrop_detect_faces',
-			__( 'Detect faces',  'wp-smartcrop' ),
-			array( $this, 'checkbox' ),
-			$this->optionset,
-			$settings_section,
-			array(
-				'option_name' => 'smartcrop_detect_faces',
-				'option_label' => __('If checked Smartcrop will try to detect faces first.','wp-smartcrop'),
-				'option_description' => __('This will slow down your uploads even more, but will lead to better crops. Especially when you upload picturs with people on it.','wp-smartcrop')
 			)
 		);
 	}
