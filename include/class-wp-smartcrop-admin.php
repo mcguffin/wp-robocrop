@@ -113,8 +113,8 @@ class WPSmartCropAdmin {
 			foreach ( $_REQUEST[ 'attachments' ][$attachment_ID]['sizes'] as $sizeslug => $size ) {
 				if ( isset( $size['cropdata'] ) ) {
 					// sanitize cropdata
-					array_map( 'floatval', $size['cropdata'] );
-					$this->_crops[$sizeslug] = $size['cropdata'];
+					$size_cropdata = array_map( 'floatval', $size['cropdata'] );
+					$this->_crops[$sizeslug] = $size_cropdata;
 				}
 			}
 
