@@ -1,4 +1,4 @@
-.
+
 	<script type="text/html" id="tmpl-smartcrop-modal">
 		<div class="smartcrop-message-content">
 			<h3 class="title">{{ data.title }}</h3>

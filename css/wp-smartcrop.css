@@ -87,3 +87,75 @@ WP Smart Crop
 	display:block;
     color:#0073aa;
 }
+
+
+
+.set-focuspoint {
+	position:relative;
+	display:inline-block;
+	max-width:100%;
+	max-height:100%;
+	pointer-events:none;
+	overflow:hidden;
+}
+
+.set-focuspoint img {
+	width: auto;
+	height: auto;
+	max-width:100%;
+	max-height:100%;
+}
+.set-focuspoint .focuspoint {
+	position:absolute
+}
+
+.set-focuspoint .focuspoint:after,
+.set-focuspoint .focuspoint:before {
+	position:absolute;
+	content:'';
+	background:#fff;
+	box-shadow:0 0 5px rgba(0,0,0,0.5);
+}
+.set-focuspoint .focuspoint:before {
+	height:40px;
+	width:1px;
+	left:0;
+	top:-20px;
+}
+.set-focuspoint .focuspoint:after {
+	width:40px;
+	height:1px;
+	left:-20px;
+	top:0;
+}
+.set-focuspoint .circle {
+	position:absolute;
+	top:-75px;
+	left:-75px;
+	width:150px;
+	height:150px;
+	border-radius:76px;
+	border:1px solid #fff;
+	box-shadow:0 0 5px rgba(0,0,0,0.5);
+}
+
+
+
+
+
+.ask-focuspoint .media-frame-toolbar .instructions {
+	margin:18px;
+	font-style:italic;
+	font-size:18px;
+	float:left;
+}
+
+.ask-focuspoint .media-frame-toolbar .button.reset {
+	margin:15px 0;
+	float:right;
+}
+
+.ask-focuspoint .media-frame-toolbar .button.proceed {
+	margin:15px;
+	float:right;
+}

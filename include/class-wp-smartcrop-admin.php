@@ -24,7 +24,8 @@ class WPSmartCropAdmin {
 	 *	(assoc) crops gotten from request
 	 */
 	private $_focuspoint		= null;
-
+	
+	private $previous_metadata	= null;
 
 	/**
 	 *	Get singleton instance
@@ -82,9 +83,15 @@ class WPSmartCropAdmin {
 				'cropImage'			=> __('Crop Image','wp-smartcrop'),
 				'smartcropImage'	=> __('Smart Crop Image','wp-smartcrop'),
 				'back'				=> __('Back', 'wp-smartcrop'),
+				'okay'				=> __('Okay', 'wp-smartcrop'),
+				'done'				=> __('Done', 'wp-smartcrop'),
+				'reset'				=> __('Reset', 'wp-smartcrop'),
 				'Image'				=> __('Image', 'wp-smartcrop'),
 				'ImageSize'			=> __('Image size', 'wp-smartcrop'),
 				'AnalyzingImage'	=> __('Analyzing Image','wp-smartcrop'),
+				'SetFocusPoint'		=> __('Set Focus Point','wp-smartcrop'),
+				'FocusPointInstructions'
+									=> __('Click on the most important spot of the image.','wp-smartcrop'),
 			),
 			'options'		=> array(
 				'autocrop'		=> !! get_option('smartcrop_autocrop'),
@@ -92,15 +99,30 @@ class WPSmartCropAdmin {
 		);
 
 		if ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ) {
-			wp_register_script( 'smartcrop' , plugins_url( 'js/vendor/smartcrop/smartcrop.js' , dirname(__FILE__) ) , array() , $version );
-			wp_register_script( 'smartercrop' , plugins_url( 'js/smarter-crop.js' , dirname(__FILE__) ) , array( 
-				'smartcrop',
-				) , $version );
-			wp_register_script( 'wp-smartcrop-uploader' , plugins_url( 'js/wp-uploader.js' , dirname(__FILE__) ) , array('smartercrop') , $version );
-			wp_register_script( 'wp-smartcrop' , plugins_url( 'js/media-view.js' , dirname(__FILE__) ) , array('media-grid','smartercrop','wp-smartcrop-uploader') , $version );
-			wp_localize_script( 'wp-smartcrop-uploader' , 'wp_smartcrop' , $script_l10n );
+
+			wp_register_script( 'wp-smartcrop-cropcalc' , 
+								plugins_url( 'js/cropcalc.js', dirname(__FILE__) ) , 
+								array() , $version 
+							);
+
+			wp_register_script( 'wp-smartcrop-focuspoint-media-view' , 
+								plugins_url( 'js/focuspoint-media-view.js', dirname(__FILE__) ) , 
+								array('jquery', 'media-grid', 'wp-smartcrop-cropcalc' ) , $version 
+							);
+
+			wp_register_script( 'wp-smartcrop-media-view' , 
+								plugins_url( 'js/media-view.js' , dirname(__FILE__) ) , 
+								array('media-grid') , $version );
+
+			wp_register_script( 'wp-smartcrop', 
+								plugins_url( 'js/focuspoint-wp-uploader.js', dirname(__FILE__) ) , 
+								array('wp-smartcrop-focuspoint-media-view', 'wp-smartcrop-cropcalc', 'wp-smartcrop-media-view' ) , $version 
+							);
+
+			wp_localize_script( 'wp-smartcrop-focuspoint-media-view' , 'wp_smartcrop' , $script_l10n );
+
 		} else {
-			wp_register_script( 'wp-smartcrop' , plugins_url( 'js/wp-smartcrop.combined.min.js' , dirname(__FILE__) ) , array( 'jquery', 'media-grid' ) , $version );
+			wp_register_script( 'wp-smartcrop' , plugins_url( 'js/wp-smartcrop.combined.min.js' , dirname(__FILE__) ) , array( 'media-grid' ) , $version );
 			wp_localize_script( 'wp-smartcrop' , 'wp_smartcrop' , $script_l10n );
 		}
 
@@ -140,7 +162,9 @@ class WPSmartCropAdmin {
 	function edit_attachment( $attachment_ID ) {
 
 		if ( wp_attachment_is_image( $attachment_ID ) ) {
-			$previous_metadata = wp_get_attachment_metadata( $attachment_ID );
+			
+			$this->previous_metadata = wp_get_attachment_metadata( $attachment_ID );
+			
 			if ( isset( $_REQUEST[ 'attachments' ], $_REQUEST[ 'attachments' ][$attachment_ID] ) ) {
 				if ( isset( $_REQUEST[ 'attachments' ][$attachment_ID]['sizes'] ) ) {
 
@@ -153,18 +177,6 @@ class WPSmartCropAdmin {
 						}
 					}
 				}
-			}
-			if ( isset( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'] ) ) {
-				$focuspoint = wp_parse_args( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'], array(
-					'x' => 0,
-					'y' => 0,
-				));
-				array_
-				// sanitize
-				$this->_focuspoint = array(
-					'x' => min( max( $focuspoint['x'], -1), 1),
-					'y' => min( max( $focuspoint['y'], -1), 1),
-				);
 			}
 			
 			
@@ -186,6 +198,9 @@ class WPSmartCropAdmin {
 		include __DIR__.'/template/smartcrop-select-tpl.php';
 		include __DIR__.'/template/smartcrop-select-item-tpl.php';
 		include __DIR__.'/template/smartcrop-modal-tpl.php';
+		
+		include __DIR__.'/template/smartcrop-ask-focuspoint-tpl.php';
+		include __DIR__.'/template/smartcrop-set-focuspoint-tpl.php';
 	}
 
 	/**
@@ -200,6 +215,11 @@ class WPSmartCropAdmin {
 					$response['sizes'][$size]['cropdata'] = array_map('intval',$sizedata['cropdata']);
 				}
 			}
+		}
+		if ( isset( $meta['focuspoint'] ) ) {
+			$response['focuspoint'] = $meta['focuspoint'];
+		} else {
+			$response['focuspoint'] = array( 'x' => 0, 'y' => 0 );
 		}
 		return $response;
 	}
@@ -217,8 +237,17 @@ class WPSmartCropAdmin {
 				}
 			}
 		}
-		if ( isset( $this->_focuspoint ) ) {
-			$metadata['focuspoint'] = $this->_focuspoint;
+		
+		// upload
+		if ( isset( $_REQUEST['focuspoint'] ) ) {
+			$metadata['focuspoint'] = $this->sanitize_focuspoint( json_decode( stripslashes( $_REQUEST['focuspoint'] ) ) );
+			
+		// save image
+		} else if ( ! is_null( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'] ) ) {
+			$metadata['focuspoint'] = $this->sanitize_focuspoint( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'] );
+		// update from somewhere else
+		} else if ( isset( $this->previous_metadata, $this->previous_metadata['focuspoint'] ) ) {
+			$metadata['focuspoint'] = $this->previous_metadata['focuspoint'];
 		}
 		return $metadata;
 	}
@@ -416,6 +445,20 @@ class WPSmartCropAdmin {
 			}
 		}
 		return true;
+	}
+	
+	
+	private function sanitize_focuspoint( $focuspoint ) {
+		$focuspoint = wp_parse_args( array_map('floatval',(array) $focuspoint), array(
+			'x' => 0,
+			'y' => 0,
+		));
+		
+		return array(
+			'x' => min( max( $focuspoint['x'], -1), 1),
+			'y' => min( max( $focuspoint['y'], -1), 1),
+		);
+	
 	}
 	
 }

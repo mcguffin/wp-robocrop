@@ -1,3 +1,4 @@
+
 	<script type="text/html" id="tmpl-smartcrop">
 		<div class="smartcrop-sidebar">
 			<div class="select-ratio"></div>
@@ -7,7 +8,7 @@
 				<button class="button-primary smartcrop-save" disabled="disabled"><?php _e('Save','wp-smartcrop'); ?></button>
 			</div>
 		</div>
-	
+
 		<div class="smartcrop-content">
 			<div class="smartcrop-image-wrap box">
 				<img id="smartcrop-image" src="{{ data.url }}" alt="" />

@@ -1,4 +1,4 @@
-(function(wp,$,SmarterCrop) {
+(function(wp,$) {
 
 	var image_ratios = window.wp_smartcrop.image_ratios,
 		image_sizes  = window.wp_smartcrop.image_sizes,
@@ -9,7 +9,7 @@
 		previous_mode = null,
 		smartcrop_model = null;
 	// 
-	
+
 	var smartcropStateExtend = {
 		createStates: function() {
 			this._parentCreateStates.apply(this,arguments);
@@ -228,8 +228,7 @@
 						.nextAll( '.imgareaselect-outer' ).css( 'position', 'fixed' );
 				},
 				onSelectEnd: function( image, coords ) {
-//					var cropdata = self._pointToRectCoords( self._scaleCoords( coords, 1 / self._image_scale_factor() ) )
-					var cropdata = self._pointToRectCoords( coords )
+					var cropdata = wp.smartcrop.cropcalc.pointToRectCoords( coords )
 					self._setCropSizes(cropdata);
 					self.$saveButton.prop('disabled',false);
 				}
@@ -352,28 +351,25 @@
 			return this;
 		},
 		autocrop: function( event ) {
+			// crop by focus point
 			
-			var self = this, cropper, 
-				btns = this.$saveButton.add( this.$autocropButton ).prop('disabled',true).get(),
-				ratio = {};
+			var cropdata, imageinfo = {
+				width:		this.model.get('width'),
+				height:		this.model.get('height'),
+				focuspoint:	this.model.get('focuspoint')
+			};
+			cropdata = wp.smartcrop.cropcalc.cropFromFocusPoint( imageinfo, this.current_ratio );
+			cropdata = wp.smartcrop.cropcalc.relToAbsCoords( cropdata, imageinfo );
 
-			if ( ! this._croppers[this.current_ratio.name] ) {
-				_.extend( ratio, this.current_ratio );
-				var cropper = this._croppers[this.current_ratio.name] = new SmarterCrop( ratio , options );
-				cropper.on('cropresult' , function( cropdata, ratio ) {
-					self._setCropSizes( cropdata.absolute );
-					self.selectCrop( cropdata.absolute );
-					$(btns).prop('disabled',false);
-				});
-			}
-			cropper = this._croppers[this.current_ratio.name];
-			cropper.cropImage( this.$el.find('img').get(0) );
+			this._setCropSizes( cropdata );
+			this.selectCrop( cropdata );
+
 			return this;
 		},
 		selectCrop:function( rect ) {
 			// draw crop UI element.
 			var factor = this._image_scale_factor(),
-				points = this._rectToPointCoords(rect),
+				points = wp.smartcrop.cropcalc.rectToPointCoords( rect ),
 				$areaSelect = this.$areaSelect();
 			
 			$areaSelect.setSelection( points.x1, points.y1, points.x2, points.y2, false );
@@ -441,23 +437,23 @@
 					
 				}
 			}
-		},
-		_pointToRectCoords:function( points ) {
-			return {
-				x: points.x1,
-				y: points.y1,
-				width:  points.x2 - points.x1,
-				height: points.y2 - points.y1
-			}
-		},
-		_rectToPointCoords:function( rect ) {
-			return {
-				x1: rect.x,
-				y1: rect.y,
-				x2: (rect.maxX ? rect.maxX : rect.x+rect.width),
-				y2: (rect.maxY ? rect.maxY : rect.y+rect.height),
-			};
 		}
+// 		_pointToRectCoords:function( points ) {
+// 			return {
+// 				x: points.x1,
+// 				y: points.y1,
+// 				width:  points.x2 - points.x1,
+// 				height: points.y2 - points.y1
+// 			}
+// 		},
+// 		_rectToPointCoords:function( rect ) {
+// 			return {
+// 				x1: rect.x,
+// 				y1: rect.y,
+// 				x2: (rect.maxX ? rect.maxX : rect.x+rect.width),
+// 				y2: (rect.maxY ? rect.maxY : rect.y+rect.height),
+// 			};
+// 		}
 	});
 	
 	
@@ -499,4 +495,4 @@
 	
 	
 
-})(wp,jQuery,SmarterCrop);
+})(wp,jQuery);

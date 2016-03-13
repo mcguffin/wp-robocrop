@@ -30,8 +30,6 @@ ToDo:
  			'1.0000' : {sizes: ['thumbnail','other-rect'], aspect: 1.000, min_width:..., min_height:... }
  	- [x] adapt wp-upload
  	- [x] adapt media-view
- - [x] wp-upload
- 	- [x] show modal message while analyzing and cropping
  - [ ] Error Handling
  	- [ ] Define Error cases
  - [ ] media-view
@@ -42,15 +40,10 @@ ToDo:
  	- [x] JS: Force reload Thumbnail after saving crop
  	- [x] JS: Ratios list: Grey out / hide unaffected imagesizes
  - [ ] UX
- 	- [x] Croptool: disable save button when there is nothing to save.
-	- [x] Make croptool available from edit post media modal
-	- [x] Make croptool available from library view (extend wp.media.view.Attachment.Details);
-	- [-] UX: start upload after an image has been processed
-			*Not possible*
-	- [x] Kickout faces
-	- [ ] Show "SmartCropping" Message
+	- [x] Close modal triggers proceed
+	- [x] Merge cropping tool
+	- [ ] EditFocus point @ media view
  - [ ] Test 
- 	- [x] autosmartcrop on edit post
  	- [ ] Test with no cropped images available (upload image, add another image size)
  		- [ ] disable autocrop, if cannot crop
  	- [ ] Test together with SayCheese

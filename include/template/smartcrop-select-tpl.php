@@ -1,3 +1,4 @@
+
 	<script type="text/html" id="tmpl-smartcrop-select">
 		<div class="box">
 			<h3>{{ data.model.get('title') }}</h3>
