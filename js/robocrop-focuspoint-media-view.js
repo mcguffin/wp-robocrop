@@ -9,7 +9,7 @@
 		Modal 		= wp.media.Modal;
 	
 	wp.media.robocrop.view.focuspoint = {};
-	
+
 	wp.media.robocrop.view.focuspoint.Img = View.extend({
 		className:'attachment-image',
 		tagName:'img',
@@ -24,7 +24,7 @@
 			return this;
 		}
 	});
-	
+
 	wp.media.robocrop.view.focuspoint.FocusPoint = View.extend({
 		className:	'focuspoint-box',
 		template:	wp.template('focuspoint'),
