@@ -1,18 +1,7 @@
 Smart Crop
 ==========
 
-Smart image cropping in WordPress.
-
-Before uploading an image this plugin finds a good cropping rectangle.
-
-Requires at least WP 4.4
-
-
-Use the WordPress JS-Uploader to make the plugin work.
-
- - Face detection: [https://github.com/eduardolundgren/tracking.js](tracking.js).
- - SmartCrop algorithm: [https://github.com/jwagner/smartcrop.js/](smartcrop.js).
-
+Manual and Focus Point based image cropping in WordPress.
 
 
 Browser Support
@@ -43,7 +32,7 @@ ToDo:
 	- [x] Close modal triggers proceed
 	- [x] Merge cropping tool
 	- [ ] EditFocus point @ media view
-	- [ ] Cancel Upload Feature
+	- [x] Cancel Upload Feature
  - [ ] Test 
  	- [ ] Test with no cropped images available (upload image, add another image size)
  		- [ ] disable autocrop, if cannot crop

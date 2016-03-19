@@ -7,15 +7,32 @@
 	var View		= wp.media.View,
 		MediaFrame	= wp.media.view.MediaFrame,
 		Modal 		= wp.media.Modal;
-
-
-	wp.media.view.FocusPointSelect = View.extend({
-		className:	'set-focuspoint',
-		template:	wp.template('set-focuspoint'),
-
+	
+	wp.media.view.focuspoint = {};
+	
+	wp.media.view.focuspoint.Img = View.extend({
+		className:'attachment-image',
+		tagName:'img',
+// 		initialize:function(){
+// 			this.$el.attr('type','image');
+// 		},
+		getSrc: function(src) {
+			return this.$el.attr( 'src' );
+		},
+		setSrc: function(src) {
+			!!src && this.$el.attr( 'src', src );
+			return this;
+		}
+	});
+	
+	wp.media.view.focuspoint.FocusPoint = View.extend({
+		className:	'focuspoint-box',
+		template:	wp.template('focuspoint'),
 		initialize: function(){
 			var self = this;
-			this.$el.on('click','.attachment-image',function( event ) {
+			_.defaults( this.options, { focuspoint:{x:0,y:0} } );
+
+			this.$el.on('click',function( event ) {
 				self.clickFocuspoint( event );
 			});
 		},
@@ -25,16 +42,41 @@
 				y: -2 * event.offsetY / $( event.target ).height() + 1,
 			} );
 		},
-		getFocuspoint: function(){
+		getFocuspoint: function() {
 			return this.focuspoint;
 		},
 		setFocuspoint: function( focuspoint ) {
 			this.focuspoint = focuspoint;
-			console.log(this.focuspoint);
+			
 			this.$el.find('.focuspoint').css({
 				left: 	((focuspoint.x + 1) * 50)+'%',
 				bottom:	((focuspoint.y + 1) * 50)+'%'
 			});
+			this.trigger('change:focuspoint', this.focuspoint );
+			return this;
+		},
+	});
+
+	wp.media.view.focuspoint.ImageFocusPointSelect = View.extend({
+		className:	'set-focuspoint',
+
+		initialize: function(){
+			_.defaults( this.options, { controller:this, focuspoint:{x:0,y:0} } );
+			var self = this;
+			this.image		= new wp.media.view.focuspoint.Img({ src: this.options.src });
+			this.focuspoint	= new wp.media.view.focuspoint.FocusPoint({ 
+				controller: this.controller,
+				focuspoint: this.options.focuspoint
+			});
+		},
+		render: function(){
+			this.views.set( [ this.image, this.focuspoint ] );
+		},
+		getFocuspoint: function() {
+			return this.focuspoint.getFocuspoint();
+		},
+		setFocuspoint: function( focuspoint ) {
+			this.focuspoint && this.focuspoint.setFocuspoint( focuspoint );
 			return this;
 		},
 		getImageWidth: function( ) {
@@ -49,22 +91,14 @@
 		}
 	});
 
-	wp.media.view.AskFocuspointToolbar = View.extend({
-		tagName:   'div',
-		className: 'media-toolbar',
-		initialize: function() {
-			this.instructions = 
-			this.primary   = new wp.media.view.PriorityList();
-			this.primary.$el.addClass('media-toolbar-primary');
-		}
-	});
-	wp.media.view.AskFocuspoint = MediaFrame.extend({
+	wp.media.view.focuspoint.AskFocuspoint = MediaFrame.extend({
 		className: 'ask-focuspoint media-frame',
 		template:  wp.template('ask-focuspoint'),
-		regions:   ['title','content','toolbar'],
+		regions:   ['title','content','instructions','buttons'],
 		events: {
 			'click .reset': 'reset',
 			'click .proceed': 'proceed',
+			'click .cancel-upload': 'cancelUpload',
 		},
 		initialize: function( ) {
 
@@ -82,7 +116,8 @@
 			}
 			this.createTitle();
 			this.createContent();
-			this.createToolbar();
+			this.createInstructions();
+			this.createButtons();
 		},
 		render: function() {
 			// frame layout
@@ -98,7 +133,7 @@
 			this.title.set( [ this._title ] );
 		},
 		createContent: function() {
-			this._content = new wp.media.view.FocusPointSelect({
+			this._content = new wp.media.view.focuspoint.ImageFocusPointSelect({
 				src: '',
 				focuspoint:{ x:0, y:0 },
 				controller: this
@@ -109,21 +144,30 @@
 				});
 			this.content.set( [ this._content ] );
 		},
-		createToolbar: function() {
+		createInstructions: function() {
 			var info, btn;
-
-			this.toolbar.set( [
+			this.instructions.set( [
 				new wp.media.View({
 					el: $( '<div class="instructions">' + l10n.FocusPointInstructions + '</div>' )[0],
 					priority: -40
-				}),
+				})
+			] );
+		},
+		createButtons: function() {
+			var info, btn;
+
+			this.buttons.set( [
 				new wp.media.view.Button({
-					text: l10n.done,
-					className: 'button-primary proceed'
+					text: l10n.CancelUpload,
+					className: 'cancel-upload'
 				}),
 				new wp.media.view.Button({
 					text: l10n.reset,
 					className: 'reset'
+				}),
+				new wp.media.view.Button({
+					text: l10n.done,
+					className: 'button-primary proceed'
 				})
 			] );
 		},
@@ -155,6 +199,11 @@
 		},
 		proceed: function( event ) {
 			this.trigger('proceed');
+		},
+		cancelUpload: function( event ){
+			// remove from queue!
+			this.trigger('cancel-upload');
+			this.close();
 		}
 	});
 

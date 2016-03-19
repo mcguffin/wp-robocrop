@@ -95,7 +95,6 @@ WP Smart Crop
 	display:inline-block;
 	max-width:100%;
 	max-height:100%;
-	pointer-events:none;
 	overflow:hidden;
 }
 
@@ -104,31 +103,43 @@ WP Smart Crop
 	height: auto;
 	max-width:100%;
 	max-height:100%;
-}
-.set-focuspoint .focuspoint {
-	position:absolute
+	display:block;
 }
 
-.set-focuspoint .focuspoint:after,
-.set-focuspoint .focuspoint:before {
+
+.focuspoint-box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+}
+.focuspoint-box .focuspoint {
+	position:absolute;
+	pointer-events:none;
+}
+
+.focuspoint-box .focuspoint:after,
+.focuspoint-box .focuspoint:before {
 	position:absolute;
 	content:'';
 	background:#fff;
 	box-shadow:0 0 5px rgba(0,0,0,0.5);
 }
-.set-focuspoint .focuspoint:before {
+.focuspoint-box .focuspoint:before {
 	height:40px;
 	width:1px;
 	left:0;
 	top:-20px;
 }
-.set-focuspoint .focuspoint:after {
+.focuspoint-box .focuspoint:after {
 	width:40px;
 	height:1px;
 	left:-20px;
 	top:0;
 }
-.set-focuspoint .circle {
+.focuspoint-box .focuspoint .circle {
 	position:absolute;
 	top:-75px;
 	left:-75px;
@@ -141,8 +152,6 @@ WP Smart Crop
 
 
 
-
-
 .ask-focuspoint .media-frame-toolbar .instructions {
 	margin:18px;
 	font-style:italic;
@@ -150,12 +159,12 @@ WP Smart Crop
 	float:left;
 }
 
-.ask-focuspoint .media-frame-toolbar .button.reset {
-	margin:15px 0;
-	float:right;
-}
-
-.ask-focuspoint .media-frame-toolbar .button.proceed {
+.ask-focuspoint .media-frame-buttons {
 	margin:15px;
 	float:right;
 }
+.ask-focuspoint .media-frame-buttons button {
+	margin-left:5px;
+}
+
+

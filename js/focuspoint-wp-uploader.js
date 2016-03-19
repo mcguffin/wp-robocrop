@@ -36,7 +36,7 @@
 	
 	exports.media.view.UploaderWindow.prototype.ready = function() {
 		var askFocusImages = [],
-			askModal;
+			askModal, self = this;
 		
 		// prevent double init
 		if ( didReady ) {
@@ -47,21 +47,22 @@
 		ret = oldReady.apply( this , arguments );
 		
 		function askFocus( uploader ) {
-			var file, src;
+			var fileItem, src;
 			if ( askModal ) {
 				askModal.close().dispose();
 			} 
 			if ( askFocusImages.length ) {
 				fileItem = askFocusImages.shift();
-				askModal = new wp.media.view.AskFocuspoint({ modal:true });
+				askModal = new wp.media.view.focuspoint.AskFocuspoint({ modal:true });
 				askModal.on('proceed',function() {
-					console.log(askModal);
 					imageInfos[fileItem.file.name] = {
 						focuspoint:	askModal.getFocuspoint(),
 						width:		askModal.getImageWidth(),
 						height:		askModal.getImageHeight()
 					};
 					askFocus( uploader );
+				}).on('cancel-upload',function() {
+					fileItem.file.attachment.destroy();
 				});
 				askModal.setFocuspoint({x:0,y:0});
 				if ( fileItem.dataUrl ) {
@@ -121,7 +122,6 @@
 			for (var i=0;i<files.length;i++) {
 				if ( files[i].type == 'image/png' || files[i].type == 'image/jpeg' ) {
 					addAskFocus( files[i], up );
-					console.log( files[i] );
 				}
 			}
 			if ( askFocusImages.length ) {

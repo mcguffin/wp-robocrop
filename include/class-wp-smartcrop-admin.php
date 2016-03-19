@@ -92,6 +92,7 @@ class WPSmartCropAdmin {
 				'SetFocusPoint'		=> __('Set Focus Point','wp-smartcrop'),
 				'FocusPointInstructions'
 									=> __('Click on the most important spot of the image.','wp-smartcrop'),
+				'CancelUpload'		=> __('Cancel Upload','wp-smartcrop'),
 			),
 			'options'		=> array(
 				'autocrop'		=> !! get_option('smartcrop_autocrop'),
@@ -200,7 +201,7 @@ class WPSmartCropAdmin {
 		include __DIR__.'/template/smartcrop-modal-tpl.php';
 		
 		include __DIR__.'/template/smartcrop-ask-focuspoint-tpl.php';
-		include __DIR__.'/template/smartcrop-set-focuspoint-tpl.php';
+		include __DIR__.'/template/smartcrop-focuspoint-tpl.php';
 	}
 
 	/**
