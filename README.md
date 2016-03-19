@@ -43,6 +43,7 @@ ToDo:
 	- [x] Close modal triggers proceed
 	- [x] Merge cropping tool
 	- [ ] EditFocus point @ media view
+	- [ ] Cancel Upload Feature
  - [ ] Test 
  	- [ ] Test with no cropped images available (upload image, add another image size)
  		- [ ] disable autocrop, if cannot crop
