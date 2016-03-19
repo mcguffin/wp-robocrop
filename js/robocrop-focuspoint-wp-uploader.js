@@ -1,4 +1,4 @@
-(function(exports,plupload){
+(function( exports ) {
 
 	var image_ratios = window.wp_robocrop.image_ratios,
 		image_sizes  = window.wp_robocrop.image_sizes,
@@ -11,28 +11,9 @@
 	/**
 	 *	Early return if autocrop is disabled
 	 */
-// 	if ( ! options.autocrop ) {
-// 		return;
-// 	}
-	
-	// source it out!
-// 	function cropFromFocusPoint( imageinfo, cropinfo ) {
-// 		// normalize 
-// 		var fp_x =   (  imageinfo.focuspoint.x + 1) / 2 * imageinfo.width,
-// 			fp_y =   ( -imageinfo.focuspoint.y + 1) / 2 * imageinfo.height,
-// 			scale = Math.min( imageinfo.width / cropinfo.min_width, imageinfo.height / cropinfo.min_height ),
-// 			crop_w = cropinfo.min_width * scale,
-// 			crop_h = cropinfo.min_height * scale,
-// 			crop_x = Math.min( Math.max( fp_x - crop_w / 2, 0 ) , imageinfo.width - crop_w),
-// 			crop_y = Math.min( Math.max( fp_y - crop_h / 2, 0 ) , imageinfo.height - crop_h);
-// 		return {
-// 			names: cropinfo.sizes,
-// 			x: crop_x / imageinfo.width,
-// 			y: crop_y / imageinfo.height,
-// 			width: crop_w / imageinfo.width,
-// 			height: crop_h / imageinfo.height
-// 		};
-// 	}
+	if ( ! options.ask_for_focuspoint ) {
+		return;
+	}
 	
 	exports.media.view.UploaderWindow.prototype.ready = function() {
 		var askFocusImages = [],
@@ -53,7 +34,7 @@
 			} 
 			if ( askFocusImages.length ) {
 				fileItem = askFocusImages.shift();
-				askModal = new wp.media.view.focuspoint.AskFocuspoint({ modal:true });
+				askModal = new wp.media.robocrop.view.focuspoint.AskFocuspoint({ modal:true });
 				askModal.on('proceed',function() {
 					imageInfos[fileItem.file.name] = {
 						focuspoint:	askModal.getFocuspoint(),
@@ -139,7 +120,7 @@
 				imageinfo = imageInfos[file.name];
 				cropdata = {};
 				for (s in image_ratios) {
-					cropdata[ image_ratios[s].name ] = wp.robocrop.cropcalc.cropFromFocusPoint( imageinfo, image_ratios[s] );
+					cropdata[ image_ratios[s].name ] = wp.media.robocrop.cropFromFocusPoint( imageinfo, image_ratios[s] );
 				}
 
 				up.settings.multipart_params.focuspoint	= JSON.stringify( imageinfo.focuspoint );
@@ -150,5 +131,5 @@
 	};
 
 
-})(wp,plupload);
+})(wp);
 

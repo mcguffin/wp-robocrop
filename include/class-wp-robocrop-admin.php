@@ -95,7 +95,7 @@ class WPRoboCropAdmin {
 				'CancelUpload'		=> __('Cancel Upload','wp-robocrop'),
 			),
 			'options'		=> array(
-				'autocrop'		=> !! get_option('robocrop_autocrop'),
+				'ask_for_focuspoint'		=> !! get_option('robocrop_ask_for_focuspoint'),
 			),
 		);
 
