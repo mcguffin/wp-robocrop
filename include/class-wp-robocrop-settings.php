@@ -30,7 +30,7 @@ class WPRoboCropSettings {
 		add_action( 'admin_init' , array( &$this , 'register_settings' ) );
 
 		// add default options
-		add_option( 'robocrop_ask_for_focuspoint',     true );
+		add_option( 'robocrop_ask_for_focuspoint', true );
 	}
 
 	/**
@@ -49,12 +49,12 @@ class WPRoboCropSettings {
 		// ... and here
 		add_settings_field(
 			'robocrop_ask_for_focuspoint',
-			__( 'Ask for Focus Point',  'wp-robocrop' ),
+			__( 'Upload with Focus Point',  'wp-robocrop' ),
 			array( $this, 'checkbox' ),
 			$this->optionset,
 			$settings_section,
 			array(
-				'option_name' => 'robocrop_autocrop',
+				'option_name' => 'robocrop_ask_for_focuspoint',
 				'option_label' => __('If checked you will be asked to set a focus point before an image gets uploaded','wp-robocrop'),
 			)
 		);
@@ -66,11 +66,6 @@ class WPRoboCropSettings {
 	 *	@usedby register_settings
 	 */
 	public function settings_description() {
-		?>
-		<div class="inside">
-			<p><?php _e( 'WP RoboCrop provides a cropping tool for image thumbnails.' , 'wp-robocrop' ); ?></p>
-		</div>
-		<?php
 	}
 	
 	/**
