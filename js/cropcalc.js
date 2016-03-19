@@ -1,7 +1,7 @@
 (function( exports ){
 
-	var smartcrop = {};
-	smartcrop.cropcalc = {
+	var robocrop = {};
+	robocrop.cropcalc = {
 	
 		cropFromFocusPoint: function( imageinfo, cropinfo ) {
 			// normalize 
@@ -89,6 +89,6 @@
 
 	};
 
-	exports.smartcrop = smartcrop;
+	exports.robocrop = robocrop;
 
 })( wp );

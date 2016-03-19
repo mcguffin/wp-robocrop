@@ -1,8 +1,8 @@
 (function(wp,$) {
 
-	var image_ratios = window.wp_smartcrop.image_ratios,
-		image_sizes  = window.wp_smartcrop.image_sizes,
-		l10n = window.wp_smartcrop.l10n;
+	var image_ratios = window.wp_robocrop.image_ratios,
+		image_sizes  = window.wp_robocrop.image_sizes,
+		l10n = window.wp_robocrop.l10n;
 
 	var View		= wp.media.View,
 		MediaFrame	= wp.media.view.MediaFrame,

@@ -2,7 +2,7 @@
 
 
 
-class WPSmartCropSettings {
+class WPRoboCropSettings {
 	private static $_instance = null;
 	
 	/**
@@ -30,7 +30,7 @@ class WPSmartCropSettings {
 		add_action( 'admin_init' , array( &$this , 'register_settings' ) );
 
 		// add default options
-		add_option( 'smartcrop_autocrop',     true );
+		add_option( 'robocrop_ask_for_focuspoint',     true );
 	}
 
 	/**
@@ -41,22 +41,21 @@ class WPSmartCropSettings {
 	 *	@uses checkbox
 	 */
 	function register_settings() {
-		$settings_section = 'smartcrop_settings';
+		$settings_section = 'robocrop_settings';
 		// more settings go here ...
-		register_setting( $this->optionset , 'smartcrop_autocrop' , 'boolval' );
+		register_setting( $this->optionset , 'robocrop_ask_for_focuspoint' , 'boolval' );
 
-		add_settings_section( $settings_section, __( 'WP Smartcrop',  'wp-smartcrop' ), array( &$this, 'settings_description' ), $this->optionset );
+		add_settings_section( $settings_section, __( 'WP RoboCrop',  'wp-robocrop' ), array( &$this, 'settings_description' ), $this->optionset );
 		// ... and here
 		add_settings_field(
-			'smartcrop_autocrop',
-			__( 'Autocrop',  'wp-smartcrop' ),
+			'robocrop_ask_for_focuspoint',
+			__( 'Ask for Focus Point',  'wp-robocrop' ),
 			array( $this, 'checkbox' ),
 			$this->optionset,
 			$settings_section,
 			array(
-				'option_name' => 'smartcrop_autocrop',
-				'option_label' => __('If checked images will be cropped automatically before they are uploaded','wp-smartcrop'),
-				'option_description' => __('Depending on Your image sizes this may slow down the upload process.','wp-smartcrop')
+				'option_name' => 'robocrop_autocrop',
+				'option_label' => __('If checked you will be asked to set a focus point before an image gets uploaded','wp-robocrop'),
 			)
 		);
 	}
@@ -69,7 +68,7 @@ class WPSmartCropSettings {
 	public function settings_description() {
 		?>
 		<div class="inside">
-			<p><?php _e( 'Smartcrop provides a cropping tool for image thumbnails. You can enable automatic cropping upon image upload below.' , 'wp-smartcrop' ); ?></p>
+			<p><?php _e( 'WP RoboCrop provides a cropping tool for image thumbnails.' , 'wp-robocrop' ); ?></p>
 		</div>
 		<?php
 	}
@@ -94,4 +93,4 @@ class WPSmartCropSettings {
 	
 }
 
-WPSmartCropSettings::getInstance();
+WPRoboCropSettings::getInstance();

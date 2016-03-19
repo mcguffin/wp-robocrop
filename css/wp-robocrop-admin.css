@@ -1,14 +1,14 @@
 /*
 WP Smart Crop
 */
-.image-smartcrop .box {
+.image-robocrop .box {
 	padding:16px;
 }
-.smartcrop-image-wrap {
+.robocrop-image-wrap {
 	box-sizing:border-box;
 	height:100%;
 }
-.smartcrop-sidebar {
+.robocrop-sidebar {
 	position:absolute;
 	left:0;
 	top:0;
@@ -17,21 +17,21 @@ WP Smart Crop
 	width:300px;
 	border-right:1px solid #ccc;
 }
-.smartcrop-content {
+.robocrop-content {
 	position:absolute;
 	right:0;
 	left:300px;
 	top:0;
 	bottom:0;
 }
-.smartcrop-content img {
+.robocrop-content img {
 	max-width:100%;
 	max-height:100%;
 	width:auto;
 	height:auto;
 }
 
-.smartcrop-message-content {
+.robocrop-message-content {
 	padding: 16px;
     background: #fff;
     width: 300px;
@@ -43,39 +43,39 @@ WP Smart Crop
     box-shadow:0 3px 6px rgba( 0, 0, 0, 0.3 );
 }
 
-.smartcrop-select .choices {
+.robocrop-select .choices {
 	border-top:1px solid #ccc;
 }
 
-.smartcrop-select-item input[type="radio"] {
+.robocrop-select-item input[type="radio"] {
 	display:none;
 }
-.smartcrop-select-item input[type="radio"]:before {
+.robocrop-select-item input[type="radio"]:before {
 	content:'';
 }
-.smartcrop-select-item input[type="radio"]:checked ~ label {
+.robocrop-select-item input[type="radio"]:checked ~ label {
 	background:#fff;
 	width:301px;
 	border-color:#ccc;
 }
-.smartcrop-select-item .sizename:before {
+.robocrop-select-item .sizename:before {
 	content:', ';
 }
-.smartcrop-select-item .sizename:first-child:before {
+.robocrop-select-item .sizename:first-child:before {
 	content:'';
 }
-.smartcrop-select-item .disabled,
-.smartcrop-select-item input[type="radio"][disabled] ~ label {
+.robocrop-select-item .disabled,
+.robocrop-select-item input[type="radio"][disabled] ~ label {
 	color:#999;
 }
-.smartcrop-select-item label {
+.robocrop-select-item label {
 	display:block;
 	padding:16px;
 	box-sizing:border-box;
 /* 	border-top:1px solid #f0f0f0; */
 	border-bottom:1px solid #ccc;
 }
-.smartcrop-select-item label strong {
+.robocrop-select-item label strong {
 	font-size:20px;
 }
 
@@ -83,7 +83,7 @@ WP Smart Crop
 
 
 
-.attachment-info .smartcrop-attachment {
+.attachment-info .robocrop-attachment {
 	display:block;
     color:#0073aa;
 }

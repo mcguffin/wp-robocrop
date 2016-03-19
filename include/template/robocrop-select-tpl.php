@@ -1,5 +1,5 @@
 
-	<script type="text/html" id="tmpl-smartcrop-select">
+	<script type="text/html" id="tmpl-robocrop-select">
 		<div class="box">
 			<h3>{{ data.model.get('title') }}</h3>
 			<div class="details">

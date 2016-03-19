@@ -1,14 +1,14 @@
 <?php
 
 /*
-Plugin Name: WP Smart Crop
-Plugin URI: https://github.com/mcguffin/wp-smart-crop/
-Description: Smart crop media
+Plugin Name: WP RoboCrop
+Description: Manual and Focus Point based image cropping.
+Plugin URI: https://github.com/mcguffin/wp-robocrop/
 Author: Jörn Lund
 Version: 0.0.1
 Author URI: https://github.com/mcguffin/
 License: GPL2
-Text Domain: wp-smartcrop
+Text Domain: wp-robocrop
 Domain Path: /languages
 */
 
@@ -18,10 +18,10 @@ if ( ! defined('ABSPATH') )
 
 
 if ( is_admin() || defined( 'DOING_AJAX' ) ) {
-	require_once plugin_dir_path(__FILE__).'/include/class-wp-smartcrop-admin.php';
+	require_once plugin_dir_path(__FILE__).'/include/class-wp-robocrop-admin.php';
 }
 
 if ( is_admin() ) {
-	require_once plugin_dir_path(__FILE__).'/include/class-wp-smartcrop-settings.php';
+	require_once plugin_dir_path(__FILE__).'/include/class-wp-robocrop-settings.php';
 }
 

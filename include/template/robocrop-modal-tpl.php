@@ -1,6 +1,6 @@
 
-	<script type="text/html" id="tmpl-smartcrop-modal">
-		<div class="smartcrop-message-content">
+	<script type="text/html" id="tmpl-robocrop-modal">
+		<div class="robocrop-message-content">
 			<h3 class="title">{{ data.title }}</h3>
 			<p class="message"></p>
 			<span class="spinner"></span>

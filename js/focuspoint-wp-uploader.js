@@ -1,9 +1,9 @@
 (function(exports,plupload){
 
-	var image_ratios = window.wp_smartcrop.image_ratios,
-		image_sizes  = window.wp_smartcrop.image_sizes,
-		l10n = window.wp_smartcrop.l10n,
-		options = window.wp_smartcrop.options,
+	var image_ratios = window.wp_robocrop.image_ratios,
+		image_sizes  = window.wp_robocrop.image_sizes,
+		l10n = window.wp_robocrop.l10n,
+		options = window.wp_robocrop.options,
 		oldReady = exports.media.view.UploaderWindow.prototype.ready,
 		didReady = false,
 		imageInfos = {};
@@ -139,7 +139,7 @@
 				imageinfo = imageInfos[file.name];
 				cropdata = {};
 				for (s in image_ratios) {
-					cropdata[ image_ratios[s].name ] = wp.smartcrop.cropcalc.cropFromFocusPoint( imageinfo, image_ratios[s] );
+					cropdata[ image_ratios[s].name ] = wp.robocrop.cropcalc.cropFromFocusPoint( imageinfo, image_ratios[s] );
 				}
 
 				up.settings.multipart_params.focuspoint	= JSON.stringify( imageinfo.focuspoint );
