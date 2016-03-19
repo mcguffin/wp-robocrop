@@ -8,9 +8,9 @@
 		MediaFrame	= wp.media.view.MediaFrame,
 		Modal 		= wp.media.Modal;
 	
-	wp.media.view.focuspoint = {};
+	wp.media.robocrop.view.focuspoint = {};
 	
-	wp.media.view.focuspoint.Img = View.extend({
+	wp.media.robocrop.view.focuspoint.Img = View.extend({
 		className:'attachment-image',
 		tagName:'img',
 // 		initialize:function(){
@@ -25,7 +25,7 @@
 		}
 	});
 	
-	wp.media.view.focuspoint.FocusPoint = View.extend({
+	wp.media.robocrop.view.focuspoint.FocusPoint = View.extend({
 		className:	'focuspoint-box',
 		template:	wp.template('focuspoint'),
 		initialize: function(){
@@ -57,14 +57,14 @@
 		},
 	});
 
-	wp.media.view.focuspoint.ImageFocusPointSelect = View.extend({
+	wp.media.robocrop.view.focuspoint.ImageFocusPointSelect = View.extend({
 		className:	'set-focuspoint',
 
 		initialize: function(){
 			_.defaults( this.options, { controller:this, focuspoint:{x:0,y:0} } );
 			var self = this;
-			this.image		= new wp.media.view.focuspoint.Img({ src: this.options.src });
-			this.focuspoint	= new wp.media.view.focuspoint.FocusPoint({ 
+			this.image		= new wp.media.robocrop.view.focuspoint.Img({ src: this.options.src });
+			this.focuspoint	= new wp.media.robocrop.view.focuspoint.FocusPoint({ 
 				controller: this.controller,
 				focuspoint: this.options.focuspoint
 			});
@@ -91,7 +91,7 @@
 		}
 	});
 
-	wp.media.view.focuspoint.AskFocuspoint = MediaFrame.extend({
+	wp.media.robocrop.view.focuspoint.AskFocuspoint = MediaFrame.extend({
 		className: 'ask-focuspoint media-frame',
 		template:  wp.template('ask-focuspoint'),
 		regions:   ['title','content','instructions','buttons'],
@@ -133,7 +133,7 @@
 			this.title.set( [ this._title ] );
 		},
 		createContent: function() {
-			this._content = new wp.media.view.focuspoint.ImageFocusPointSelect({
+			this._content = new wp.media.robocrop.view.focuspoint.ImageFocusPointSelect({
 				src: '',
 				focuspoint:{ x:0, y:0 },
 				controller: this

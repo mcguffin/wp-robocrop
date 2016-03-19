@@ -14,7 +14,7 @@
 		createStates: function() {
 			this._parentCreateStates.apply(this,arguments);
 			this.states.add(
-				new wp.media.controller.SmartcropImage( {
+				new wp.media.robocrop.controller.SmartcropImage( {
 					model: this.model,
 					selection: this.options.selection
 				} )
@@ -32,7 +32,7 @@
 
 	var robocropHandlersExtend = {
 		robocropImageMode: function( contentRegion ) {
-			var robocropImageController = new wp.media.controller.SmartcropImage( {
+			var robocropImageController = new wp.media.robocrop.controller.SmartcropImage( {
 				model: 			robocrop_model,
 				frame: 			this,
 				content:		this.content
@@ -41,7 +41,7 @@
 			robocropImageController._router = function() {};
 			robocropImageController._menu = function() {};
 			
-			contentRegion.view = new wp.media.view.SmartcropImage( {
+			contentRegion.view = new wp.media.robocrop.view.SmartcropImage( {
 				model: 		robocrop_model,
 				frame: 		this,
 				controller:	robocropImageController
@@ -112,7 +112,7 @@
 	/**
 	 *	Ratio select list
 	 */
-	wp.media.view.SmartcropRatioSelect = wp.media.View.extend({
+	wp.media.robocrop.view.SmartcropRatioSelect = wp.media.View.extend({
 		className: 'robocrop-select',
 		template: wp.template('robocrop-select'),
 		ratios:{},
@@ -142,7 +142,7 @@
 						names.push( name_tpl( size ) );
 					}
 				});
-				self.views.add(new wp.media.view.SmartcropRatioSelectItem({
+				self.views.add(new wp.media.robocrop.view.SmartcropRatioSelectItem({
 					ratiokey:key,
 					sizenames:names.join(''),
 					ratio: key,
@@ -165,7 +165,7 @@
 		}
 	});
 
-	wp.media.view.SmartcropRatioSelectItem = wp.media.View.extend({
+	wp.media.robocrop.view.SmartcropRatioSelectItem = wp.media.View.extend({
 		className: 'robocrop-select-item',
 		template: wp.template('robocrop-select-item'),
 		sizekey:'',
@@ -178,7 +178,7 @@
 		}
 	});
 	
-	wp.media.view.SmartcropImage = wp.media.view.EditImage.extend({
+	wp.media.robocrop.view.SmartcropImage = wp.media.view.EditImage.extend({
 		className:		'image-robocrop',
 		template:		wp.template('robocrop'),
 		image_ratios:	image_ratios,
@@ -200,7 +200,7 @@
 			wp.media.view.EditImage.prototype.dispose.apply(this,arguments);
 		},
 		createSelect: function() {
-			this.select = new wp.media.view.SmartcropRatioSelect({
+			this.select = new wp.media.robocrop.view.SmartcropRatioSelect({
 				choices: choices
 			});
 		},
@@ -228,14 +228,14 @@
 						.nextAll( '.imgareaselect-outer' ).css( 'position', 'fixed' );
 				},
 				onSelectEnd: function( image, coords ) {
-					var cropdata = wp.robocrop.cropcalc.pointToRectCoords( coords )
+					var cropdata = wp.media.robocrop.pointToRectCoords( coords )
 					self._setCropSizes(cropdata);
 					self.$saveButton.prop('disabled',false);
 				}
 			});
 
 			// set ratio seelct
-			this.selectRatio = new wp.media.view.SmartcropRatioSelect({
+			this.selectRatio = new wp.media.robocrop.view.SmartcropRatioSelect({
 				ratios:this.image_ratios,
 				model:this.model
 			});
@@ -358,8 +358,8 @@
 				height:		this.model.get('height'),
 				focuspoint:	this.model.get('focuspoint')
 			};
-			cropdata = wp.robocrop.cropcalc.cropFromFocusPoint( imageinfo, this.current_ratio );
-			cropdata = wp.robocrop.cropcalc.relToAbsCoords( cropdata, imageinfo );
+			cropdata = wp.media.robocrop.cropFromFocusPoint( imageinfo, this.current_ratio );
+			cropdata = wp.media.robocrop.relToAbsCoords( cropdata, imageinfo );
 
 			this._setCropSizes( cropdata );
 			this.selectCrop( cropdata );
@@ -369,7 +369,7 @@
 		selectCrop:function( rect ) {
 			// draw crop UI element.
 			var factor = this._image_scale_factor(),
-				points = wp.robocrop.cropcalc.rectToPointCoords( rect ),
+				points = wp.media.robocrop.rectToPointCoords( rect ),
 				$areaSelect = this.$areaSelect();
 			
 			$areaSelect.setSelection( points.x1, points.y1, points.x2, points.y2, false );
@@ -438,22 +438,6 @@
 				}
 			}
 		}
-// 		_pointToRectCoords:function( points ) {
-// 			return {
-// 				x: points.x1,
-// 				y: points.y1,
-// 				width:  points.x2 - points.x1,
-// 				height: points.y2 - points.y1
-// 			}
-// 		},
-// 		_rectToPointCoords:function( rect ) {
-// 			return {
-// 				x1: rect.x,
-// 				y1: rect.y,
-// 				x2: (rect.maxX ? rect.maxX : rect.x+rect.width),
-// 				y2: (rect.maxY ? rect.maxY : rect.y+rect.height),
-// 			};
-// 		}
 	});
 	
 	
@@ -463,7 +447,7 @@
 	
 	
 	// controller state
-	wp.media.controller.SmartcropImage = wp.media.controller.State.extend({
+	wp.media.robocrop.controller.SmartcropImage = wp.media.controller.State.extend({
 		defaults: {
 			id:      'robocrop-image',
 			title:   l10n.robocropImage,

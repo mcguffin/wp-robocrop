@@ -1,7 +1,7 @@
 (function( exports ){
-
-	var robocrop = {};
-	robocrop.cropcalc = {
+	var robocrop;
+	
+	robocrop = {
 	
 		cropFromFocusPoint: function( imageinfo, cropinfo ) {
 			// normalize 
@@ -85,10 +85,11 @@
 				x2: (rect.maxX ? rect.maxX : rect.x+rect.width),
 				y2: (rect.maxY ? rect.maxY : rect.y+rect.height),
 			};
-		}
-
+		},
+		
+		view : {},
+		controller : {}
 	};
 
-	exports.robocrop = robocrop;
-
+	exports.media.robocrop = robocrop;
 })( wp );

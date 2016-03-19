@@ -1,5 +1,5 @@
-Smart Crop
-==========
+WP RoboCrop
+===========
 
 Manual and Focus Point based image cropping in WordPress.
 

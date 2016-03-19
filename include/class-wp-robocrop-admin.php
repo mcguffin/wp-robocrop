@@ -102,21 +102,21 @@ class WPRoboCropAdmin {
 		if ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ) {
 
 			wp_register_script( 'wp-robocrop-cropcalc' , 
-								plugins_url( 'js/cropcalc.js', dirname(__FILE__) ) , 
+								plugins_url( 'js/robocrop-base.js', dirname(__FILE__) ) , 
 								array() , $version 
 							);
 
 			wp_register_script( 'wp-robocrop-focuspoint-media-view' , 
-								plugins_url( 'js/focuspoint-media-view.js', dirname(__FILE__) ) , 
+								plugins_url( 'js/robocrop-focuspoint-media-view.js', dirname(__FILE__) ) , 
 								array('jquery', 'media-grid', 'wp-robocrop-cropcalc' ) , $version 
 							);
 
 			wp_register_script( 'wp-robocrop-media-view' , 
-								plugins_url( 'js/media-view.js' , dirname(__FILE__) ) , 
+								plugins_url( 'js/robocrop-media-view.js' , dirname(__FILE__) ) , 
 								array('media-grid') , $version );
 
 			wp_register_script( 'wp-robocrop', 
-								plugins_url( 'js/focuspoint-wp-uploader.js', dirname(__FILE__) ) , 
+								plugins_url( 'js/robocrop-focuspoint-wp-uploader.js', dirname(__FILE__) ) , 
 								array('wp-robocrop-focuspoint-media-view', 'wp-robocrop-cropcalc', 'wp-robocrop-media-view' ) , $version 
 							);
 
@@ -195,11 +195,12 @@ class WPRoboCropAdmin {
 	 *	@action 'print_media_templates'
 	 */
 	function print_media_templates() {
+		// cropping tool
 		include __DIR__.'/template/robocrop-tpl.php';
 		include __DIR__.'/template/robocrop-select-tpl.php';
 		include __DIR__.'/template/robocrop-select-item-tpl.php';
-		include __DIR__.'/template/robocrop-modal-tpl.php';
 		
+		// focus point editor
 		include __DIR__.'/template/robocrop-ask-focuspoint-tpl.php';
 		include __DIR__.'/template/robocrop-focuspoint-tpl.php';
 	}
@@ -324,7 +325,7 @@ class WPRoboCropAdmin {
 			wp_enqueue_media();
 		wp_enqueue_script( 'wp-robocrop' );
 
-		wp_enqueue_style( 'wp-robocrop' );
+		wp_enqueue_style( 'wp-robocrop-admin' );
 	}
 	
 	/**
