@@ -12,7 +12,7 @@ Known Browser Support
 
 Known Issues
 ------------
- - [SayCheese](https://github.com/mcguffin/say-cheese): Focuspoint will be saved during upload. 
+ - [SayCheese](https://github.com/mcguffin/say-cheese): Focuspoint will not be saved on upload. 
 
 ToDo:
 -----
@@ -27,6 +27,7 @@ ToDo:
  		- [ ] IE10-11
  - [x] Efficency
  	- [x] Minify and combine JS
+ 	- [ ] Cleanup css
  - [ ] UX
  	- [ ] At MediaFrame upload: setting State rather than opening a new modal
 	- [ ] Option to disable focuspoint at
