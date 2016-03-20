@@ -20,8 +20,8 @@ ToDo:
  		- [ ] Safari
  		- [ ] Edge
  		- [ ] IE10-11
- - [ ] Efficency
- 	- [ ] Minify and combine JS
+ - [x] Efficency
+ 	- [x] Minify and combine JS
  - [ ] UX
  	- [ ] At MediaFrame upload: setting State rather than opening a new modal
 

@@ -126,12 +126,11 @@ class WPRoboCropAdmin {
 			wp_localize_script( 'wp-robocrop-focuspoint-media-view' , 'wp_robocrop' , $script_l10n );
 
 		} else {
-			wp_register_script( 'wp-robocrop' , plugins_url( 'js/wp-robocrop.combined.min.js' , dirname(__FILE__) ) , array( 'media-grid' ) , $version );
+			wp_register_script( 'wp-robocrop' , plugins_url( 'js/wp-robocrop.combined.min.js' , dirname(__FILE__) ) , array( 'jquery', 'media-grid' ) , $version );
 			wp_localize_script( 'wp-robocrop' , 'wp_robocrop' , $script_l10n );
 		}
 
 		wp_register_style( 'wp-robocrop-admin' , plugins_url( 'css/wp-robocrop-admin.css' , dirname(__FILE__) ) , array( ) , $version );
-
 	}
 	
 	/**

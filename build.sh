@@ -2,24 +2,44 @@
 
 export CLOSURE_COMPILER="/usr/local/compiler-latest/compiler.jar"
 
-# minify media-view.js
+combined=./js/wp-robocrop.combined.min.js
+tmp_min=./js/tmp.js
+
+rm $combined
+touch $combined
+
+# minify robocrop-base.js
 java -jar \
 	$CLOSURE_COMPILER \
-	--js ./js/media-view.js \
-	--js_output_file ./js/media-view.min.js
+	--js ./js/robocrop-base.js \
+	--js_output_file $tmp_min
 
-# minify wp-uploader.js
+cat $tmp_min >> $combined
+
+# minify robocrop-focuspoint-media-view.js
 java -jar \
 	$CLOSURE_COMPILER \
-	--js ./js/wp-uploader.js \
-	--js_output_file ./js/wp-uploader.min.js
+	--js ./js/robocrop-focuspoint-media-view.js \
+	--js_output_file $tmp_min
 
+cat $tmp_min >> $combined
 
+# minify robocrop-media-view.js
+java -jar \
+	$CLOSURE_COMPILER \
+	--js ./js/robocrop-media-view.js \
+	--js_output_file $tmp_min
+
+cat $tmp_min >> $combined
+
+# minify robocrop-focuspoint-wp-uploader.js
+java -jar \
+	$CLOSURE_COMPILER \
+	--js ./js/robocrop-focuspoint-wp-uploader.js \
+	--js_output_file $tmp_min
+
+cat $tmp_min >> $combined
 
 # combine
 
-cat ./js/wp-uploader.min.js >> ./js/wp-robocrop.combined.min.js
-cat ./js/media-view.min.js >> ./js/wp-robocrop.combined.min.js
-
-rm ./js/media-view.min.js
-rm ./js/wp-uploader.min.js
+rm $tmp_min

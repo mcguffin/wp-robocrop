@@ -1,3 +1,7 @@
+/**
+ * @preserve (c) 2016 by Joern Lund
+ * @license GPL3
+ */
 (function( exports ){
 	var robocrop;
 	
