@@ -1,6 +1,7 @@
 <?php
 
-
+if ( ! defined('ABSPATH') ) 
+	die();
 
 ?>
 	<script type="text/html" id="tmpl-robocrop">

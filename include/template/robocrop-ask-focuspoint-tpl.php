@@ -1,4 +1,9 @@
+<?php
 
+if ( ! defined('ABSPATH') ) 
+	die();
+
+?>
 	<script type="text/html" id="tmpl-ask-focuspoint">
 		<div class="media-frame-title"></div>
 		<div class="media-frame-content">
