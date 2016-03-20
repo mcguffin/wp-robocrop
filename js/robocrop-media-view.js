@@ -393,6 +393,7 @@
 		onselecttool: function(){
 			var toolkey = this.selectRatio.getSelected();
 			this.$areaSelect().cancelSelection();
+			this.$autoButton.prop( 'disabled', true );
 			// do stuff according to tool
 			// get model
 			switch ( toolkey ) {
@@ -404,6 +405,8 @@
 		},
 		onselectratio: function( ) {
 			this.focuspointtool.setEnabled( false );
+			this.$autoButton.prop( 'disabled', false );
+
 			/**
 			 *	On switch ratio
 			 */
@@ -473,6 +476,8 @@
 
 			this._setCropSizes( cropdata );
 			this.selectCrop( cropdata );
+
+			this.$saveButton.prop( 'disabled', false );
 
 			return this;
 		},
