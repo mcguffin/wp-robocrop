@@ -13,12 +13,6 @@ class WPRoboCropAdmin {
 	private static $_instance	= null;
 
 	/**
-	 *	(uint) Default rounding precision for image ratios
-	 *	Add a filter for this later
-	 */
-	private $ratio_precision 	= 4;
-
-	/**
 	 *	(assoc) crops gotten from request
 	 */
 	private $_crops				= array();
