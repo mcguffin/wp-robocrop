@@ -83,7 +83,7 @@
 			if ( _ret.blob.getSource ) {
 				_ret2 = _ret.blob.getSource();
 				if ( 'string' === typeof(_ret2) ) {
-					_ret.dataUrl = _ret2;
+					_ret.dataUrl = 'data:'+file.type+';base64,' + btoa( _ret2 );
 					bytes = new Uint8Array(_ret2.length);
 					for ( i=0; i < _ret2.length; i++ ) {
 						bytes[i] = _ret2.charCodeAt(i);

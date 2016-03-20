@@ -4,8 +4,8 @@
 		image_sizes			= window.wp_robocrop.image_sizes,
 		l10n				= window.wp_robocrop.l10n,
 		options				= window.wp_robocrop.options,
-		cropBtnHTML			= '<button type="button" class="button robocrop-attachment">'+l10n.cropImage+'</button>',
-		cropLinkHTML		= '<button type="button" class="button-link robocrop-attachment">'+l10n.cropImage+'</button>',
+		cropBtnHTML			= '<button type="button" class="button robocrop-attachment">'+l10n.CropImage+'</button>',
+		cropLinkHTML		= '<button type="button" class="button-link robocrop-attachment">'+l10n.CropImage+'</button>',
 		previous_mode		= null,
 		robocrop_model		= null,
 		previous_state		= null,
@@ -15,9 +15,8 @@
 	var robocropStateExtend = {
 		createStates: function() {
 			this._parentCreateStates.apply(this,arguments);
-			console.log("createStates",this.states);
 			this.states.add(
-				new wp.media.robocrop.controller.SmartcropImage( {
+				new wp.media.robocrop.controller.RobocropImage( {
 					model: this.model,
 					selection: this.options.selection
 				} )
@@ -30,11 +29,9 @@
 			this._parentBindHandlers.apply( this, arguments );
 			this.on( 'content:create:robocrop-image', this.robocropImageMode, this );
 			this.on( 'content:render:robocrop-image', this.robocropImageModeRender, this );
-			console.log('handlers');
 		},
 		robocropImageMode: function( contentRegion ) {
-			console.log('dohandlers');
-			var robocropImageController = new wp.media.robocrop.controller.SmartcropImage( {
+			var robocropImageController = new wp.media.robocrop.controller.RobocropImage( {
 				model: 			robocrop_model,
 				frame: 			this,
 				content:		this.content
@@ -43,7 +40,7 @@
 			robocropImageController._router = function() {};
 			robocropImageController._menu = function() {};
 			
-			contentRegion.view = new wp.media.robocrop.view.SmartcropImage( {
+			contentRegion.view = new wp.media.robocrop.view.RobocropImage( {
 				model: 		robocrop_model,
 				frame: 		this,
 				controller:	this.controller
@@ -82,7 +79,6 @@
 		},
 		robocropAttachment: function( event ) {
 			var cropState		= this.controller.states.get( 'robocrop-image' );
-			console.log(this.controller);
 
 			robocrop_model		= this.controller.image.attachment;
 			previous_mode		= null;
@@ -151,7 +147,6 @@
 		id:'robocrop-image',
 		initialize: function() {
 			_.defaults( this.options, {src:''} );
-			console.log(this.options.src);
 			this.$el.attr('src', this.options.src );
 		},
 		getSrc: function(src) {
@@ -167,7 +162,7 @@
 	/**
 	 *	Ratio select list
 	 */
-	wp.media.robocrop.view.SmartcropRatioSelect = wp.media.View.extend({
+	wp.media.robocrop.view.RobocropRatioSelect = wp.media.View.extend({
 		className: 'robocrop-select',
 		template: wp.template('robocrop-select'),
 		events: {
@@ -187,7 +182,7 @@
 			var self = this;
 			
 			_.each( this.options.tools, function( tool, key ) {
-				self.views.add(new wp.media.robocrop.view.SmartcropRatioSelectItem({
+				self.views.add(new wp.media.robocrop.view.RobocropRatioSelectItem({
 					ratiokey:	key,
 					sizenames:	false,
 					ratio: 		key,
@@ -209,7 +204,7 @@
 						names.push( name_tpl( size ) );
 					}
 				});
-				self.views.add(new wp.media.robocrop.view.SmartcropRatioSelectItem({
+				self.views.add(new wp.media.robocrop.view.RobocropRatioSelectItem({
 					ratiokey:	key,
 					sizenames:	names.join(''),
 					ratio: 		key,
@@ -240,7 +235,7 @@
 	/**
 	 *	Ratio select list Item
 	 */
-	wp.media.robocrop.view.SmartcropRatioSelectItem = wp.media.View.extend({
+	wp.media.robocrop.view.RobocropRatioSelectItem = wp.media.View.extend({
 		className: 'robocrop-select-item',
 		template: wp.template('robocrop-select-item'),
 		sizekey:'',
@@ -253,7 +248,7 @@
 		}
 	});
 
-	wp.media.robocrop.view.SmartcropImage = wp.media.View.extend({
+	wp.media.robocrop.view.RobocropImage = wp.media.View.extend({
 		className:		'image-robocrop',
 		template:		wp.template('robocrop'),
 		image_ratios:	image_ratios,
@@ -282,7 +277,7 @@
 			wp.media.view.EditImage.prototype.dispose.apply(this,arguments);
 		},
 		createSelect: function() {
-			this.select = new wp.media.robocrop.view.SmartcropRatioSelect({
+			this.select = new wp.media.robocrop.view.RobocropRatioSelect({
 				choices: choices
 			});
 		},
@@ -315,7 +310,7 @@
 
 
 			// set ratio seelct
-			this.selectRatio = new wp.media.robocrop.view.SmartcropRatioSelect({
+			this.selectRatio = new wp.media.robocrop.view.RobocropRatioSelect({
 				tools: {
 					focuspoint : {
 						title: l10n.SetFocusPoint,
@@ -407,7 +402,6 @@
 					this.focuspointtool.setEnabled( true );
 					break;
 			}
-			console.log( this.model.get('focuspoint') );
 		},
 		onselectratio: function( ) {
 			this.focuspointtool.setEnabled( false );
@@ -456,8 +450,6 @@
 				
 				_.extend(rect,cropdata);
 			}
-			
-
 
 			this.$areaSelect().setOptions( areaSelectOptions );
 			if ( ! this.image.$el.get(0).complete ) {
@@ -564,10 +556,10 @@
 	});
 
 	// controller state
-	wp.media.robocrop.controller.SmartcropImage = wp.media.controller.State.extend({
+	wp.media.robocrop.controller.RobocropImage = wp.media.controller.State.extend({
 		defaults: {
 			id:      'robocrop-image',
-			title:   l10n.robocropImage,
+			title:   l10n.RobocropImage,
 			menu:    false,
 			toolbar: 'robocrop-image',
 			content: 'robocrop-image',

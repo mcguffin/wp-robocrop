@@ -145,7 +145,8 @@
 			this._content = new wp.media.robocrop.view.focuspoint.ImageFocusPointSelect({
 				src: '',
 				focuspoint:{ x:0, y:0 },
-				controller: this
+				controller: this,
+				enabled: true
 			});
 			this.imagewrap.set( [ this._content ] );
 		},
@@ -167,11 +168,11 @@
 					className: 'cancel-upload'
 				}),
 				new wp.media.view.Button({
-					text: l10n.reset,
+					text: l10n.Reset,
 					className: 'reset'
 				}),
 				new wp.media.view.Button({
-					text: l10n.done,
+					text: l10n.Okay,
 					className: 'button-primary proceed'
 				})
 			] );
@@ -181,9 +182,11 @@
 			this._content.setSrc( src );
 		},
 		setFile: function( file ) {
+			console.log(file);
 			var self = this, fr = new FileReader();
 			fr.onload = function( event ) {
-				self._content.setSrc( event.target.result );
+				self.setSrc( fr.result );
+				console.log( typeof fr.result );
 			}
 			fr.readAsDataURL( file );
 		},
