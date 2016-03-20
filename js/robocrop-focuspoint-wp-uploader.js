@@ -7,14 +7,14 @@
 		oldReady = exports.media.view.UploaderWindow.prototype.ready,
 		didReady = false,
 		imageInfos = {};
-	
+
 	/**
 	 *	Early return if autocrop is disabled
 	 */
 	if ( ! options.ask_for_focuspoint ) {
 		return;
 	}
-	
+
 	exports.media.view.UploaderWindow.prototype.ready = function() {
 		var askFocusImages = [],
 			askModal, self = this;
@@ -56,7 +56,7 @@
 				uploader.start();
 			}
 		}
-		
+
 		function addAskFocus( file, uploader ) {
 			var fr;
 			fileData = resolveFile( file );
@@ -67,7 +67,7 @@
 				return false;
 			}
 		}
-		
+
 		/**
 		 *	@return native file object or blob
 		 */
@@ -93,7 +93,7 @@
 			}
 			return _ret;
 		}
-		
+
 		// stop uploader and generate cropdata 
 		this.uploader.uploader.bind('FilesAdded',function( up, files ) {
 			up.stop();

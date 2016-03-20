@@ -39,12 +39,12 @@ class WPRoboCropAdmin {
 		}
 		return self::$_instance;
 	}
-	
+
 	/**
 	 *	Prevent cloning
 	 */
 	private function __clone(){}
-	
+
 	/**
 	 *	Private constructor
 	 */
@@ -64,8 +64,8 @@ class WPRoboCropAdmin {
 
 		add_filter( 'wp_prepare_attachment_for_js' , array( $this , 'wp_prepare_attachment_for_js' ),10,3);
 	}
-	
-	
+
+
 	/**
 	 *	@action 'plugins_loaded'
 	 */
@@ -128,7 +128,7 @@ class WPRoboCropAdmin {
 
 		wp_register_style( 'wp-robocrop-admin' , plugins_url( 'css/wp-robocrop-admin.css' , dirname(__FILE__) ) , array( ) , $version );
 	}
-	
+
 	/**
 	 *	Enable client side image resize.
 	 *
@@ -250,7 +250,7 @@ class WPRoboCropAdmin {
 		}
 		return $metadata;
 	}
-	
+
 	/**
 	 *	See if there is cropdata in the HTTP-Request.
 	 *	On WP Upload we don't know the actual image dimensions,
@@ -285,7 +285,7 @@ class WPRoboCropAdmin {
 		}
 		return false;
 	}
-	
+
 	/**
 	 *	@filter 'image_resize_dimensions'
 	 */
@@ -313,7 +313,7 @@ class WPRoboCropAdmin {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 *	@action 'wp_enqueue_media'
 	 */
@@ -349,7 +349,7 @@ class WPRoboCropAdmin {
 		
 		return $ratios;
 	}
-	
+
 	/**
 	 *	Get image size based on width and height
 	 *	
@@ -370,7 +370,7 @@ class WPRoboCropAdmin {
 			}
 		}
 	}
-	
+
 	/**
 	 *	Get all image sizes
 	 *	
@@ -381,7 +381,7 @@ class WPRoboCropAdmin {
 		global $_wp_additional_image_sizes;
 
 		$sizes = array();
-		
+
 		/**
 		 * Get rounding precision for image ratios.
 		 * E.g. 16/9 = 1.7777777.. will be rounded to 1.7778
@@ -445,8 +445,8 @@ class WPRoboCropAdmin {
 		}
 		return true;
 	}
-	
-	
+
+
 	private function sanitize_focuspoint( $focuspoint ) {
 		$focuspoint = wp_parse_args( array_map('floatval',(array) $focuspoint), array(
 			'x' => 0,
@@ -457,7 +457,6 @@ class WPRoboCropAdmin {
 			'x' => min( max( $focuspoint['x'], -1), 1),
 			'y' => min( max( $focuspoint['y'], -1), 1),
 		);
-	
 	}
 	
 }

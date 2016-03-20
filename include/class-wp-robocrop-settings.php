@@ -70,7 +70,7 @@ class WPRoboCropSettings {
 	 */
 	public function settings_description() {
 	}
-	
+
 	/**
 	 *	Output checkbox
 	 *
@@ -88,7 +88,7 @@ class WPRoboCropSettings {
 			?></p><?php
 		}
 	}
-	
+
 }
 
 WPRoboCropSettings::getInstance();

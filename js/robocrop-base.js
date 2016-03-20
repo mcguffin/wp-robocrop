@@ -6,7 +6,6 @@
 	var robocrop;
 	
 	robocrop = {
-	
 		cropFromFocusPoint: function( imageinfo, cropinfo ) {
 			// normalize 
 			var fp_x =   (  imageinfo.focuspoint.x + 1) / 2 * imageinfo.width,
@@ -24,7 +23,7 @@
 				height: crop_h / imageinfo.height
 			};
 		},
-	
+
 		relToAbsCoords: function( cropdata, imageinfo ) {
 			var s, ret = {};
 			for ( s in cropdata ) {
@@ -72,7 +71,7 @@
 			}
 			return ret;
 		},
-	
+
 		pointToRectCoords:function( points ) {
 			return {
 				x: points.x1,
@@ -81,7 +80,7 @@
 				height: points.y2 - points.y1
 			}
 		},
-	
+
 		rectToPointCoords:function( rect ) {
 			return {
 				x1: rect.x,
@@ -90,7 +89,7 @@
 				y2: (rect.maxY ? rect.maxY : rect.y+rect.height),
 			};
 		},
-		
+
 		view : {},
 		controller : {}
 	};

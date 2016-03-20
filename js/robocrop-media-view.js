@@ -84,7 +84,7 @@
 			previous_mode		= null;
 			robocrop_controller	= this.controller; 
 			previous_state		= this.controller.state();
-			
+
 			if ( cropState ) {
 				event.preventDefault();
 				this.controller.setState( 'robocrop-image' );
@@ -307,7 +307,6 @@
 					self.$saveButton.prop('disabled',false);
 				}
 			});
-
 
 			// set ratio seelct
 			this.selectRatio = new wp.media.robocrop.view.RobocropRatioSelect({
@@ -580,12 +579,5 @@
 			this.stopListening( this.frame );
 		},
 	});
-
-	
-	
-	
-	
-	
-	
 
 })(wp,jQuery);

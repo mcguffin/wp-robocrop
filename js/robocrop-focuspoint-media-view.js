@@ -119,7 +119,7 @@
 			});
 
 			MediaFrame.prototype.initialize.apply(this,arguments);
-	
+
 			if ( this.modal ) {
 				this.modal.on('close', this.cancelUpload, this );
 			}
@@ -131,7 +131,7 @@
 		render: function() {
 			// frame layout
 			this.$el.addClass('hide-menu').addClass('hide-router');
-	
+
 			MediaFrame.prototype.render.apply(this,arguments);
 		},
 		createTitle: function( ) {
@@ -186,7 +186,6 @@
 			var self = this, fr = new FileReader();
 			fr.onload = function( event ) {
 				self.setSrc( fr.result );
-				console.log( typeof fr.result );
 			}
 			fr.readAsDataURL( file );
 		},
