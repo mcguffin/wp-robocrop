@@ -88,17 +88,40 @@ WP Smart Crop
     color:#0073aa;
 }
 
+/*
+.set-focuspoint
+	img.attachment-image
+	.focuspount-box
 
-
-.set-focuspoint {
-	position:relative;
-	display:inline-block;
-	max-width:100%;
-	max-height:100%;
-	overflow:hidden;
+*/
+.robocrop-content,
+.ask-focuspoint .media-frame-content {
+	padding:16px;
+	overflow:auto;
 }
 
-.set-focuspoint img {
+.media-frame-imagewrap {
+	text-align:center;
+}
+@media only screen and (min-width: 1024px) and (orientation: landscape) {
+	.media-frame-imagewrap {
+		width:80%;
+		margin-left:10%;
+	}
+}
+@media only screen and (min-width: 1280px) and (orientation: landscape) {
+	.media-frame-imagewrap {
+		width:60%;
+		margin-left:20%;
+	}
+}
+.robocrop-image-box {
+    position: relative;
+    display:inline-block;
+    box-shadow:0 0 15px rgba(0,0,0,0.15);
+}
+
+.robocrop-image-box img {
 	width: auto;
 	height: auto;
 	max-width:100%;
@@ -107,7 +130,7 @@ WP Smart Crop
 }
 
 
-.focuspoint-box {
+.tool-focuspoint {
     position: absolute;
     left: 0;
     top: 0;
@@ -115,31 +138,31 @@ WP Smart Crop
     right: 0;
     z-index: 1;
 }
-.focuspoint-box .focuspoint {
+.tool-focuspoint .focuspoint {
 	position:absolute;
 	pointer-events:none;
 }
 
-.focuspoint-box .focuspoint:after,
-.focuspoint-box .focuspoint:before {
+.tool-focuspoint .focuspoint:after,
+.tool-focuspoint .focuspoint:before {
 	position:absolute;
 	content:'';
 	background:#fff;
 	box-shadow:0 0 5px rgba(0,0,0,0.5);
 }
-.focuspoint-box .focuspoint:before {
+.tool-focuspoint .focuspoint:before {
 	height:40px;
 	width:1px;
 	left:0;
 	top:-20px;
 }
-.focuspoint-box .focuspoint:after {
+.tool-focuspoint .focuspoint:after {
 	width:40px;
 	height:1px;
 	left:-20px;
 	top:0;
 }
-.focuspoint-box .focuspoint .circle {
+.tool-focuspoint .focuspoint .circle {
 	position:absolute;
 	top:-75px;
 	left:-75px;

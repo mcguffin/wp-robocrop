@@ -142,6 +142,27 @@
 
 
 
+	/**
+	 *	An Image
+	 */
+	wp.media.robocrop.view.Img = wp.media.View.extend({
+		className:'attachment-image',
+		tagName:'img',
+		id:'robocrop-image',
+		initialize: function() {
+			_.defaults( this.options, {src:''} );
+			console.log(this.options.src);
+			this.$el.attr('src', this.options.src );
+		},
+		getSrc: function(src) {
+			return this.$el.attr( 'src' );
+		},
+		setSrc: function(src) {
+			!!src && this.$el.attr( 'src', src );
+			return this;
+		}
+	});
+
 
 	/**
 	 *	Ratio select list
@@ -149,20 +170,32 @@
 	wp.media.robocrop.view.SmartcropRatioSelect = wp.media.View.extend({
 		className: 'robocrop-select',
 		template: wp.template('robocrop-select'),
-		ratios:{},
-		model:null,
 		events: {
-			'click [name="robocrop-select-ratio"]': 'select'
+			'click [name="robocrop-select-ratio"]': 'selectRatio',
 		},
 		initialize: function() {
 			wp.Backbone.View.prototype.initialize.apply(this,arguments);
+			_.defaults({
+				ratios:{},
+				tools:{}
+			},this.options);
 			this.options.l10n = l10n;
-
+			
 		},
 		render: function() {
 			wp.Backbone.View.prototype.render.apply(this,arguments);
 			var self = this;
 			
+			_.each( this.options.tools, function( tool, key ) {
+				self.views.add(new wp.media.robocrop.view.SmartcropRatioSelectItem({
+					ratiokey:	key,
+					sizenames:	false,
+					ratio: 		key,
+					title:		tool.title,
+					enabled: 	true
+				}))
+				
+			});
 			_.each( this.options.ratios, function( ratio, key ) {
 				var names = [],
 					tpl_str = '<span class="sizename<%= cancrop ? "" : " disabled" %>"><%= name %> (<%= width %>×<%= height %>)</span>',
@@ -177,25 +210,30 @@
 					}
 				});
 				self.views.add(new wp.media.robocrop.view.SmartcropRatioSelectItem({
-					ratiokey:key,
-					sizenames:names.join(''),
-					ratio: key,
-					enabled: (self.model.get('width') >= ratio.min_width) &&
-							(self.model.get('height') >= ratio.min_height)
+					ratiokey:	key,
+					sizenames:	names.join(''),
+					ratio: 		key,
+					title:		key + ' : 1',
+					enabled: 	(self.model.get('width')  >= ratio.min_width) &&
+								(self.model.get('height') >= ratio.min_height)
 				}))
 			} );
 			
 			
 		},
-		setRatio: function( ratiokey ) {
+		setSelected: function( ratiokey ) {
 			this.$el.find('[name="robocrop-select-ratio"][value="'+ratiokey+'"]').prop('checked',true);
-			this.trigger('select');
+			this.selectRatio();
 		},
-		getRatio: function( ) {
+		getSelected: function( ) {
 			return this.$el.find('[name="robocrop-select-ratio"]:checked').val();
 		},
-		select: function( event ) {
-			this.trigger('select');
+		selectRatio: function( event ) {
+			if ( this.options.ratios[ this.getSelected() ] ) {
+				this.trigger('select-ratio');
+			} else if ( this.options.tools[ this.getSelected() ] ) {
+				this.trigger('select-tool');
+			}
 		}
 	});
 
@@ -215,7 +253,7 @@
 		}
 	});
 
-	wp.media.robocrop.view.SmartcropImage = wp.media.view.EditImage.extend({
+	wp.media.robocrop.view.SmartcropImage = wp.media.View.extend({
 		className:		'image-robocrop',
 		template:		wp.template('robocrop'),
 		image_ratios:	image_ratios,
@@ -227,9 +265,16 @@
 			'click .robocrop-save'     : 'save'
 		},
 		initialize: function( options ) {
-			wp.media.view.EditImage.prototype.initialize.apply( this, arguments );
-			this._croppers = {}
-			this.sizeToSelect = ( !! options.frame && !! options.frame.image ) ? options.frame.image.attributes.size : false;
+		//	wp.media.view.EditImage.prototype.initialize.apply( this, arguments );
+			this._croppers 		= {};
+			this.sizeToSelect 	= ( !! options.frame && !! options.frame.image ) ? options.frame.image.attributes.size : false;
+			this.image 			= new wp.media.robocrop.view.Img( {src: this.model.get('url') } );
+
+			this.controller 	= options.controller;
+			this.focuspointtool	= new wp.media.robocrop.view.focuspoint.ImageFocusPointSelect({ image: this.image, focuspoint: this.model.get('url') });
+			this.listenTo( this.focuspointtool, 'changed', this.updateFocusPoint );
+			
+			wp.media.View.prototype.initialize.apply( this, arguments );
 		},
 		dispose:function() {
 			var areaSelect = this.$areaSelect()
@@ -243,11 +288,15 @@
 		},
 		render: function() {
 			var self = this;
-			wp.media.view.EditImage.prototype.render.apply(this,arguments);
-			this.$img = this.$el.find('img');
 
-			this.$img.imgAreaSelect({
-				parent: 		this.$img.closest('.robocrop-image-wrap'),
+			wp.media.View.prototype.render.apply(this,arguments);
+
+			this.views.set('.robocrop-image-box', this.focuspointtool );
+
+			this.focuspointtool.setFocuspoint( this.model.get( 'focuspoint' ) );
+
+			this.image.$el.imgAreaSelect({
+				parent: 		this.image.$el.closest('.robocrop-image-box'),
 				instance:	 	true,
 				handles: 		true,
 				keys: 			true,
@@ -257,13 +306,6 @@
 				resizable:		true,
 				imageHeight:	this.model.get('height'),
 				imageWidth:		this.model.get('width'),
-				onInit: 	function( img ) {
-					// Ensure that the imgareaselect wrapper elements are position:absolute
-					// (even if we're in a position:fixed modal)
-					var $img = $( img );
-					$img.next().css( 'position', 'fixed' )
-						.nextAll( '.imgareaselect-outer' ).css( 'position', 'fixed' );
-				},
 				onSelectEnd: function( image, coords ) {
 					var cropdata = wp.media.robocrop.pointToRectCoords( coords )
 					self._setCropSizes(cropdata);
@@ -271,23 +313,34 @@
 				}
 			});
 
+
 			// set ratio seelct
 			this.selectRatio = new wp.media.robocrop.view.SmartcropRatioSelect({
+				tools: {
+					focuspoint : {
+						title: l10n.SetFocusPoint,
+						trigger: 'focuspoint'
+					}
+				},
 				ratios:this.image_ratios,
 				model:this.model
 			});
-			this.selectRatio.on('select', this.onselect, this );
+			this.selectRatio
+				.on('select-ratio', this.onselectratio, this )
+				.on('select-tool', this.onselecttool, this );
 			this.views.set('.select-ratio', this.selectRatio );	
 			// setTimeout( function(){ },20);
 			
-			this.$saveButton		= this.$el.find('.robocrop-save');
-			this.$cancelButton		= this.$el.find('.robocrop-cancel');
-			this.$autocropButton	= this.$el.find('.robocrop-autocrop');
+			// buttons
+			this.$saveButton	= this.$el.find('.robocrop-save');
+			this.$cancelButton	= this.$el.find('.robocrop-cancel');
+			this.$autoButton	= this.$el.find('.robocrop-autocrop');
 			return this;
 		},
 		ready: function() {
 			var currentRatio, found;
 			wp.media.view.EditImage.prototype.ready.apply(this,arguments);
+
 			if ( !! this.sizeToSelect ) {
 				found = _.find( this.image_ratios, function( ratio ){
 					return ratio.sizes.indexOf( this.sizeToSelect ) > -1;
@@ -297,18 +350,21 @@
 				}
 			}
 			if ( ! currentRatio ) {
-				currentRatio = _.first(_.keys( this.image_ratios ));
+				currentRatio = 'focuspoint';//_.first(_.keys( this.image_ratios ));
 			}
-			this.selectRatio.setRatio( currentRatio ); 
+			this.selectRatio.setSelected( "focuspoint" ); 
 			return this;
 		},
 		save: function() {
 			var data = {
 					attachments:{}
 				}, id = this.model.get('id'),
-				$btns = this.$saveButton.add(this.$cancelButton).add( this.$autocropButton ).prop('disabled',true),
+				$btns = this.$saveButton.add(this.$cancelButton).add( this.$autoButton ).prop('disabled',true),
 				self = this;
-			data.attachments[id] = { sizes:this.model.get('sizes') };
+			data.attachments[id] = { 
+				sizes:		this.model.get('sizes'), 
+				focuspoint: this.model.get('focuspoint')
+			};
 			this.model.saveCompat( data, {} ).done( function( resp ) {
 				var d = new Date();
 				
@@ -336,11 +392,29 @@
 			}
 			return this;
 		},
-		onselect: function( ) {
+// 		back: function() {
+// 			var lastState = this.controller.lastState();
+// 			this.controller.setState( lastState );
+// 		},
+		onselecttool: function(){
+			var toolkey = this.selectRatio.getSelected();
+			this.$areaSelect().cancelSelection();
+			// do stuff according to tool
+			// get model
+			switch ( toolkey ) {
+				case 'focuspoint':
+					// wrap around
+					this.focuspointtool.setEnabled( true );
+					break;
+			}
+			console.log( this.model.get('focuspoint') );
+		},
+		onselectratio: function( ) {
+			this.focuspointtool.setEnabled( false );
 			/**
 			 *	On switch ratio
 			 */
-			var ratiokey = this.selectRatio.getRatio(),
+			var ratiokey = this.selectRatio.getSelected(),
 				sizes = this.model.get('sizes'),
 				factor, rect, cropdata, self = this, 
 				s, areaSelectOptions,
@@ -386,8 +460,8 @@
 
 
 			this.$areaSelect().setOptions( areaSelectOptions );
-			if ( ! this.$img.get(0).complete ) {
-				this.$img.on('load',function() {
+			if ( ! this.image.$el.get(0).complete ) {
+				this.image.$el.on('load',function() {
 					self.selectCrop(rect);
 				});
 			} else {
@@ -426,11 +500,15 @@
 			return $('#robocrop-image').data('imgAreaSelect');
 		},
 		_image_scale_factor : function() {
-			var $container = this.$img.closest('.robocrop-image-wrap'),
+			var $container = this.image.$el.closest('.robocrop-image-box'),
 				w = Math.min(this.model.get('width'),$container.width()),
 				h = Math.min(this.model.get('height'),$container.height());
 			
 			return Math.min( w / this.model.get('width'), h / this.model.get('height') );
+		},
+		updateFocusPoint: function( ) {
+			this.model.set( 'focuspoint', this.focuspointtool.getFocuspoint() );
+			this.$saveButton.prop( 'disabled', false );
 		},
 		_setCropSizes : function( cropdata ) {
 			var modelSizes = this.model.get('sizes');

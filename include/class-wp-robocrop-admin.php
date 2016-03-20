@@ -101,23 +101,23 @@ class WPRoboCropAdmin {
 
 		if ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ) {
 
-			wp_register_script( 'wp-robocrop-cropcalc' , 
+			wp_register_script( 'wp-robocrop-base' , 
 								plugins_url( 'js/robocrop-base.js', dirname(__FILE__) ) , 
 								array() , $version 
 							);
 
 			wp_register_script( 'wp-robocrop-focuspoint-media-view' , 
 								plugins_url( 'js/robocrop-focuspoint-media-view.js', dirname(__FILE__) ) , 
-								array('jquery', 'media-grid', 'wp-robocrop-cropcalc' ) , $version 
+								array('jquery', 'media-grid', 'wp-robocrop-base' ) , $version 
 							);
 
 			wp_register_script( 'wp-robocrop-media-view' , 
 								plugins_url( 'js/robocrop-media-view.js' , dirname(__FILE__) ) , 
-								array('media-grid') , $version );
+								array('media-grid', 'wp-robocrop-focuspoint-media-view', 'wp-robocrop-base') , $version );
 
 			wp_register_script( 'wp-robocrop', 
 								plugins_url( 'js/robocrop-focuspoint-wp-uploader.js', dirname(__FILE__) ) , 
-								array('wp-robocrop-focuspoint-media-view', 'wp-robocrop-cropcalc', 'wp-robocrop-media-view' ) , $version 
+								array('wp-robocrop-focuspoint-media-view', 'wp-robocrop-base', 'wp-robocrop-media-view' ) , $version 
 							);
 
 			wp_localize_script( 'wp-robocrop-focuspoint-media-view' , 'wp_robocrop' , $script_l10n );
@@ -179,8 +179,7 @@ class WPRoboCropAdmin {
 					}
 				}
 			}
-			
-			
+
 			// trigger sizes regeneration
 			$fullsizepath = get_attached_file( $attachment_ID );
 			$metadata = wp_generate_attachment_metadata( $attachment_ID, $fullsizepath );
@@ -199,7 +198,7 @@ class WPRoboCropAdmin {
 		include __DIR__.'/template/robocrop-tpl.php';
 		include __DIR__.'/template/robocrop-select-tpl.php';
 		include __DIR__.'/template/robocrop-select-item-tpl.php';
-		
+
 		// focus point editor
 		include __DIR__.'/template/robocrop-ask-focuspoint-tpl.php';
 		include __DIR__.'/template/robocrop-focuspoint-tpl.php';
@@ -218,6 +217,7 @@ class WPRoboCropAdmin {
 				}
 			}
 		}
+
 		if ( isset( $meta['focuspoint'] ) ) {
 			$response['focuspoint'] = $meta['focuspoint'];
 		} else {
@@ -239,16 +239,15 @@ class WPRoboCropAdmin {
 				}
 			}
 		}
-		
-		// upload
+
 		if ( isset( $_REQUEST['focuspoint'] ) ) {
+			// upload
 			$metadata['focuspoint'] = $this->sanitize_focuspoint( json_decode( stripslashes( $_REQUEST['focuspoint'] ) ) );
-			
-		// save image
-		} else if ( ! is_null( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'] ) ) {
-			$metadata['focuspoint'] = $this->sanitize_focuspoint( $_REQUEST[ 'attachments' ][$attachment_ID]['focuspoint'] );
-		// update from somewhere else
+		} else if ( isset( $_REQUEST[ 'attachments' ][$attachment_id]['focuspoint'] ) ) { 
+			// save image
+			$metadata['focuspoint'] = $this->sanitize_focuspoint( $_REQUEST[ 'attachments' ][$attachment_id]['focuspoint'] );
 		} else if ( isset( $this->previous_metadata, $this->previous_metadata['focuspoint'] ) ) {
+			// keep old value when updating from somewhere else
 			$metadata['focuspoint'] = $this->previous_metadata['focuspoint'];
 		}
 		return $metadata;
