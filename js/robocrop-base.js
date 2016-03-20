@@ -27,7 +27,6 @@
 		relToAbsCoords: function( cropdata, imageinfo ) {
 			var s, ret = {};
 			for ( s in cropdata ) {
-				console.log(s);
 				switch ( s ) {
 					case 'x':
 					case 'x1':

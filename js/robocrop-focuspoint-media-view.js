@@ -121,7 +121,7 @@
 			MediaFrame.prototype.initialize.apply(this,arguments);
 
 			if ( this.modal ) {
-				this.modal.on('close', this.cancelUpload, this );
+				this.modal.on('escape', this.cancelUpload, this );
 			}
 			this.createTitle();
 			this.createContent();
@@ -182,7 +182,6 @@
 			this._content.setSrc( src );
 		},
 		setFile: function( file ) {
-			console.log(file);
 			var self = this, fr = new FileReader();
 			fr.onload = function( event ) {
 				self.setSrc( fr.result );
@@ -207,7 +206,7 @@
 		proceed: function( event ) {
 			this.trigger('proceed');
 		},
-		cancelUpload: function( event ){
+		cancelUpload: function( event ) {
 			// remove from queue!
 			this.trigger('cancel-upload');
 			this.close();

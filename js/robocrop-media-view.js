@@ -488,7 +488,7 @@
 			return this;
 		},
 		$areaSelect : function(){
-			return $('#robocrop-image').data('imgAreaSelect');
+			return this.image.$el.data('imgAreaSelect');
 		},
 		_image_scale_factor : function() {
 			var $container = this.image.$el.closest('.robocrop-image-box'),
