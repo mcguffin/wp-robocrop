@@ -413,7 +413,7 @@ class WPRoboCropAdmin {
 				'width'  => $w,
 				'height' => $h,
 				'crop'   => $crop,
-				'ratio'  => round($w / $h, $precision ),
+				'ratio'  => $w && $h ? round($w / $h, $precision ) : 0,
 			);
 		}
 		
