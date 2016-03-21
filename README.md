@@ -30,6 +30,6 @@ ToDo:
  	- [ ] Cleanup css
  - [ ] UX
  	- [ ] At MediaFrame upload: setting State rather than opening a new modal
-	- [ ] Option to disable focuspoint at
- - [ ] Default rounding precision to 2
-
+	- [ ] Option to disable focuspoint at post edit
+ - [x] Default rounding precision to 2
+ - [ ] Bug: Button does not work at MediaFrame.Select

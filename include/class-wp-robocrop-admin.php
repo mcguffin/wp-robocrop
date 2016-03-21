@@ -382,7 +382,7 @@ class WPRoboCropAdmin {
 		 *
 		 * @param int $precision decimal places after rounding
 		 */
-		$precision = apply_filters('robocrop_rounding_precision', 4 );
+		$precision = apply_filters('robocrop_rounding_precision', 2 );
 		
 		// get size names
 		$size_names = apply_filters( 'image_size_names_choose', array(
