@@ -1,8 +1,7 @@
-(function( ) {
+(function( $ ) {
 
 	var image_ratios = window.wp_robocrop.image_ratios,
 		image_sizes  = window.wp_robocrop.image_sizes,
-		l10n = window.wp_robocrop.l10n,
 		options = window.wp_robocrop.options,
 		imageInfos = {};
 
@@ -36,7 +35,7 @@
 				}
 				if ( !! askFocusImages.length ) {
 					fileItem = askFocusImages.shift();
-					askModal = new wp.media.robocrop.view.focuspoint.AskFocuspoint({ modal:true });
+					askModal = new wp.media.robocrop.view.Frame.Focuspoint({ controller: $(this) });
 					askModal.on('proceed',function() {
 						imageInfos[fileItem.file.name] = {
 							focuspoint:	askModal.getFocuspoint(),
@@ -136,5 +135,5 @@
 		}
 	});
 
-})( );
+})( jQuery );
 

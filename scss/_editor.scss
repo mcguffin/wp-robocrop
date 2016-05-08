@@ -1,0 +1,177 @@
+/*
+WP RoboCrop
+*/
+.image-robocrop {
+	.robocrop-modal & {
+	}
+	.box {
+		padding:16px;
+	}
+}
+
+.robocrop-modal {
+	.media-frame-content {
+		left: 0;
+		top: 50px;
+	}
+	.media-frame-title {
+		left: 0;
+		h1 {
+			font-size: 22px;
+			line-height: 50px;
+			margin:0;
+			padding:0 16px;
+		}
+    }
+	.media-frame-toolbar {
+		left:0;
+		.instructions {
+			margin:18px;
+			font-style:italic;
+			font-size:18px;
+			float:left;
+		}
+	}
+
+	.media-frame-buttons {
+		margin:16px;
+		float:right;
+		button {
+			margin-left:16px;
+		}
+	}
+
+
+}
+.media-frame {
+	.button-link.robocrop-open {
+	    color: #0073aa;
+	}
+}
+.robocrop-image-wrap {
+	box-sizing:border-box;
+	height:100%;
+}
+.robocrop-sidebar {
+	position:absolute;
+	left:0;
+	top:0;
+	bottom:0;
+	background:#f0f0f0;
+	width:300px;
+	border-right:1px solid #ccc;
+}
+.robocrop-content {
+	position:absolute;
+	right:0;
+	left:300px;
+	top:0;
+	bottom:0;
+}
+.robocrop-content img {
+	max-width:100%;
+	max-height:100%;
+	width:auto;
+	height:auto;
+}
+
+.robocrop-message-content {
+	padding: 16px;
+    background: #fff;
+    width: 300px;
+    top: 30%;
+    left:50%;
+    margin-left:-150px;
+    z-index: 159901;
+    position: fixed;
+    box-shadow:0 3px 6px rgba( 0, 0, 0, 0.3 );
+}
+
+.robocrop-select .choices {
+	border-top:1px solid #ccc;
+}
+
+.robocrop-select-item input[type="radio"] {
+	display:none;
+}
+.robocrop-select-item input[type="radio"]:before {
+	content:'';
+}
+.robocrop-select-item input[type="radio"]:checked ~ label {
+	background:#fff;
+	width:301px;
+	border-color:#ccc;
+}
+.robocrop-select-item .sizename:before {
+	content:', ';
+}
+.robocrop-select-item .sizename:first-child:before {
+	content:'';
+}
+.robocrop-select-item .disabled,
+.robocrop-select-item input[type="radio"][disabled] ~ label {
+	color:#999;
+}
+.robocrop-select-item label {
+	display:block;
+	padding:16px;
+	box-sizing:border-box;
+/* 	border-top:1px solid #f0f0f0; */
+	border-bottom:1px solid #ccc;
+}
+.robocrop-select-item label strong {
+	font-size:20px;
+}
+
+
+
+
+
+.attachment-info .robocrop-attachment {
+	display:block;
+    color:#0073aa;
+}
+
+/*
+.set-focuspoint
+	img.attachment-image
+	.focuspount-box
+
+*/
+.robocrop-content,
+.ask-focuspoint .media-frame-content {
+	padding:16px;
+	overflow:auto;
+}
+
+.media-frame-imagewrap {
+	text-align:center;
+}
+@media only screen and (min-width: 1024px) and (orientation: landscape) {
+	.media-frame-imagewrap {
+		width:80%;
+		margin-left:10%;
+	}
+}
+@media only screen and (min-width: 1280px) and (orientation: landscape) {
+	.media-frame-imagewrap {
+		width:60%;
+		margin-left:20%;
+	}
+}
+.robocrop-image-box {
+    position: relative;
+    display:inline-block;
+    box-shadow:0 0 15px rgba(0,0,0,0.15);
+    max-width:100%;
+    overflow:hidden;
+}
+
+.robocrop-image-box img {
+	width: auto;
+	height: auto;
+	max-width:100%;
+	max-height:100%;
+	display:block;
+}
+

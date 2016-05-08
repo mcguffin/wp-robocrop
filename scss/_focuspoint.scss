@@ -1,0 +1,46 @@
+
+.tool-focuspoint {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+	.focuspoint {
+		position:absolute;
+		pointer-events:none;
+		&:after,
+		&:before {
+			position:absolute;
+			content:'';
+			background:#fff;
+			box-shadow:0 0 5px rgba(0,0,0,0.5);
+		}
+		&:before {
+			height:40px;
+			width:1px;
+			left:0;
+			top:-20px;
+		}
+		&:after {
+			width:40px;
+			height:1px;
+			left:-20px;
+			top:0;
+		}
+		.circle {
+			position:absolute;
+			top:-75px;
+			left:-75px;
+			width:150px;
+			height:150px;
+			border-radius:76px;
+			border:1px solid #fff;
+			box-shadow:0 0 5px rgba(0,0,0,0.5);
+		}
+	}
+}
+
+
+
+

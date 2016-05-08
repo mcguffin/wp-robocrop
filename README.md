@@ -3,7 +3,7 @@ WP RoboCrop
 
 Manual and Focus Point based image cropping in WordPress.
 
-Developed with WordPress 4.5-beta
+Developed with WordPress 4.5.2
 
 Known Browser Support
 ---------------------
@@ -14,9 +14,43 @@ Known Issues
 ------------
  - [SayCheese](https://github.com/mcguffin/say-cheese): Focuspoint will not be saved on upload. 
 
+Developing:
+-----------
+
+#### Sass watch
+
+##### development
+`sass --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style compressed`
+
+##### Production
+`sass --sourcemap=none --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style compressed`
+
+
 ToDo:
 -----
+ - [ ] Only on Images!
+ - [ ] Open RoboCrop-Tool in its own media modal. 
+ 		... like new RoboCropModal( { model:theModel } )
+
  - [ ] Test 
+ 	- [x] WP-Media-Library
+ 		- [x] Edit
+ 		- [x] Upload
+ 	- [ ] Edit Post > Add Media
+ 		- [x] Edit
+ 		- [ ] Upload
+ 		- Bugs: 
+ 			Featured Image > Select > Edit sizes: doesn't work
+ 			Add Media > Select Image > Edit Sizes > Close X > Featured Image > selct > Edit Sizes: doesn't work
+ 			same as above: > Close Featured image > Add Media: can't close size editor
+ 	- [ ] Featured Image
+ 		- [ ] Edit
+ 		- [ ] Upload
+ 		-> Doesn't work!
+ 	- [ ] ACF Image post meta
+ 	- [ ] ACF Image option
+ 	- [ ] Image widget upload
+
  	- [ ] Test together with [SayCheese](https://github.com/mcguffin/say-cheese)
  		- [ ] Bug: Focuspoint does not get saved. BeforeUpload triggered immediate after file added.
  		- [ ] Sometimes images are not disaplayed in the media library (and plupload throws an exception)

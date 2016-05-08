@@ -3,139 +3,7 @@
 	var image_ratios		= window.wp_robocrop.image_ratios,
 		image_sizes			= window.wp_robocrop.image_sizes,
 		l10n				= window.wp_robocrop.l10n,
-		options				= window.wp_robocrop.options,
-		cropBtnHTML			= '<button type="button" class="button robocrop-attachment">'+l10n.CropImage+'</button>',
-		cropLinkHTML		= '<button type="button" class="button-link robocrop-attachment">'+l10n.CropImage+'</button>',
-		previous_mode		= null,
-		robocrop_model		= null,
-		previous_state		= null,
-		robocrop_controller = null;
-	// 
-
-	var robocropStateExtend = {
-		createStates: function() {
-			this._parentCreateStates.apply(this,arguments);
-			this.states.add(
-				new wp.media.robocrop.controller.RobocropImage( {
-					model: this.model,
-					selection: this.options.selection
-				} )
-			);
-		}
-	};
-
-	var robocropHandlersExtend = {
-		bindHandlers: function() {
-			this._parentBindHandlers.apply( this, arguments );
-			this.on( 'content:create:robocrop-image', this.robocropImageMode, this );
-			this.on( 'content:render:robocrop-image', this.robocropImageModeRender, this );
-		},
-		robocropImageMode: function( contentRegion ) {
-			var robocropImageController = new wp.media.robocrop.controller.RobocropImage( {
-				model: 			robocrop_model,
-				frame: 			this,
-				content:		this.content
-			} );
-			robocropImageController._toolbar = function() {};
-			robocropImageController._router = function() {};
-			robocropImageController._menu = function() {};
-			
-			contentRegion.view = new wp.media.robocrop.view.RobocropImage( {
-				model: 		robocrop_model,
-				frame: 		this,
-				controller:	this.controller
-			});
-		},
-		robocropImageModeRenderer: function( view ) {
-			view.on( 'ready', view.loadEditor );
-		}
-	};
-
-
-	// grid view media library
-	_.extend(	wp.media.view.MediaFrame.EditAttachments.prototype, { 
-			_parentBindHandlers: wp.media.view.MediaFrame.EditAttachments.prototype.bindHandlers
-		}, 
-		robocropHandlersExtend
-	);
-	
-
-	// Inline MediaLibrary
-	_.extend(	wp.media.view.MediaFrame.Post.prototype, { 
-			_parentBindHandlers: wp.media.view.MediaFrame.Post.prototype.bindHandlers,
-			_parentCreateStates: wp.media.view.MediaFrame.Post.prototype.createStates
-		}, 
-		robocropHandlersExtend,
-		robocropStateExtend 
-	);
-
-
-	// post inline image editor
-	_.extend( wp.media.view.ImageDetails.prototype, {
-		_parentPostRender: wp.media.view.ImageDetails.prototype.postRender,
-		postRender: function() {
-			this._parentPostRender.apply(this,arguments);
-			this.$el.find('.actions').append(cropBtnHTML);
-		},
-		robocropAttachment: function( event ) {
-			var cropState		= this.controller.states.get( 'robocrop-image' );
-
-			robocrop_model		= this.controller.image.attachment;
-			previous_mode		= null;
-			robocrop_controller	= this.controller; 
-			previous_state		= this.controller.state();
-
-			if ( cropState ) {
-				event.preventDefault();
-				this.controller.setState( 'robocrop-image' );
-			} 
-		}
-	});
-	wp.media.view.ImageDetails.prototype.events['click .robocrop-attachment'] = 'robocropAttachment';
-
-	// post inline image editor
-	_.extend( wp.media.view.MediaFrame.ImageDetails.prototype, {
-			_parentBindHandlers: wp.media.view.MediaFrame.ImageDetails.prototype.bindHandlers,
-			_parentCreateStates: wp.media.view.MediaFrame.ImageDetails.prototype.createStates
-		}, 
-		robocropHandlersExtend,
-		robocropStateExtend 
-	);
-
-
-	// Inline MediaLibrary, Grid view MediaLibrary
-	_.extend( wp.media.view.Attachment.Details.prototype, {
-		_parentRender: wp.media.view.Attachment.Details.prototype.render,
-		render: function(){
-			this._parentRender.apply(this,arguments);
-			// media library screen
-			this.$('.attachment-actions').append(cropBtnHTML);
-			// uploader modal
-			$( cropLinkHTML ).insertAfter( this.$el.find( 'a.edit-attachment' ) );
-		},
-		robocropAttachment: function( event ) {
-			var cropState	= this.controller.states.get( 'robocrop-image' );
-
-			robocrop_model		= this.model;
-			robocrop_controller	= this.controller; 
-			
-			if ( cropState ) {
-				previous_mode	= null;
-				previous_state	= this.controller.state();
-				event.preventDefault();
-				this.controller.setState( 'robocrop-image' );
-			} else {
-				previous_mode	= this.controller.content.mode();
-				previous_state	= null;
-				this.controller.content.mode( 'robocrop-image' );
-			}
-		},
-		_parentCreateStates: wp.media.view.Attachment.Details.prototype.createStates
-	}, robocropStateExtend );
-	
-	wp.media.view.Attachment.Details.prototype.events['click .robocrop-attachment'] = 'robocropAttachment';
-
-
+		options				= window.wp_robocrop.options;
 
 
 	/**
@@ -229,6 +97,7 @@
 			} else if ( this.options.tools[ this.getSelected() ] ) {
 				this.trigger('select-tool');
 			}
+			this.trigger('select');
 		}
 	});
 
@@ -255,9 +124,8 @@
 		image_sizes:	image_sizes,
 		_croppers:		null,
 		events: {
-			'click .robocrop-autocrop' : 'autocrop',
-			'click .robocrop-cancel'   : 'cancel',
-			'click .robocrop-save'     : 'save'
+			'click .robocrop-autocrop-current'	: 'autocrop',
+			'click .robocrop-autocrop-all'		: 'autocropAll',
 		},
 		initialize: function( options ) {
 		//	wp.media.view.EditImage.prototype.initialize.apply( this, arguments );
@@ -271,22 +139,25 @@
 			
 			wp.media.View.prototype.initialize.apply( this, arguments );
 		},
-		dispose:function() {
+		dismiss:function() {
 			var areaSelect = this.$areaSelect()
 			areaSelect && areaSelect.remove();
-			wp.media.view.EditImage.prototype.dispose.apply(this,arguments);
+			this.$el.remove();
 		},
 		createSelect: function() {
 			this.select = new wp.media.robocrop.view.RobocropRatioSelect({
 				choices: choices
 			});
 		},
+		hasChanged: function(){
+			this.trigger( 'changed' );
+		},
 		render: function() {
 			var self = this;
 
 			wp.media.View.prototype.render.apply(this,arguments);
 
-			this.views.set('.robocrop-image-box', this.focuspointtool );
+			this.views.set('.robocrop-content', this.focuspointtool );
 
 			this.focuspointtool.setFocuspoint( this.model.get( 'focuspoint' ) );
 
@@ -304,7 +175,7 @@
 				onSelectEnd: function( image, coords ) {
 					var cropdata = wp.media.robocrop.pointToRectCoords( coords )
 					self._setCropSizes(cropdata);
-					self.$saveButton.prop('disabled',false);
+					self.hasChanged();
 				}
 			});
 
@@ -321,14 +192,14 @@
 			});
 			this.selectRatio
 				.on('select-ratio', this.onselectratio, this )
-				.on('select-tool', this.onselecttool, this );
+				.on('select-tool', this.onselecttool, this )
+				.on('select', this.updateButtons, this );
 			this.views.set('.select-ratio', this.selectRatio );	
 			// setTimeout( function(){ },20);
 			
 			// buttons
-			this.$saveButton	= this.$el.find('.robocrop-save');
-			this.$cancelButton	= this.$el.find('.robocrop-cancel');
-			this.$autoButton	= this.$el.find('.robocrop-autocrop');
+			this.$autoButton	= this.$el.find('.robocrop-autocrop-current');
+			this.$autoAllButton	= this.$el.find('.robocrop-autocrop-all');
 			return this;
 		},
 		ready: function() {
@@ -353,7 +224,7 @@
 			var data = {
 					attachments:{}
 				}, id = this.model.get('id'),
-				$btns = this.$saveButton.add(this.$cancelButton).add( this.$autoButton ).prop('disabled',true),
+				$btns = this.$autoAllButton.add( this.$autoButton ).prop( 'disabled', true ),
 				self = this;
 			data.attachments[id] = { 
 				sizes:		this.model.get('sizes'), 
@@ -374,28 +245,21 @@
 							} );
 					}
 				}, self );
-				$btns.prop('disabled',false)
+				$btns.prop( 'disabled', false );
+				self.trigger( 'saved' );
 			});
 			return this;
 		},
-		cancel:function() {
-			if ( previous_mode ) {
-				robocrop_controller.content.mode( previous_mode );
-			} else if ( previous_state ) {
-				robocrop_controller.setState( previous_state );
-			}
-			return this;
+		updateButtons: function(){
+			var toolkey = this.selectRatio.getSelected();
+			this.$autoButton.toggleClass( 'hidden', toolkey === 'focuspoint' );
+			this.$autoAllButton.toggleClass( 'hidden', toolkey !== 'focuspoint' );
+			console.log('select',toolkey);
 		},
-// 		back: function() {
-// 			var lastState = this.controller.lastState();
-// 			this.controller.setState( lastState );
-// 		},
 		onselecttool: function(){
 			var toolkey = this.selectRatio.getSelected();
 			this.$areaSelect().cancelSelection();
-			this.$autoButton.prop( 'disabled', true );
-			// do stuff according to tool
-			// get model
+
 			switch ( toolkey ) {
 				case 'focuspoint':
 					// wrap around
@@ -405,7 +269,6 @@
 		},
 		onselectratio: function( ) {
 			this.focuspointtool.setEnabled( false );
-			this.$autoButton.prop( 'disabled', false );
 
 			/**
 			 *	On switch ratio
@@ -467,17 +330,32 @@
 			// crop by focus point
 			
 			var cropdata, imageinfo = {
-				width:		this.model.get('width'),
-				height:		this.model.get('height'),
-				focuspoint:	this.model.get('focuspoint')
-			};
+					width:		this.model.get('width'),
+					height:		this.model.get('height'),
+					focuspoint:	this.model.get('focuspoint')
+				};
 			cropdata = wp.media.robocrop.cropFromFocusPoint( imageinfo, this.current_ratio );
 			cropdata = wp.media.robocrop.relToAbsCoords( cropdata, imageinfo );
 
 			this._setCropSizes( cropdata );
 			this.selectCrop( cropdata );
 
-			this.$saveButton.prop( 'disabled', false );
+			return this;
+		},
+		autocropAll: function( event ) {
+			var self = this,
+				imageinfo = {
+					width:		this.model.get('width'),
+					height:		this.model.get('height'),
+					focuspoint:	this.model.get('focuspoint')
+				};
+
+			_.each( this.image_ratios, function( ratio ) {
+				var cropdata;
+				cropdata = wp.media.robocrop.cropFromFocusPoint( imageinfo, ratio );
+				cropdata = wp.media.robocrop.relToAbsCoords( cropdata, imageinfo );
+				self._setCropSizes( cropdata, ratio );
+			} );
 
 			return this;
 		},
@@ -504,11 +382,11 @@
 		},
 		updateFocusPoint: function( ) {
 			this.model.set( 'focuspoint', this.focuspointtool.getFocuspoint() );
-			this.$saveButton.prop( 'disabled', false );
 		},
-		_setCropSizes : function( cropdata ) {
-			var modelSizes = this.model.get('sizes');
-			_.each(this.current_ratio.sizes, function( sizename ) {
+		_setCropSizes : function( cropdata, ratio ) {
+			var modelSizes = this.model.get('sizes')
+				ratio = ratio || this.current_ratio;
+			_.each(ratio.sizes, function( sizename ) {
 				! modelSizes[ sizename ] && ( modelSizes[ sizename ] = {} );
 				modelSizes[ sizename ].cropdata = cropdata;
 			});
@@ -559,13 +437,82 @@
 		}
 	});
 
+
+
+
+	wp.media.robocrop.view.Frame = wp.media.view.MediaFrame.extend({
+		template:  wp.template('robocrop-modal'),
+		regions:   ['title','content','instructions','buttons']
+	});
+
+	wp.media.robocrop.view.Frame.Crop = wp.media.robocrop.view.Frame.extend({
+		events: {
+			'click .robocrop-save'		: 'save',
+			'click .robocrop-cancel'	: 'close',
+		},
+		save: function() {
+			this.$('.robocrop-save').prop( 'disabled', true );
+			this._content.save();
+		},
+		initialize: function( ) {
+			wp.media.robocrop.view.Frame.prototype.initialize.apply( this, arguments );
+
+			this.createTitle();
+			this.createContent();
+			this.createButtons();
+
+			this.on('close', this.dismiss, this );
+			this.listenTo( this._content, 'saved', this.modelSync );
+		},
+		modelSync: function(){
+			this.$('.robocrop-save').prop( 'disabled', false );
+		},
+		dismiss:function(){
+			this._content.dismiss();
+		},
+		createTitle: function( ) {
+			this._title = new wp.media.View({
+				tagName: 'h1'
+			});
+			this._title.$el.text( l10n.AttachmentDetails );
+			this.title.set( [ this._title ] );
+		},
+		createContent: function() {
+			this._content = new wp.media.robocrop.view.RobocropImage({
+				controller: this.controller,
+				model: this.model
+			});
+			this.content.set( [ this._content ] );
+		},
+		createButtons: function() {
+			var info, btn;
+
+			this.buttons.set( [
+				new wp.media.view.Button({
+					text: l10n.Close,
+					className: 'button-secondary robocrop-cancel'
+				}),
+				new wp.media.view.Button({
+					text: l10n.SaveChanges,
+					className: 'button-primary robocrop-save'
+				})
+			] );
+		}
+	});
+
+
+
+
+
+
+
 	// controller state
 	wp.media.robocrop.controller.RobocropImage = wp.media.controller.State.extend({
 		defaults: {
 			id:      'robocrop-image',
 			title:   l10n.RobocropImage,
 			menu:    false,
-			toolbar: 'robocrop-image',
+//			toolbar: 'robocrop-image',
 			content: 'robocrop-image',
 			url:     ''
 		},

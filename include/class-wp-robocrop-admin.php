@@ -72,23 +72,24 @@ class WPRoboCropAdmin {
 	 */
 	function admin_init() {
 		$version = '0.0.1';
-
 		$script_l10n = array(
 			'image_ratios' => $this->get_image_ratios(),
 			'image_sizes'  => $this->get_image_sizes(),
 			'l10n' => array(
-				'CropImage'			=> __('Edit Image sizes','wp-robocrop'),
-				'RobocropImage'		=> __('Robo Crop Image','wp-robocrop'),
-				'Okay'				=> __('Okay', 'wp-robocrop'),
-				'Reset'				=> __('Reset', 'wp-robocrop'),
-				'ImageSize'			=> __('Image size', 'wp-robocrop'),
-				'SetFocusPoint'		=> __('Set Focus Point','wp-robocrop'),
+				'EditImageSizes'	=> __( 'Edit Image sizes','wp-robocrop' ),
+				'RobocropImage'		=> __( 'Robo Crop Image','wp-robocrop' ),
+				'Okay'				=> __( 'Okay', 'wp-robocrop' ),
+				'SaveChanges'		=> __( 'Save Changes', 'wp-robocrop' ),
+				'Close'				=> __( 'Close', 'wp-robocrop' ),
+				'Reset'				=> __( 'Reset', 'wp-robocrop' ),
+				'AttachmentDetails'	=> __( 'Attachment Details', 'wp-robocrop' ),
+				'SetFocusPoint'		=> __( 'Set Focus Point', 'wp-robocrop' ),
 				'FocusPointInstructions'
-									=> __('Click on the most important spot of the image.','wp-robocrop'),
-				'CancelUpload'		=> __('Cancel Upload','wp-robocrop'),
+									=> __( 'Click on the most important spot of the image.', 'wp-robocrop' ),
+				'CancelUpload'		=> __( 'Cancel Upload', 'wp-robocrop' ),
 			),
 			'options'		=> array(
-				'ask_for_focuspoint'		=> !! get_option('robocrop_ask_for_focuspoint'),
+				'ask_for_focuspoint'		=> !! get_option( 'robocrop_ask_for_focuspoint' ),
 			),
 		);
 
@@ -99,21 +100,25 @@ class WPRoboCropAdmin {
 								array() , $version 
 							);
 
-			wp_register_script( 'wp-robocrop-focuspoint-media-view' , 
-								plugins_url( 'js/robocrop-focuspoint-media-view.js', dirname(__FILE__) ) , 
-								array('jquery', 'media-grid', 'wp-robocrop-base' ) , $version 
-							);
-
 			wp_register_script( 'wp-robocrop-media-view' , 
 								plugins_url( 'js/robocrop-media-view.js' , dirname(__FILE__) ) , 
-								array('media-grid', 'wp-robocrop-focuspoint-media-view', 'wp-robocrop-base') , $version );
+								array('media-grid', 'wp-robocrop-base') , $version );
+
+			wp_register_script( 'wp-robocrop-focuspoint-media-view' , 
+								plugins_url( 'js/robocrop-focuspoint-media-view.js', dirname(__FILE__) ) , 
+								array('jquery', 'media-grid', 'wp-robocrop-media-view', 'wp-robocrop-base' ) , $version 
+							);
+
+			wp_register_script( 'wp-robocrop-wp-media-view' , 
+								plugins_url( 'js/robocrop-wp-media-view.js' , dirname(__FILE__) ) , 
+								array('media-grid', 'wp-robocrop-media-view', 'wp-robocrop-focuspoint-media-view' , 'wp-robocrop-base') , $version );
 
 			wp_register_script( 'wp-robocrop', 
 								plugins_url( 'js/robocrop-focuspoint-wp-uploader.js', dirname(__FILE__) ) , 
-								array('wp-robocrop-focuspoint-media-view', 'wp-robocrop-base', 'wp-robocrop-media-view' ) , $version 
+								array('wp-robocrop-focuspoint-media-view', 'wp-robocrop-wp-media-view' , 'wp-robocrop-base', 'wp-robocrop-media-view' ) , $version 
 							);
 
-			wp_localize_script( 'wp-robocrop-focuspoint-media-view' , 'wp_robocrop' , $script_l10n );
+			wp_localize_script( 'wp-robocrop-base' , 'wp_robocrop' , $script_l10n );
 
 		} else {
 			wp_register_script( 'wp-robocrop' , plugins_url( 'js/wp-robocrop.combined.min.js' , dirname(__FILE__) ) , array( 'jquery', 'media-grid' ) , $version );
@@ -188,6 +193,7 @@ class WPRoboCropAdmin {
 	function print_media_templates() {
 		// cropping tool
 		include __DIR__.'/template/robocrop-tpl.php';
+		include __DIR__.'/template/robocrop-modal.php';
 		include __DIR__.'/template/robocrop-select-tpl.php';
 		include __DIR__.'/template/robocrop-select-item-tpl.php';
 
