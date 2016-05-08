@@ -70,11 +70,17 @@
 	_.extend( wp.media.view.ImageDetails.prototype, {
 		_parentPostRender: wp.media.view.ImageDetails.prototype.postRender,
 		postRender: function() {
-			this._parentPostRender.apply(this,arguments);
+			this._parentPostRender.apply( this, arguments );
 			this.$el.find('.actions').append(cropBtnHTML);
 		},
 		robocropOpen: function( event ) {
-			var croptool = new wp.media.robocrop.view.Frame.Crop( { controller: this.controller, model: this.controller.image.attachment } );
+			console.log();
+			var size = this.model.get('size'),
+				croptool = new wp.media.robocrop.view.Frame.Crop( { 
+					controller: this.controller, 
+					model: this.controller.image.attachment,
+					sizeToSelect: size
+				} );
 			croptool.open();
 		}
 	});

@@ -130,7 +130,6 @@
 		initialize: function( options ) {
 		//	wp.media.view.EditImage.prototype.initialize.apply( this, arguments );
 			this._croppers 		= {};
-			this.sizeToSelect 	= ( !! options.frame && !! options.frame.image ) ? options.frame.image.attributes.size : false;
 			this.image 			= new wp.media.robocrop.view.Img( {src: this.model.get('url') } );
 
 			this.controller 	= options.controller;
@@ -194,6 +193,7 @@
 				.on('select-ratio', this.onselectratio, this )
 				.on('select-tool', this.onselecttool, this )
 				.on('select', this.updateButtons, this );
+
 			this.views.set('.select-ratio', this.selectRatio );	
 			// setTimeout( function(){ },20);
 			
@@ -206,18 +206,19 @@
 			var currentRatio, found;
 			wp.media.view.EditImage.prototype.ready.apply(this,arguments);
 
-			if ( !! this.sizeToSelect ) {
+			if ( ! _.isUndefined( this.options.sizeToSelect ) ) {
 				found = _.find( this.image_ratios, function( ratio ){
-					return ratio.sizes.indexOf( this.sizeToSelect ) > -1;
+					return ratio.sizes.indexOf( this.options.sizeToSelect ) > -1;
 				}, this );
 				if ( found ) {
 					currentRatio = found.name;
 				}
 			}
-			if ( ! currentRatio ) {
+
+			if ( _.isUndefined( currentRatio ) ) {
 				currentRatio = 'focuspoint';//_.first(_.keys( this.image_ratios ));
 			}
-			this.selectRatio.setSelected( "focuspoint" ); 
+			this.selectRatio.setSelected( currentRatio ); 
 			return this;
 		},
 		save: function() {
@@ -454,7 +455,7 @@
 			this.$('.robocrop-save').prop( 'disabled', true );
 			this._content.save();
 		},
-		initialize: function( ) {
+		initialize: function( options ) {
 			wp.media.robocrop.view.Frame.prototype.initialize.apply( this, arguments );
 
 			this.createTitle();
@@ -478,10 +479,11 @@
 			this.title.set( [ this._title ] );
 		},
 		createContent: function() {
-			this._content = new wp.media.robocrop.view.RobocropImage({
+			var opts = _.extend({
 				controller: this.controller,
 				model: this.model
-			});
+			}, this.options );
+			this._content = new wp.media.robocrop.view.RobocropImage( opts );
 			this.content.set( [ this._content ] );
 		},
 		createButtons: function() {
