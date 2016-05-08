@@ -255,7 +255,6 @@
 			var toolkey = this.selectRatio.getSelected();
 			this.$autoButton.toggleClass( 'hidden', toolkey === 'focuspoint' );
 			this.$autoAllButton.toggleClass( 'hidden', toolkey !== 'focuspoint' );
-			console.log('select',toolkey);
 		},
 		onselecttool: function(){
 			var toolkey = this.selectRatio.getSelected();
@@ -504,34 +503,5 @@
 
 
 
-
-
-
-
-	// controller state
-	wp.media.robocrop.controller.RobocropImage = wp.media.controller.State.extend({
-		defaults: {
-			id:      'robocrop-image',
-			title:   l10n.RobocropImage,
-			menu:    false,
-//			toolbar: 'robocrop-image',
-			content: 'robocrop-image',
-			url:     ''
-		},
-
-		/**
-		 * @since 3.9.0
-		 */
-		activate: function() {
-			this.listenTo( this.frame, 'toolbar:render:robocrop-image', this.toolbar );
-		},
-
-		/**
-		 * @since 3.9.0
-		 */
-		deactivate: function() {
-			this.stopListening( this.frame );
-		},
-	});
 
 })(wp,jQuery);
