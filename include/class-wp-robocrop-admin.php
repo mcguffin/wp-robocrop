@@ -71,7 +71,7 @@ class WPRoboCropAdmin {
 	 *	@action 'admin_init'
 	 */
 	function admin_init() {
-		$version = '0.0.1';
+		$version = '0.2.0';
 		$script_l10n = array(
 			'image_ratios' => $this->get_image_ratios(),
 			'image_sizes'  => $this->get_image_sizes(),
