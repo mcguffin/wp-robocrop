@@ -108,9 +108,9 @@ WP RoboCrop
 	.sizename {
 		&:before {
 			content:', ';
-			&:first-child {
-				content:'';
-			}
+		}
+		&:first-child:before {
+			content:'';
 		}
 	}
 	.disabled,
