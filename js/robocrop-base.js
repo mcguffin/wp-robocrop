@@ -4,7 +4,7 @@
  */
 (function( exports ){
 	var robocrop;
-	
+
 	robocrop = {
 		cropFromFocusPoint: function( imageinfo, cropinfo ) {
 			// normalize 

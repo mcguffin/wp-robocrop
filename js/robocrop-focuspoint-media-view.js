@@ -100,10 +100,8 @@
 		}
 	});
 
-	wp.media.robocrop.view.focuspoint.AskFocuspoint = MediaFrame.extend({
+	wp.media.robocrop.view.Frame.Focuspoint = wp.media.robocrop.view.Frame.extend({
 		className: 'ask-focuspoint media-frame',
-		template:  wp.template('ask-focuspoint'),
-		regions:   ['title','imagewrap','instructions','buttons'],
 		events: {
 			'click .reset': 'reset',
 			'click .proceed': 'proceed',
@@ -118,7 +116,7 @@
 				src: '' // expecting an img element
 			});
 
-			MediaFrame.prototype.initialize.apply(this,arguments);
+			wp.media.robocrop.view.Frame.prototype.initialize.apply(this,arguments);
 
 			if ( this.modal ) {
 				this.modal.on('escape', this.cancelUpload, this );
@@ -128,12 +126,11 @@
 			this.createInstructions();
 			this.createButtons();
 		},
-		render: function() {
-			// frame layout
-			this.$el.addClass('hide-menu').addClass('hide-router');
-
-			MediaFrame.prototype.render.apply(this,arguments);
-		},
+// 		render: function() {
+// 			// frame layout
+// 
+// 			wp.media.robocrop.view.Modal.prototype.render.apply(this,arguments);
+// 		},
 		createTitle: function( ) {
 			this._title = new wp.media.View({
 				tagName: 'h1'
@@ -148,7 +145,7 @@
 				controller: this,
 				enabled: true
 			});
-			this.imagewrap.set( [ this._content ] );
+			this.content.set( [ this._content ] );
 		},
 		createInstructions: function() {
 			var info, btn;

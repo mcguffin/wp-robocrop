@@ -1,12 +1,12 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Robocrop\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-08 17:33+0100\n"
-"PO-Revision-Date: 2016-05-08 17:34+0100\n"
+"PO-Revision-Date: 2016-03-20 23:36+0100\n"
 "Last-Translator: Jörn Lund <joern@podpirate.org>\n"
 "Language-Team: \n"
-"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,101 +22,95 @@ msgstr ""
 
 #: include/class-wp-robocrop-admin.php:79
 msgid "Edit Image sizes"
-msgstr "Bildgrößen bearb."
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:80
 msgid "Robo Crop Image"
-msgstr "Robo Crop Image"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:81
 msgid "Okay"
-msgstr "Okay"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:82
 msgid "Save Changes"
-msgstr "Änderungen speichern"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:83
 #: include/template/robocrop-modal.php:11
 msgid "Close"
-msgstr "Schließen"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:84
 msgid "Reset"
-msgstr "Zurücksetzen"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:85
 #: include/template/robocrop-modal.php:14
 msgid "Attachment Details"
-msgstr "Anhang Details"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:86
 msgid "Set Focus Point"
-msgstr "Fokuspunkt setzen"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:88
 msgid "Click on the most important spot of the image."
-msgstr "Kicke auf den wichtigsten Punkt im Bild."
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:89
 msgid "Cancel Upload"
-msgstr "Uplaod abbrechen"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:395
 msgid "Thumbnail"
-msgstr "Vorschau"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:396
 msgid "Medium"
-msgstr "Mittel"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:397
 msgid "Large"
-msgstr "Groß"
+msgstr ""
 
 #: include/class-wp-robocrop-admin.php:398
 msgid "Full Size"
-msgstr "Volle Größe"
+msgstr ""
 
 #: include/class-wp-robocrop-settings.php:51
 msgid "WP RoboCrop"
-msgstr "WP RoboCrop"
+msgstr ""
 
 #: include/class-wp-robocrop-settings.php:55
 msgid "Upload with Focus Point"
-msgstr "Upload mit Fokuspunkt"
+msgstr ""
 
 #: include/class-wp-robocrop-settings.php:61
 msgid ""
 "If checked you will be asked to set a focus point before an image gets "
 "uploaded"
-msgstr "Wenn ausgewählt wirst Du beim Bildupload nach dem Fokuspunkt gefragt."
+msgstr ""
 
 #: include/template/robocrop-modal.php:9
 msgid "Previous"
-msgstr "Vorheriges"
+msgstr ""
 
 #: include/template/robocrop-modal.php:10
 msgid "Next"
-msgstr "Nächstes"
+msgstr ""
 
 #: include/template/robocrop-select-tpl.php:12
 msgid "Image size"
-msgstr "Bildgröße"
+msgstr ""
 
 #: include/template/robocrop-tpl.php:11
 msgid "Crop by Focus Point"
-msgstr "Beschneide nach Fokuspunkt"
+msgstr ""
 
 #: include/template/robocrop-tpl.php:12
 msgid "Crop All by Focus Point"
-msgstr "Beschneide alle nach Fokuspunkt"
-
-#~ msgid "Auto"
-#~ msgstr "Autom."
-
-#~ msgid "Save"
-#~ msgstr "Speichern"
+msgstr ""
 
 # @ cheese
 #~ msgid "Webcam Record"

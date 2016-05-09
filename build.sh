@@ -16,6 +16,14 @@ java -jar \
 
 cat $tmp_min >> $combined
 
+# minify robocrop-media-view.js
+java -jar \
+	$CLOSURE_COMPILER \
+	--js ./js/robocrop-media-view.js \
+	--js_output_file $tmp_min
+
+cat $tmp_min >> $combined
+
 # minify robocrop-focuspoint-media-view.js
 java -jar \
 	$CLOSURE_COMPILER \
@@ -24,10 +32,10 @@ java -jar \
 
 cat $tmp_min >> $combined
 
-# minify robocrop-media-view.js
+# minify robocrop-wp-media-view.js
 java -jar \
 	$CLOSURE_COMPILER \
-	--js ./js/robocrop-media-view.js \
+	--js ./js/robocrop-wp-media-view.js \
 	--js_output_file $tmp_min
 
 cat $tmp_min >> $combined
