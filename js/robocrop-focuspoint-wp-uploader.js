@@ -82,7 +82,6 @@
 				for (var i=0;i<files.length;i++) {
 					if ( files[i].type == 'image/png' || files[i].type == 'image/jpeg' ) {
 						fileData = (resolveFile(files[i]));
-						console.log(fileData.blob);
 						if ( fileData.blob ) {
 							addAskFocus( fileData, up );
 						}
