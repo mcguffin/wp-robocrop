@@ -13,6 +13,8 @@ Known Browser Support
 Known Issues
 ------------
  - [SayCheese](https://github.com/mcguffin/say-cheese): Focuspoint will not be saved on upload. 
+ - All crop data gets lost when you use Wordpress Edit Original Feature.
+
 
 Developing:
 -----------
@@ -28,6 +30,7 @@ Developing:
 
 ToDo:
 -----
+ - [ ] WP > Edit Original Image > Save: all crops get lost
  - [ ] Test 
  	- [ ] Test together with [SayCheese](https://github.com/mcguffin/say-cheese)
  		- [ ] Bug: Focuspoint does not get saved. BeforeUpload triggered immediate after file added.

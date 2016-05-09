@@ -236,14 +236,28 @@
 				
 				// force reload image ...
 				_.each( self.model.attributes.sizes, function( size, sizename ) {
+					var selector =  'img[src^="'+size.url+'"]',
+						refresh = function() {
+								$(this).removeAttr('src').attr( 'src', size.url+'?'+d.getTime() );
+							};
+						refresh_mce = function() {
+								$(this).removeAttr('data-mce-src').attr( 'data-mce-src', size.url+'?'+d.getTime() );
+							};
+
 					// ... unless it's fullsize ...
 					if ( sizename !== 'full' ) {
-						// ... even inside iframes!
-						$(document).add($('iframe').contents())
-							.find( 'img[src^="'+size.url+'"]' )
-							.each( function() {
-								$(this).attr( 'src', size.url+'?'+d.getTime() );
-							} );
+
+						$(document).add( $('iframe').contents() )
+							.find( selector )
+							.each( refresh );
+
+						// ... inside tinymce iframes
+						$('.mce-edit-area iframe').each(function(){
+							$(this).contents()
+								.find( selector )
+								.each( refresh )
+								.each( refresh_mce );
+						});
 					}
 				}, self );
 				$btns.prop( 'disabled', false );
