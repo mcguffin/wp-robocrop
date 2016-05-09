@@ -241,7 +241,7 @@
 						// ... even inside iframes!
 						$(document).add($('iframe').contents())
 							.find( 'img[src^="'+size.url+'"]' )
-							.each( function(){
+							.each( function() {
 								$(this).attr( 'src', size.url+'?'+d.getTime() );
 							} );
 					}
@@ -451,7 +451,7 @@
 			'click .robocrop-cancel'	: 'close',
 		},
 		save: function() {
-			this.$('.robocrop-save').prop( 'disabled', true );
+			this.$('.robocrop-save, .robocrop-cancel').prop( 'disabled', true );
 			this._content.save();
 		},
 		initialize: function( options ) {
@@ -465,7 +465,7 @@
 			this.listenTo( this._content, 'saved', this.modelSync );
 		},
 		modelSync: function(){
-			this.$('.robocrop-save').prop( 'disabled', false );
+			this.$('.robocrop-save, .robocrop-cancel').prop( 'disabled', false );
 		},
 		dismiss:function(){
 			this._content.dismiss();
