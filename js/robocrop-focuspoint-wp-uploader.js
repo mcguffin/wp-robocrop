@@ -19,7 +19,7 @@
 		ready:function() {
 			var askFocusImages = [],
 				askModal, self = this;
-		
+
 			// prevent double init
 			if ( this.didReady ) {
 				return this._parentReady.apply( this , arguments );
@@ -27,7 +27,7 @@
 			this.didReady = true;
 
 			ret = this._parentReady.apply( this , arguments );
-		
+
 			function askFocus( uploader ) {
 				var fileItem, src;
 				if ( askModal ) {
@@ -94,7 +94,7 @@
 				var s, cropdata, focuspoint;
 
 				if ( imageInfos[file.name] ) {
-				
+
 					// add focus point and cropdata to file
 					imageinfo = imageInfos[file.name];
 					cropdata = {};

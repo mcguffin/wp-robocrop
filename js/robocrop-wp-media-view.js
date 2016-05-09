@@ -6,8 +6,7 @@
 		options				= window.wp_robocrop.options,
 		cropBtnHTML			= '<button type="button" class="button robocrop-open">'+l10n.EditImageSizes+'</button>',
 		cropLinkHTML		= '<button type="button" class="button-link robocrop-open">'+l10n.EditImageSizes+'</button>';
-// 
-// // blörx.
+ 
 	var robocropStateExtend = {
 		createStates: function() {
 			this._parentCreateStates.apply(this,arguments);
@@ -20,7 +19,7 @@
 		}
 	};
 
- 	// post inline image editor
+	// post inline image editor
 	_.extend( wp.media.view.ImageDetails.prototype, {
 		_parentPostRender: wp.media.view.ImageDetails.prototype.postRender,
 		postRender: function() {
@@ -53,12 +52,15 @@
 			}
 		},
 		robocropOpen: function( event ) {
-			var croptool = new wp.media.robocrop.view.Frame.Crop( { controller: this.controller, model: this.model } );
+			var croptool = new wp.media.robocrop.view.Frame.Crop( { 
+					controller: this.controller, 
+					model: this.model
+				});
 			croptool.open();
 		},
 		_parentCreateStates: wp.media.view.Attachment.Details.prototype.createStates
 	}, robocropStateExtend );
-	
+
 	wp.media.view.Attachment.Details.prototype.events['click .robocrop-open'] = 'robocropOpen';
 
 
