@@ -19,54 +19,8 @@
 			);
 		}
 	};
-// 
-// 	var robocropHandlersExtend = {
-// 		bindHandlers: function() {
-// 			this._parentBindHandlers.apply( this, arguments );
-// 			this.on( 'content:create:robocrop-image', this.robocropImageMode, this );
-// 			this.on( 'content:render:robocrop-image', this.robocropImageModeRender, this );
-// 		},
-// 		robocropImageMode: function( contentRegion ) {
-// 			var robocropImageController = new wp.media.robocrop.controller.RobocropImage( {
-// 				model: 			robocrop_model,
-// 				frame: 			this,
-// 				content:		this.content
-// 			} );
-// 			robocropImageController._toolbar = function() {};
-// 			robocropImageController._router = function() {};
-// 			robocropImageController._menu = function() {};
-// 			
-// 			contentRegion.view = new wp.media.robocrop.view.RobocropImage( {
-// 				model: 		robocrop_model,
-// 				frame: 		this,
-// 				controller:	this.controller
-// 			});
-// 		},
-// 		robocropImageModeRenderer: function( view ) {
-// 			view.on( 'ready', view.loadEditor );
-// 		}
-// 	};
-// 
-// 
-// 	// grid view media library
-// 	_.extend(	wp.media.view.MediaFrame.EditAttachments.prototype, { 
-// 			_parentBindHandlers: wp.media.view.MediaFrame.EditAttachments.prototype.bindHandlers
-// 		}, 
-// 		robocropHandlersExtend
-// 	);
-// 	
-// 
-// 	// Inline MediaLibrary
-// 	_.extend(	wp.media.view.MediaFrame.Post.prototype, { 
-// 			_parentBindHandlers: wp.media.view.MediaFrame.Post.prototype.bindHandlers,
-// 			_parentCreateStates: wp.media.view.MediaFrame.Post.prototype.createStates
-// 		}, 
-// 		robocropHandlersExtend,
-// 		robocropStateExtend 
-// 	);
-// 
-// 
-// 	// post inline image editor
+
+ 	// post inline image editor
 	_.extend( wp.media.view.ImageDetails.prototype, {
 		_parentPostRender: wp.media.view.ImageDetails.prototype.postRender,
 		postRender: function() {
@@ -85,15 +39,6 @@
 		}
 	});
 	wp.media.view.ImageDetails.prototype.events['click .robocrop-open'] = 'robocropOpen';
-// 
-// 	// post inline image editor
-// 	_.extend( wp.media.view.MediaFrame.ImageDetails.prototype, {
-// 			_parentBindHandlers: wp.media.view.MediaFrame.ImageDetails.prototype.bindHandlers,
-// 			_parentCreateStates: wp.media.view.MediaFrame.ImageDetails.prototype.createStates
-// 		}, 
-// 		robocropHandlersExtend,
-// 		robocropStateExtend 
-// 	);
 
 
 	// Inline MediaLibrary, Grid view MediaLibrary
