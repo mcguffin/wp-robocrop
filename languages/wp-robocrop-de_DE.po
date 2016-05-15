@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Robocrop\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 17:33+0100\n"
-"PO-Revision-Date: 2016-05-08 17:34+0100\n"
+"POT-Creation-Date: 2016-05-15 18:52+0100\n"
+"PO-Revision-Date: 2016-05-15 18:52+0100\n"
 "Last-Translator: Jörn Lund <joern@podpirate.org>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -56,7 +56,7 @@ msgstr "Fokuspunkt setzen"
 
 #: include/class-wp-robocrop-admin.php:88
 msgid "Click on the most important spot of the image."
-msgstr "Kicke auf den wichtigsten Punkt im Bild."
+msgstr "Klicke auf den wichtigsten Punkt im Bild."
 
 #: include/class-wp-robocrop-admin.php:89
 msgid "Cancel Upload"
