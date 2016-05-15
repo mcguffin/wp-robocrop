@@ -8,3 +8,4 @@
 *.psd
 .svn/
 .svnignore
+.sass-cache

@@ -9,16 +9,19 @@ Known Browser Support
 ---------------------
  - Chrome 48+
  - Firefox 44+
+ - Microsoft Edge
+ - IE11
+ - Safari 9.1+
 
 Known Issues
 ------------
- - Cropped images get wierd when you use WordPress "Edit Original" Feature.
+ - Cropped images get weird when you use WordPress "Edit Original" Feature.
 
 
 Developing:
 -----------
 
-#### Sass watch
+#### Sass watch commands
 
 ##### development
 `sass --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style compressed`
@@ -26,13 +29,6 @@ Developing:
 ##### Production
 `sass --sourcemap=none --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style compressed`
 
+#### JS compression
 
-ToDo:
------
- - [ ] Test 
- 	- [ ] X-Browser
- 		- [x] Chrome
- 		- [x] FF
- 		- [ ] Safari
- 		- [ ] Edge
- 		- [ ] IE10-11
+run `build.sh` from the terminal
