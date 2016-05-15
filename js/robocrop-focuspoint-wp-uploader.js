@@ -75,19 +75,22 @@
 			// stop uploader and generate cropdata 
 			this.uploader.uploader.bind('FilesAdded',function( up, files ) {
 				var fileData;
-				up.stop();
-				up.refresh();
 
 				// put modal
 				for (var i=0;i<files.length;i++) {
 					if ( files[i].type == 'image/png' || files[i].type == 'image/jpeg' ) {
-						fileData = (resolveFile(files[i]));
-						if ( fileData.blob ) {
+						fileData = resolveFile( files[i] );
+						if ( fileData.blob instanceof Blob ) {
 							addAskFocus( fileData, up );
 						}
 					}
 				}
-				askFocus( up ); // will ask for focus or start uploader
+				if ( askFocusImages.length ) {
+					up.stop();
+					up.refresh();
+					askFocus( up ); // will ask for focus or start uploader
+					console.log("askfocus");
+				}
 			});
 			// send cropdata 
 			this.uploader.uploader.bind('BeforeUpload',function( up, file ) {
