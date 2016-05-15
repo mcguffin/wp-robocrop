@@ -1,7 +1,7 @@
 WP RoboCrop
 ===========
 
-Manual and Focus Point based image cropping in WordPress.
+Focus point based image cropping in WordPress.
 
 Developed with WordPress 4.5.2
 
