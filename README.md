@@ -3,7 +3,8 @@ WP RoboCrop
 
 Focus point based image cropping in WordPress.
 
-Developed with WordPress 4.5.2
+Developed with WordPress 4.5.2 - 
+Tested up to WordPress 4.7
 
 Known Browser Support
 ---------------------
@@ -24,10 +25,10 @@ Developing:
 #### Sass watch commands
 
 ##### development
-`sass --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style compressed`
+`sass --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style expanded`
 
 ##### Production
-`sass --sourcemap=none --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style compressed`
+`sass --sourcemap=none --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.min.css --style compressed`
 
 #### JS compression
 
