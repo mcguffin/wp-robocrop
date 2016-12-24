@@ -96,25 +96,25 @@ class WPRoboCropAdmin {
 		if ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ) {
 
 			wp_register_script( 'wp-robocrop-base' , 
-								plugins_url( 'js/robocrop-base.js', dirname(__FILE__) ) , 
+								plugins_url( 'js/src/robocrop-base.js', dirname(__FILE__) ) , 
 								array() , $version 
 							);
 
 			wp_register_script( 'wp-robocrop-media-view' , 
-								plugins_url( 'js/robocrop-media-view.js' , dirname(__FILE__) ) , 
+								plugins_url( 'js/src/robocrop-media-view.js' , dirname(__FILE__) ) , 
 								array('media-grid', 'wp-robocrop-base') , $version );
 
 			wp_register_script( 'wp-robocrop-focuspoint-media-view' , 
-								plugins_url( 'js/robocrop-focuspoint-media-view.js', dirname(__FILE__) ) , 
+								plugins_url( 'js/src/robocrop-focuspoint-media-view.js', dirname(__FILE__) ) , 
 								array('jquery', 'media-grid', 'wp-robocrop-media-view', 'wp-robocrop-base' ) , $version 
 							);
 
 			wp_register_script( 'wp-robocrop-wp-media-view' , 
-								plugins_url( 'js/robocrop-wp-media-view.js' , dirname(__FILE__) ) , 
+								plugins_url( 'js/src/robocrop-wp-media-view.js' , dirname(__FILE__) ) , 
 								array('media-grid', 'wp-robocrop-media-view', 'wp-robocrop-focuspoint-media-view' , 'wp-robocrop-base') , $version );
 
 			wp_register_script( 'wp-robocrop', 
-								plugins_url( 'js/robocrop-focuspoint-wp-uploader.js', dirname(__FILE__) ) , 
+								plugins_url( 'js/src/robocrop-focuspoint-wp-uploader.js', dirname(__FILE__) ) , 
 								array('wp-robocrop-focuspoint-media-view', 'wp-robocrop-wp-media-view' , 'wp-robocrop-base', 'wp-robocrop-media-view' ) , $version 
 							);
 
