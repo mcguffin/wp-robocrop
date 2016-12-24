@@ -18,18 +18,8 @@ Known Issues
 ------------
  - Cropped images get weird when you use WordPress "Edit Original" Feature.
 
-
 Developing:
 -----------
 
-#### Sass watch commands
-
-##### development
-`sass --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.css --style expanded`
-
-##### Production
-`sass --sourcemap=none --watch scss/wp-robocrop-admin.scss:css/wp-robocrop-admin.min.css --style compressed`
-
-#### JS compression
-
-run `build.sh` from the terminal
+In Terminal run `npm install` in the project directory.  
+Then run `gulp`.
