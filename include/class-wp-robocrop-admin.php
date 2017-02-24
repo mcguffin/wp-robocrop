@@ -289,12 +289,14 @@ class WPRoboCropAdmin {
 	}
 
 	/**
+	 *	Filter applied by image editor instance
+	 *
 	 *	@filter 'image_resize_dimensions'
 	 */
 	function image_resize_dimensions( $result, $orig_w, $orig_h, $dest_w, $dest_h, $crop ) {
 
 		if ( $crop ) {
-			
+
 			// get sizeslug and size
 			list( $sizeslug, $size ) = $this->get_image_size( $dest_w, $dest_h, $crop );
 
