@@ -126,7 +126,7 @@ class MediaHelper extends Singleton {
 		$crop_w	= $dest_w * $scale;
 		$crop_h	= $dest_h * $scale;
 		$crop_x	= min( max( $fp_x - $crop_w / 2, 0 ) , $orig_w - $crop_w );
-		$crop_x	= min( max( $fp_y - $crop_h / 2, 0 ) , $orig_h - $crop_h );
+		$crop_y	= min( max( $fp_y - $crop_h / 2, 0 ) , $orig_h - $crop_h );
 
 		return array(
 			'x'			=> round( $crop_x ),

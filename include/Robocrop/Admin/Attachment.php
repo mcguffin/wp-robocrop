@@ -54,6 +54,8 @@ class Attachment extends Core\Singleton {
 			return;
 		}
 
+		$sizes = $this->media_helper->get_image_sizes();
+
 		$this->_current_attachment_ID = $attachment_ID;
 
 		if ( isset( $_REQUEST['focuspoint'] ) ) {
@@ -61,8 +63,6 @@ class Attachment extends Core\Singleton {
 			$this->_crop_meta[ $attachment_ID ] = array(
 				'focuspoint'	=> $this->sanitize_focuspoint( json_decode( stripslashes( $_REQUEST['focuspoint'] ) ) ),
 			);
-			
-			// 
 			
 		} else {
 			// default focuspoint
@@ -155,21 +155,9 @@ class Attachment extends Core\Singleton {
 
 		$focuspoint = $metadata['focuspoint'];
 
-		if ( ! isset( $this->_crop_meta[ $attachment_ID ][ 'sizes' ] ) && isset( $metadata[ 'sizes' ] ) ) {
-			$this->_crop_meta[ $attachment_ID ][ 'sizes' ] = $metadata[ 'sizes' ];
-		}
-		
-		foreach ( $this->_crop_meta[ $attachment_ID ][ 'sizes' ] as $sizeslug => $size ) {
-			if ( $sizes[ $sizeslug ]['crop'] ) {
-				if ( ! isset( $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
-					$this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] = $this->generate_cropdata( $sizeslug, $focuspoint, $metadata[ 'width' ], $metadata[ 'height' ] );
-				}
-			}
-		}
-
 		if ( isset($metadata['sizes']) ) {
 			foreach ( $metadata['sizes'] as $sizeslug => $size ) {
-				if ( $sizes[ $sizeslug ]['crop'] ) {
+				if ( $sizes[ $sizeslug ]['crop'] && isset( $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
 					$metadata['sizes'][ $sizeslug ]['cropdata' ] = $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ];
 				}
 			}
@@ -212,7 +200,7 @@ class Attachment extends Core\Singleton {
 			list( $sizeslug, $size ) = $this->media_helper->get_image_size( $dest_w, $dest_h, $crop );
 
 			// get cropsize from previously stored image meta
-			if ( $cropsize = $this->get_current_cropdata( $sizeslug ) ) {
+			if ( $cropsize = $this->get_current_cropdata( $sizeslug, $orig_w, $orig_h ) ) {
 				$result = array( 0, 0, $cropsize['x'], $cropsize['y'], $dest_w, $dest_h, $cropsize['width'], $cropsize['height'] );
 			}
 		}
@@ -222,9 +210,18 @@ class Attachment extends Core\Singleton {
 	/**
 	 *	@return bool|array
 	 */
-	private function get_current_cropdata( $sizeslug ) {
+	private function get_current_cropdata( $sizeslug, $orig_w = 0, $orig_h = 0 ) {
+
 		if ( isset( $this->_crop_meta[ $this->_current_attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
+
+			// explicit cropdata available
 			return $this->_crop_meta[ $this->_current_attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ];
+
+		} else if ( $orig_w && $orig_h && isset( $this->_crop_meta[ $this->_current_attachment_ID ][ 'focuspoint' ] ) ) {
+
+			// focuspoint available
+			return $this->generate_cropdata( $sizeslug, $this->_crop_meta[ $this->_current_attachment_ID ][ 'focuspoint' ], $orig_w, $orig_h );
+
 		}
 		return false;
 
