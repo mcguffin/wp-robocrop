@@ -1,7 +1,7 @@
 {
   "name": "wp-robocrop",
-  "version": "0.2.0",
-  "description": "Focus point based image cropping in WordPress",
+  "version": "1.0.0",
+  "description": "Focus point based image cropping in WordPress.",
   "main": "js/wp-robocrop.combined.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

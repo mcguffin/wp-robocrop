@@ -3,90 +3,91 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Robocrop\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-08 17:33+0100\n"
+"POT-Creation-Date: 2017-02-25 15:16+0100\n"
 "PO-Revision-Date: 2016-03-20 23:36+0100\n"
 "Last-Translator: Jörn Lund <joern@podpirate.org>\n"
-"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.8.1\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
+"Language-Team: \n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
 
-#: include/class-wp-robocrop-admin.php:79
+#: include/Robocrop/Admin/Admin.php:41
 msgid "Edit Image sizes"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:80
+#: include/Robocrop/Admin/Admin.php:42
 msgid "Robo Crop Image"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:81
+#: include/Robocrop/Admin/Admin.php:43
 msgid "Okay"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:82
+#: include/Robocrop/Admin/Admin.php:44
 msgid "Save Changes"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:83
+#: include/Robocrop/Admin/Admin.php:45
 #: include/template/robocrop-modal.php:11
 msgid "Close"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:84
+#: include/Robocrop/Admin/Admin.php:46
 msgid "Reset"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:85
+#: include/Robocrop/Admin/Admin.php:47
 #: include/template/robocrop-modal.php:14
 msgid "Attachment Details"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:86
+#: include/Robocrop/Admin/Admin.php:48
 msgid "Set Focus Point"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:88
+#: include/Robocrop/Admin/Admin.php:50
 msgid "Click on the most important spot of the image."
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:89
+#: include/Robocrop/Admin/Admin.php:51
 msgid "Cancel Upload"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:395
+#: include/Robocrop/Core/MediaHelper.php:74
 msgid "Thumbnail"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:396
+#: include/Robocrop/Core/MediaHelper.php:75
 msgid "Medium"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:397
+#: include/Robocrop/Core/MediaHelper.php:76
 msgid "Large"
 msgstr ""
 
-#: include/class-wp-robocrop-admin.php:398
+#: include/Robocrop/Core/MediaHelper.php:77
 msgid "Full Size"
 msgstr ""
 
-#: include/class-wp-robocrop-settings.php:51
+#: include/Robocrop/Settings/SettingsMedia.php:34
 msgid "WP RoboCrop"
 msgstr ""
 
-#: include/class-wp-robocrop-settings.php:55
+#: include/Robocrop/Settings/SettingsMedia.php:39
 msgid "Upload with Focus Point"
 msgstr ""
 
-#: include/class-wp-robocrop-settings.php:61
+#: include/Robocrop/Settings/SettingsMedia.php:45
 msgid ""
 "If checked you will be asked to set a focus point before an image gets "
 "uploaded"
@@ -111,59 +112,3 @@ msgstr ""
 #: include/template/robocrop-tpl.php:12
 msgid "Crop All by Focus Point"
 msgstr ""
-
-# @ cheese
-#~ msgid "Webcam Record"
-#~ msgstr "Webcam Schnappschuss"
-
-# @ cheese
-#~ msgid "Try again"
-#~ msgstr "Nochmal"
-
-# @ cheese
-#~ msgid "Upload"
-#~ msgstr "Upload"
-
-# @ cheese
-#~ msgid "Record"
-#~ msgstr "Aufnahme"
-
-# @ cheese
-#~ msgid "Snapshot"
-#~ msgstr "Schnappschuss"
-
-# @ cheese
-#~ msgid "Take Snapshot"
-#~ msgstr "Schnappschuss"
-
-#~ msgid "Copy & Paste"
-#~ msgstr "Kopieren & Einfügen"
-
-#~ msgid "Pasted"
-#~ msgstr "Eingefügt"
-
-# @ cheese
-#~ msgid "Paste from Clipboard"
-#~ msgstr "Aus der Zwischenablage"
-
-# @ default
-#~ msgid "Image"
-#~ msgstr "Bild"
-
-# @ cheese
-#~ msgid "Paste some image Data from your clipboard"
-#~ msgstr "Fügen Sie Bilddaten aus der Zwischenablage ein."
-
-# @ cheese
-#~ msgid "No image data pasted."
-#~ msgstr "Keine Bilddaten in der Zwischenablage."
-
-# @ cheese
-#~ msgid "Your Browser does not support pasting processable image data."
-#~ msgstr "Ihr Browser kann hier leider keine brauchbaren Bilddaten einfügen."
-
-#~ msgid "Please allow camera access in your browser."
-#~ msgstr "Bitte erlauben Deinem Browser den Zugriff auf die Kamera!"
-
-#~ msgid "An error occured."
-#~ msgstr "Ein Fehler ist aufgetreten."

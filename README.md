@@ -1,4 +1,4 @@
-WP RoboCrop
+WP Robocrop
 ===========
 
 Focus point based image cropping in WordPress.

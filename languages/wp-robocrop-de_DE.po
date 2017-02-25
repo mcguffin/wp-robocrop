@@ -19,6 +19,7 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules"
 
 #: include/class-wp-robocrop-admin.php:79
 msgid "Edit Image sizes"
