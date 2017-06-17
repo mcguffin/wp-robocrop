@@ -17,6 +17,7 @@ Known Browser Support
 Known Issues
 ------------
  - Cropped images get weird when you use WordPress "Edit Original" Feature.
+ - Won't work when [EWWW Image Optimizer](https://wordpress.org/plugins/ewww-image-optimizer/) is active.
 
 Developing:
 -----------
