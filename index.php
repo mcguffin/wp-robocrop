@@ -38,6 +38,7 @@ Command line args were: `"WP Robocrop" core+css+js admin+css+js settings:media g
 
 namespace Robocrop;
 
+define( 'ROBOCROP_VERSION', '1.0.0' );
 define( 'ROBOCROP_FILE', __FILE__ );
 define( 'ROBOCROP_DIRECTORY', plugin_dir_path(__FILE__) );
 

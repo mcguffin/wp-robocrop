@@ -33,8 +33,11 @@ class Admin extends Core\Module {
 	 *	@action 'admin_init'
 	 */
 	function admin_init() {
-		$version = '0.2.0';
-		$script_l10n = array(
+		$version = ROBOCROP_VERSION;
+		$suffix =  defined('SCRIPT_DEBUG') && SCRIPT_DEBUG  ? '.min' : '';
+
+		wp_register_script( 'wp-robocrop' , $this->get_asset_url( 'js/admin/wp-robocrop'.$suffix.'.js' ) , array( 'jquery', 'media-grid' ) , $version );
+		wp_localize_script( 'wp-robocrop' , 'wp_robocrop' , array(
 			'image_ratios' => $this->media_helper->get_image_ratios(),
 			'image_sizes'  => $this->media_helper->get_image_sizes(),
 			'l10n' => array(
@@ -53,43 +56,10 @@ class Admin extends Core\Module {
 			'options'		=> array(
 				'ask_for_focuspoint'		=> !! get_option( 'robocrop_ask_for_focuspoint' ),
 			),
-		);
+			'version'		=> ROBOCROP_VERSION,
+		) );
 
-		if ( defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ) {
-
-			wp_register_script( 'wp-robocrop-base' , 
-								$this->get_asset_url( 'js/src/admin/robocrop-base.js' ) , 
-								array() , $version 
-							);
-
-			wp_register_script( 'wp-robocrop-media-view' , 
-								$this->get_asset_url( 'js/src/admin/robocrop-media-view.js' ) , 
-								array('media-grid', 'wp-robocrop-base') , $version );
-
-			wp_register_script( 'wp-robocrop-focuspoint-media-view' , 
-								$this->get_asset_url( 'js/src/admin/robocrop-focuspoint-media-view.js' ) , 
-								array('jquery', 'media-grid', 'wp-robocrop-media-view', 'wp-robocrop-base' ) , $version 
-							);
-
-			wp_register_script( 'wp-robocrop-wp-media-view' , 
-								$this->get_asset_url( 'js/src/admin/robocrop-wp-media-view.js' ) , 
-								array('media-grid', 'wp-robocrop-media-view', 'wp-robocrop-focuspoint-media-view' , 'wp-robocrop-base') , $version );
-
-			wp_register_script( 'wp-robocrop', 
-								$this->get_asset_url( 'js/src/admin/robocrop-focuspoint-wp-uploader.js' ) , 
-								array('wp-robocrop-focuspoint-media-view', 'wp-robocrop-wp-media-view' , 'wp-robocrop-base', 'wp-robocrop-media-view' ) , $version 
-							);
-
-			wp_localize_script( 'wp-robocrop-base' , 'wp_robocrop' , $script_l10n );
-
-			wp_register_style( 'wp-robocrop-admin' , $this->get_asset_url( 'css/admin/admin.css' ) , array( ) , $version );
-
-		} else {
-			wp_register_script( 'wp-robocrop' , $this->get_asset_url( 'js/admin/wp-robocrop.min.js' ) , array( 'jquery', 'media-grid' ) , $version );
-			wp_localize_script( 'wp-robocrop' , 'wp_robocrop' , $script_l10n );
-			wp_register_style( 'wp-robocrop-admin' , $this->get_asset_url( 'css/admin/admin.min.css' ) , array( ) , $version );
-		}
-
+		wp_register_style( 'wp-robocrop-admin' , $this->get_asset_url( 'css/admin/admin'.$suffix.'.css' ) , array( ) , $version );
 	}
 
 
@@ -110,6 +80,11 @@ class Admin extends Core\Module {
 	 */
 	function print_media_templates() {
 		// cropping tool
+		$rp = ROBOCROP_DIRECTORY . 'include' . DIRECTORY_SEPARATOR . '/template/{,*/,*/*/,*/*/*/}*.php';
+		foreach ( glob( $rp, GLOB_BRACE ) as $template_file ) {	
+			include $template_file;
+		}
+/*
 		include $this->get_asset_path( 'include/template/robocrop-tpl.php' );
 		include $this->get_asset_path( 'include/template/robocrop-modal.php' );
 		include $this->get_asset_path( 'include/template/robocrop-select-tpl.php' );
@@ -118,6 +93,7 @@ class Admin extends Core\Module {
 		// focus point editor
 		include $this->get_asset_path( 'include/template/robocrop-ask-focuspoint-tpl.php' );
 		include $this->get_asset_path( 'include/template/robocrop-focuspoint-tpl.php' );
+*/
 	}
 
 	/**

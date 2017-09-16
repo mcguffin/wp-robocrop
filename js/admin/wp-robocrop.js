@@ -111,7 +111,14 @@
 		tagName:'img',
 		id:'robocrop-image',
 		initialize: function() {
+			var self = this;
 			_.defaults( this.options, {src:''} );
+			this.$el.on('load',function(){
+				self.width = self.$el.get(0).naturalWidth;
+				self.height = self.$el.get(0).naturalHeight;
+				self.ratio = self.width / self.height;
+				self.trigger('load',self);
+			});
 			this.$el.attr('src', this.options.src );
 		},
 		getSrc: function(src) {
@@ -230,7 +237,7 @@
 			this.image 			= new wp.media.robocrop.view.Img( {src: this.model.get('url') } );
 
 			this.controller 	= options.controller;
-			this.focuspointtool	= new wp.media.robocrop.view.focuspoint.ImageFocusPointSelect({ image: this.image, focuspoint: this.model.get('url') });
+			this.focuspointtool	= new wp.media.robocrop.view.focuspoint.ImageFocusPointSelect({ image: this.image, focuspoint: {x:0,y:0}, src: this.model.get('url') });
 			this.listenTo( this.focuspointtool, 'changed', this.updateFocusPoint );
 			
 			wp.media.View.prototype.initialize.apply( this, arguments );
@@ -624,31 +631,81 @@
 		l10n = window.wp_robocrop.l10n;
 
 	var View		= wp.media.View,
-		MediaFrame	= wp.media.view.MediaFrame;
+		MediaFrame	= wp.media.view.MediaFrame,
+		FocusPoint,
+		CropRect;
 	
 	wp.media.robocrop.view.focuspoint = {};
 
-	wp.media.robocrop.view.focuspoint.FocusPoint = View.extend({
+	CropRect = wp.media.robocrop.view.focuspoint.CropRect = View.extend({
+//		tagName: 'div',
+		template: wp.template('croprect'),
+		className:	'tool-croprect',
+		controller:null,
+		initialize: function() {
+			View.prototype.initialize.apply(this,arguments);
+
+			_.defaults( this.options, { 
+				focuspoint: null, // focuspoint coords
+				ratio: 1
+			} );
+			this.controller = this.options.controller;
+			this.listenTo( this.controller.image, 'load', this.imageLoaded );
+		},
+// 		render: function() {
+//			View.prototype.render.apply(this,arguments);
+//			this.$el.css( 'padding-bottom', ( this.options.ratio * 100 ) + '%' );
+// 			this.$el.attr( 'data-dir', this.options.ratio > this.controller.image.ratio ? 'w' : 'h' );
+// 			return this;
+// 		},
+		imageLoaded:function( image ) {
+			this.$el.attr( 'data-ratio-name', this.options.ratio.name + ' : 1' );
+			this.$el.attr( 'data-dir', this.options.ratio.ratio > image.ratio ? 'w' : 'h' );
+			this.$el.css( 'width', Math.min( 1, this.options.ratio.ratio / image.ratio ) * 100 +'%' );
+			this.setFocuspoint( this.options.focuspoint );
+			// set position from fosuspoint
+		},
+		setFocuspoint:function( focuspoint ) {
+			var imageinfo = {
+					width:this.controller.image.$el.width(),
+					height:this.controller.image.$el.height(),
+					focuspoint:focuspoint,
+				},
+				res = wp.media.robocrop.cropFromFocusPoint( imageinfo, this.options.ratio ),
+				coord = wp.media.robocrop.relToAbsCoords( res, imageinfo );
+ 			this.$el.css('left',coord.x + 'px' );
+ 			this.$el.css('top',coord.y + 'px' );
+ 			
+		}
+	});
+
+	FocusPoint = wp.media.robocrop.view.focuspoint.FocusPoint = View.extend({
 		className:	'tool-focuspoint',
 		template:	wp.template('focuspoint'),
 		initialize: function(){
 			var self = this;
-			_.defaults( this.options, { focuspoint:{x:0,y:0}, enabled: false } );
+			_.defaults( this.options, { 
+				focuspoint:{x:0,y:0}, 
+				enabled: false 
+			} );
 
-			this.$el.on('click',function( event ) {
+			this.$el.on('click', function( event ) {
 				self.clickFocuspoint( event );
 			});
 		},
 		setEnabled: function( enabled ) {
 			var prev = this.options.enabled;
 			this.options.enabled = enabled;
+			this.$el.attr('data-enabled',enabled.toString());
 			return prev;
 		},
 		clickFocuspoint: function( event ) {
+			var offs;
 			if ( this.options.enabled ) {
+				offs = this.$el.offset();
 				this.setFocuspoint( {
-					x:  2 * event.offsetX / $( event.target ).width()  - 1,
-					y: -2 * event.offsetY / $( event.target ).height() + 1,
+					x:  2 * (event.pageX - offs.left ) / this.$el.width()  - 1,
+					y: -2 * (event.pageY - offs.top ) / this.$el.height() + 1,
 				} );
 			}
 		},
@@ -657,7 +714,7 @@
 		},
 		setFocuspoint: function( focuspoint ) {
 			this.focuspoint = focuspoint;
-			
+
 			this.$el.find('.focuspoint').css({
 				left: 	((focuspoint.x + 1) * 50)+'%',
 				bottom:	((focuspoint.y + 1) * 50)+'%'
@@ -671,31 +728,52 @@
 
 	wp.media.robocrop.view.focuspoint.ImageFocusPointSelect = View.extend({
 		className:	'robocrop-image-box',
-
+		cropRects: [],
 		initialize: function( ){
-			_.defaults( this.options, { controller:this, focuspoint:{x:0,y:0}, src: false, image: false, enabled:false } );
-			var self 		= this;
 
+			_.defaults( this.options, { 
+				controller: this, 
+				focuspoint: {x:0,y:0}, 
+				src: false, 
+				image: false, 
+				enabled: false,
+			} );
+			var self 		= this;
 			if ( this.options.image !== false && (this.options.image.constructor.prototype == wp.media.robocrop.view.Img.prototype ) ) {
 				this.image = this.options.image;
 			} else if ( this.options.src !== false ) {
-				this.image	= new wp.media.robocrop.view.Img({ src: this.options.src });
+				this.image	= new wp.media.robocrop.view.Img( { src: this.options.src });
 			} else  {
-				this.image = new wp.media.robocrop.view.Img({ src: '' },this.options.image);
+				this.image = new wp.media.robocrop.view.Img( { src: '' }, this.options.image);
 			}
 
-			this.focuspoint	= new wp.media.robocrop.view.focuspoint.FocusPoint({ 
+			this.focuspoint	= new FocusPoint({ 
 				controller: this.controller,
 				focuspoint: this.options.focuspoint,
 				enabled: 	this.options.enabled
 			});
+
+			_.each( image_ratios, function( ratio, key ) {
+				self.cropRects.push( new CropRect( {
+					controller: self,
+					focuspoint: self.options.focuspoint,
+					ratio: ratio
+				} ) );
+			});
+
 			this.listenTo( this.focuspoint, 'change:focuspoint', this.valueChanged );
 		},
 		setEnabled: function( enabled ) {
 			return this.focuspoint.setEnabled( enabled )
 		},
 		render: function() {
+			View.prototype.render.apply(this,arguments);
+			var self = this;
 			this.views.set( [ this.image, this.focuspoint ] );
+			_.each( this.cropRects, function( rect ){
+				rect.render()
+				self.focuspoint.$el.append( rect.$el );
+			});
 		},
 		getFocuspoint: function() {
 			return this.focuspoint.getFocuspoint();
@@ -715,6 +793,10 @@
 			return this;
 		},
 		valueChanged: function() {
+			var self = this;
+			_.each( this.cropRects, function(rect){
+				rect.setFocuspoint( self.focuspoint.getFocuspoint() );
+			});
 			this.trigger('changed');
 		}
 	});

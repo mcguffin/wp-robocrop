@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var gulputil = require('gulp-util');
 var concat = require('gulp-concat');  
 var uglify = require('gulp-uglify');  
 var sass = require('gulp-sass');
@@ -69,10 +70,10 @@ gulp.task('scripts', function() {
 			'./src/js/admin/robocrop-wp-media-view.js',
 			'./src/js/admin/robocrop-focuspoint-wp-uploader.js' 
 		])
+		.pipe( sourcemaps.init() )
 		.pipe( concat('wp-robocrop.js') )
 	    .pipe( gulp.dest('./js/admin/') )
-		.pipe( sourcemaps.init() )
-		.pipe( uglify() )
+		.pipe( uglify().on('error', gulputil.log )  )
 		.pipe( rename('wp-robocrop.min.js') )
 		.pipe( sourcemaps.write() )
 	    .pipe( gulp.dest('./js/admin/') )

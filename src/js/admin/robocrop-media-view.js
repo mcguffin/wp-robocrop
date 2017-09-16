@@ -14,7 +14,14 @@
 		tagName:'img',
 		id:'robocrop-image',
 		initialize: function() {
+			var self = this;
 			_.defaults( this.options, {src:''} );
+			this.$el.on('load',function(){
+				self.width = self.$el.get(0).naturalWidth;
+				self.height = self.$el.get(0).naturalHeight;
+				self.ratio = self.width / self.height;
+				self.trigger('load',self);
+			});
 			this.$el.attr('src', this.options.src );
 		},
 		getSrc: function(src) {
@@ -133,7 +140,7 @@
 			this.image 			= new wp.media.robocrop.view.Img( {src: this.model.get('url') } );
 
 			this.controller 	= options.controller;
-			this.focuspointtool	= new wp.media.robocrop.view.focuspoint.ImageFocusPointSelect({ image: this.image, focuspoint: this.model.get('url') });
+			this.focuspointtool	= new wp.media.robocrop.view.focuspoint.ImageFocusPointSelect({ image: this.image, focuspoint: {x:0,y:0}, src: this.model.get('url') });
 			this.listenTo( this.focuspointtool, 'changed', this.updateFocusPoint );
 			
 			wp.media.View.prototype.initialize.apply( this, arguments );

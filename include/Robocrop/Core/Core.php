@@ -52,6 +52,8 @@ class Core extends Module {
 	 *	Fired on plugin activation
 	 */
 	public static function activate() {
+		$old_version = get_option( 'robocrop_version' );
+		update_option( 'robocrop_version', ROBOCROP_VERSION );
 	}
 
 	/**
@@ -64,6 +66,7 @@ class Core extends Module {
 	 *	Fired on plugin deinstallation
 	 */
 	public static function uninstall() {
+		delete_option( 'robocrop_version' );
 	}
 
 }
