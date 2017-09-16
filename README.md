@@ -4,7 +4,7 @@ WP Robocrop
 Focus point based image cropping in WordPress.
 
 Developed with WordPress 4.5.2 - 
-Tested up to WordPress 4.7
+Tested up to WordPress 4.8.1
 
 Known Browser Support
 ---------------------
