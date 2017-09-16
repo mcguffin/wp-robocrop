@@ -1,17 +1,18 @@
 (function(wp,$) {
 
-	var image_ratios		= window.wp_robocrop.image_ratios,
-		image_sizes			= window.wp_robocrop.image_sizes,
-		l10n				= window.wp_robocrop.l10n,
-		options				= window.wp_robocrop.options,
-		cropBtnHTML			= '<button type="button" class="button robocrop-open">'+l10n.EditImageSizes+'</button>',
-		cropLinkHTML		= '<button type="button" class="button-link robocrop-open">'+l10n.EditImageSizes+'</button>';
+	var robocrop 		= wp.media.robocrop,
+		image_ratios	= robocrop.image_ratios,
+		image_sizes		= robocrop.image_sizes,
+		l10n			= robocrop.l10n,
+		options			= robocrop.options,
+		cropBtnHTML		= '<button type="button" class="button robocrop-open">'+l10n.EditImageSizes+'</button>',
+		cropLinkHTML	= '<button type="button" class="button-link robocrop-open">'+l10n.EditImageSizes+'</button>';
  
 	var robocropStateExtend = {
 		createStates: function() {
 			this._parentCreateStates.apply(this,arguments);
 			this.states.add(
-				new wp.media.robocrop.controller.RobocropImage( {
+				new robocrop.controller.RobocropImage( {
 					model: this.model,
 					selection: this.options.selection
 				} )
@@ -29,7 +30,7 @@
 		robocropOpen: function( event ) {
 			console.log();
 			var size = this.model.get('size'),
-				croptool = new wp.media.robocrop.view.Frame.Crop( { 
+				croptool = new robocrop.view.Frame.Crop( { 
 					controller: this.controller, 
 					model: this.controller.image.attachment,
 					sizeToSelect: size
@@ -52,7 +53,7 @@
 			}
 		},
 		robocropOpen: function( event ) {
-			var croptool = new wp.media.robocrop.view.Frame.Crop( { 
+			var croptool = new robocrop.view.Frame.Crop( { 
 					controller: this.controller, 
 					model: this.model
 				});

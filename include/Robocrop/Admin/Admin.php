@@ -37,7 +37,7 @@ class Admin extends Core\Module {
 		$suffix =  defined('SCRIPT_DEBUG') && SCRIPT_DEBUG  ? '.min' : '';
 
 		wp_register_script( 'wp-robocrop' , $this->get_asset_url( 'js/admin/wp-robocrop'.$suffix.'.js' ) , array( 'jquery', 'media-grid' ) , $version );
-		wp_localize_script( 'wp-robocrop' , 'wp_robocrop' , array(
+		wp_localize_script( 'wp-robocrop' , 'robocrop' , array(
 			'image_ratios' => $this->media_helper->get_image_ratios(),
 			'image_sizes'  => $this->media_helper->get_image_sizes(),
 			'l10n' => array(

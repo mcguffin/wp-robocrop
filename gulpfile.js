@@ -71,9 +71,9 @@ gulp.task('scripts', function() {
 			'./src/js/admin/robocrop-focuspoint-wp-uploader.js' 
 		])
 		.pipe( sourcemaps.init() )
+		.pipe( uglify().on('error', gulputil.log )  )
 		.pipe( concat('wp-robocrop.js') )
 	    .pipe( gulp.dest('./js/admin/') )
-		.pipe( uglify().on('error', gulputil.log )  )
 		.pipe( rename('wp-robocrop.min.js') )
 		.pipe( sourcemaps.write() )
 	    .pipe( gulp.dest('./js/admin/') )

@@ -1,8 +1,9 @@
 (function( $ ) {
 
-	var image_ratios = window.wp_robocrop.image_ratios,
-		image_sizes  = window.wp_robocrop.image_sizes,
-		options = window.wp_robocrop.options,
+	var robocrop = wp.media.robocrop,
+		image_ratios = robocrop.image_ratios,
+		image_sizes  = robocrop.image_sizes,
+		options = robocrop.options,
 		imageInfos = {};
 
 	/**
@@ -35,7 +36,7 @@
 				}
 				if ( !! askFocusImages.length ) {
 					fileItem = askFocusImages.shift();
-					askModal = new wp.media.robocrop.view.Frame.Focuspoint({ controller: $(this) });
+					askModal = new robocrop.view.Frame.Focuspoint({ controller: $(this) });
 					askModal.on('proceed',function() {
 						imageInfos[fileItem.file.name] = {
 							focuspoint:	askModal.getFocuspoint(),
@@ -102,7 +103,7 @@
 					imageinfo = imageInfos[file.name];
 					cropdata = {};
 					for (s in image_ratios) {
-						cropdata[ image_ratios[s].name ] = wp.media.robocrop.cropFromFocusPoint( imageinfo, image_ratios[s] );
+						cropdata[ image_ratios[s].name ] = robocrop.cropFromFocusPoint( imageinfo, image_ratios[s] );
 					}
 
 					up.settings.multipart_params.focuspoint	= JSON.stringify( imageinfo.focuspoint );

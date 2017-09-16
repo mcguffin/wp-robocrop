@@ -44,6 +44,11 @@
 	.tool-croprect {
 		display:none;
 	}
+	.robocrop-image-box[data-hilite="true"] & {
+		.focuspoint {
+			opacity:0;
+		}
+	}
 	&[data-enabled="true"] {
 		.focuspoint {
 			opacity:1;
@@ -63,18 +68,33 @@
 .tool-croprect {
 	position:absolute;
 	border:1px solid rgba(255,255,255,0.5);
-	z-index:2;
+//	z-index:2;
 	opacity:0;
-	transition:opacity 0.3s;
-	&:before {
+	transition:opacity 0.3s, border-color 0.3s;
+	.robocrop-image-box[data-hilite="true"] & {
+		border-color:rgba(255,255,255,0);
+	}
+	.label {
 		position:absolute;
-		content:attr(data-ratio-name);
-		top:0;
-		left:0;
-		color:rgba(255,255,255,0.15);
+//		content:attr(data-ratio-name);
+		&:first-of-type {
+			top:0;
+			left:0;
+		}
+		&:last-of-type {
+			bottom:0;
+			right:0;
+		}
+		color:rgba(255,255,255,0.85);
 		font-size:14px;
 		transition:all 0.3s;
 		padding:0.25em 0.5em;
+		z-index:3;
+		text-shadow:0 0 3px rgba(0,0,0,0.8);
+		.robocrop-image-box[data-hilite="true"] & {
+			opacity:0;
+		}
+
 	}
 	&:after {
 		content:'';
@@ -88,14 +108,14 @@
 		transition:border-color 0.3s;
 		pointer-events:none;
 	}
-	&:hover {
-		z-index:3;
-		&:before {
-			text-shadow:0 0 3px rgba(0,0,0,0.7);
-			color:rgba(255,255,255,0.8);
+	&[data-hilite="true"] {
+//		z-index:3;
+		.label {
+			text-shadow:0 0 3px rgba(0,0,0,0.0);
+			color:rgba(255,255,255,0.15);
 		}
 		&:after {
-			border-color:rgba(255,255,255,0.9);
+			border-color:rgba(255,255,255,1);
 		}
 	}
 	&[data-dir="w"] {

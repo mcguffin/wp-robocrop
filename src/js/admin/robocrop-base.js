@@ -5,7 +5,7 @@
 (function( exports ){
 	var robocrop;
 
-	robocrop = {
+	robocrop = _.extend( window.robocrop, {
 		cropFromFocusPoint: function( imageinfo, cropinfo ) {
 			// normalize 
 			var fp_x =   (  imageinfo.focuspoint.x + 1) / 2 * imageinfo.width,
@@ -91,7 +91,8 @@
 
 		view : {},
 		controller : {}
-	};
+	});
 
 	exports.media.robocrop = robocrop;
+
 })( wp );
