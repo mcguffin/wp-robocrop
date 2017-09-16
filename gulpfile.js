@@ -48,6 +48,13 @@ gulp.task('styles', function() {
 				omitSourceMapUrl: true  
 			} ).on('error', sass.logError) )
 			.pipe( sourcemaps.write() )
+			.pipe( rename('admin.min.css') )
+			.pipe( gulp.dest('./css/admin/') )
+			.pipe( sass( { 
+				outputStyle: 'expanded', 
+				omitSourceMapUrl: true  
+			} ).on('error', sass.logError) )
+			.pipe( sourcemaps.write() )
 			.pipe( rename('admin.css') )
 			.pipe( gulp.dest('./css/admin/') )
 	];
