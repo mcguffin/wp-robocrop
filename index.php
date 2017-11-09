@@ -5,8 +5,9 @@ Plugin Name: WP Robocrop
 Plugin URI: https://github.com/mcguffin/wp-robocrop
 Description: Focus point based image cropping in WordPress
 Author: Jörn Lund
-Version: 1.0.0
-Author URI: https://github.com/mcguffin
+Version: 1.0.1
+Github Repository: mcguffin/wp-robocrop
+Author URI: https://github.com/mcguffin/
 License: GPL3
 
 Text Domain: wp-robocrop
@@ -16,7 +17,7 @@ Domain Path: /languages/
 /*  Copyright 2017  Jörn Lund
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -38,7 +39,7 @@ Command line args were: `"WP Robocrop" core+css+js admin+css+js settings:media g
 
 namespace Robocrop;
 
-define( 'ROBOCROP_VERSION', '1.0.0' );
+define( 'ROBOCROP_VERSION', '1.0.1' );
 define( 'ROBOCROP_FILE', __FILE__ );
 define( 'ROBOCROP_DIRECTORY', plugin_dir_path(__FILE__) );
 
@@ -54,17 +55,11 @@ if ( is_admin() ) {
 
 if ( is_admin() || defined( 'DOING_AJAX' ) ) {
 
+	// don't WP-Update actual repos!
+	if ( ! file_exists( ACFQUICKEDIT_DIRECTORY . '/.git/' ) ) {
+		AutoUpdate\AutoUpdateGithub::instance();
+	}
+
 	Admin\Attachment::instance();
 
-/*
-	Admin\Tools::instance();
-	Admin\Settings::instance();
-
-	// Compatibility plugins
-	$compat = glob(plugin_dir_path(__FILE__) . 'include/compat/*.php');
-	foreach ( $compat as $compat_file ) {
-		require_once $compat_file;
-	}
-*/
 }
-

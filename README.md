@@ -3,7 +3,7 @@ WP Robocrop
 
 Focus point based image cropping in WordPress.
 
-Developed with WordPress 4.5.2 - 
+Developed with WordPress 4.5.2 -
 Tested up to WordPress 4.8.1
 
 Known Browser Support
@@ -16,8 +16,7 @@ Known Browser Support
 
 Known Issues
 ------------
- - Cropped images get weird when you use WordPress "Edit Original" Feature.
- - Won't work when [EWWW Image Optimizer](https://wordpress.org/plugins/ewww-image-optimizer/) is active.
+ - Cropdata gets lost after using "Edit Original"
 
 Developing:
 -----------
