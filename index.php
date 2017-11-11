@@ -56,7 +56,7 @@ if ( is_admin() ) {
 if ( is_admin() || defined( 'DOING_AJAX' ) ) {
 
 	// don't WP-Update actual repos!
-	if ( ! file_exists( ACFQUICKEDIT_DIRECTORY . '/.git/' ) ) {
+	if ( ! file_exists( ROBOCROP_DIRECTORY . '/.git/' ) ) {
 		AutoUpdate\AutoUpdateGithub::instance();
 	}
 
