@@ -51,12 +51,12 @@
 				tools:{}
 			},this.options);
 			this.options.l10n = l10n;
-			
+
 		},
 		render: function() {
 			wp.Backbone.View.prototype.render.apply(this,arguments);
 			var self = this;
-			
+
 			_.each( this.options.tools, function( tool, key ) {
 				self.views.add(new robocrop.view.RobocropRatioSelectItem({
 					ratiokey:	key,
@@ -65,7 +65,7 @@
 					title:		tool.title,
 					enabled: 	true
 				}))
-				
+
 			});
 			_.each( this.options.ratios, function( ratio, key ) {
 				var names = [],
@@ -89,8 +89,8 @@
 								(self.model.get('height') >= ratio.min_height)
 				}))
 			} );
-			
-			
+
+
 		},
 		setSelected: function( ratiokey ) {
 			this.$el.find('[name="robocrop-select-ratio"][value="'+ratiokey+'"]').prop('checked',true);
@@ -143,7 +143,7 @@
 			this.controller 	= options.controller;
 			this.focuspointtool	= new robocrop.view.focuspoint.ImageFocusPointSelect({ image: this.image, focuspoint: {x:0,y:0}, src: this.model.get('url') });
 			this.listenTo( this.focuspointtool, 'changed', this.updateFocusPoint );
-			
+
 			wp.media.View.prototype.initialize.apply( this, arguments );
 		},
 		dismiss:function() {
@@ -202,9 +202,9 @@
 				.on('select-tool', this.onselecttool, this )
 				.on('select', this.updateButtons, this );
 
-			this.views.set('.select-ratio', this.selectRatio );	
+			this.views.set('.select-ratio', this.selectRatio );
 			// setTimeout( function(){ },20);
-			
+
 			// buttons
 			this.$autoButton	= this.$el.find('.robocrop-autocrop-current');
 			this.$autoAllButton	= this.$el.find('.robocrop-autocrop-all');
@@ -226,7 +226,7 @@
 			if ( _.isUndefined( currentRatio ) ) {
 				currentRatio = 'focuspoint';//_.first(_.keys( this.image_ratios ));
 			}
-			this.selectRatio.setSelected( currentRatio ); 
+			this.selectRatio.setSelected( currentRatio );
 			return this;
 		},
 		save: function() {
@@ -235,13 +235,13 @@
 				}, id = this.model.get('id'),
 				$btns = this.$autoAllButton.add( this.$autoButton ).prop( 'disabled', true ),
 				self = this;
-			data.attachments[id] = { 
-				sizes:		this.model.get('sizes'), 
+			data.attachments[id] = {
+				sizes:		this.model.get('sizes'),
 				focuspoint: this.model.get('focuspoint')
 			};
 			this.model.saveCompat( data, {} ).done( function( resp ) {
 				var d = new Date();
-				
+
 				// force reload image ...
 				_.each( self.model.attributes.sizes, function( size, sizename ) {
 					var selector =  'img[src^="'+size.url+'"]',
@@ -297,9 +297,9 @@
 			 */
 			var ratiokey = this.selectRatio.getSelected(),
 				sizes = this.model.get('sizes'),
-				factor, rect, cropdata, self = this, 
+				factor, rect, cropdata, self = this,
 				s, areaSelectOptions,
-				imgWidth  = this.model.get('width'), 
+				imgWidth  = this.model.get('width'),
 				imgHeight = this.model.get('height');
 
 			this.current_ratio = this.image_ratios[ratiokey];
@@ -323,7 +323,7 @@
 			if ( !cropdata ) {
 				// wp default cropdata
 				var scale = Math.min( this.model.get('width') / this.current_ratio.ratio, this.model.get('height'));
-				
+
 				rect = {
 					x:0,
 					y:0,
@@ -334,7 +334,7 @@
 				rect.y = (this.model.get('height') - rect.height)/2;
 			} else {
 				rect = {};
-				
+
 				_.extend(rect,cropdata);
 			}
 
@@ -350,7 +350,7 @@
 		},
 		autocrop: function( event ) {
 			// crop by focus point
-			
+
 			var cropdata, imageinfo = {
 					width:		this.model.get('width'),
 					height:		this.model.get('height'),
@@ -386,7 +386,7 @@
 			var factor = this._image_scale_factor(),
 				points = robocrop.rectToPointCoords( rect ),
 				$areaSelect = this.$areaSelect();
-			
+
 			$areaSelect.setSelection( points.x1, points.y1, points.x2, points.y2, false );
 			$areaSelect.setOptions( {show:true} );
 			$areaSelect.update();
@@ -399,7 +399,7 @@
 			var $container = this.image.$el.closest('.robocrop-image-box'),
 				w = Math.min(this.model.get('width'),$container.width()),
 				h = Math.min(this.model.get('height'),$container.height());
-			
+
 			return Math.min( w / this.model.get('width'), h / this.model.get('height') );
 		},
 		updateFocusPoint: function( ) {
@@ -453,7 +453,7 @@
 							coords[s] *= h;
 							break;
 					}
-					
+
 				}
 			}
 		}
@@ -464,7 +464,7 @@
 
 	robocrop.view.Frame = wp.media.view.MediaFrame.extend({
 		template:  wp.template('robocrop-modal'),
-		regions:   ['title','content','instructions','buttons']
+		regions:   ['title','content','instructions','buttons','ratios']
 	});
 
 	robocrop.view.Frame.Crop = robocrop.view.Frame.extend({

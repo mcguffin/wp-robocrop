@@ -138,7 +138,8 @@ WP RoboCrop
 .robocrop-content,
 .ask-focuspoint .media-frame-content {
 	padding:16px;
-	overflow:auto;
+	overflow:hidden;
+	text-align:center;
 }
 
 .media-frame-imagewrap {
@@ -167,4 +168,3 @@ WP RoboCrop
 		display:block;
 	}
 }
-

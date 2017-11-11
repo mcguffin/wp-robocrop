@@ -9,7 +9,7 @@
 		MediaFrame	= wp.media.view.MediaFrame,
 		FocusPoint,
 		CropRect;
-	
+
 	robocrop.view.focuspoint = {};
 
 	CropRect = robocrop.view.focuspoint.CropRect = View.extend({
@@ -21,9 +21,10 @@
 			'mouseleave .label' : 'hideHilite',
 		},
 		initialize: function() {
+			var self = this;
 			View.prototype.initialize.apply(this,arguments);
 
-			_.defaults( this.options, { 
+			_.defaults( this.options, {
 				focuspoint: null, // focuspoint coords
 				ratio: null
 			} );
@@ -33,6 +34,7 @@
 			this.controller = this.options.controller;
 			this.listenTo( this.controller.image, 'load', this.imageLoaded );
 
+			return this;
 		},
 		imageLoaded:function( image ) {
 			this.$el.attr( 'data-dir', this.options.ratio.ratio > image.ratio ? 'w' : 'h' );
@@ -58,20 +60,23 @@
 		showHilite: function(e){
 			this.$el.attr('data-hilite','true');
 			this.trigger('hilite:show');
+			return this;
 		},
 		hideHilite: function(e){
 			this.$el.attr('data-hilite','false');
 			this.trigger('hilite:hide');
+			return this;
 		}
 	});
 
 	FocusPoint = robocrop.view.focuspoint.FocusPoint = View.extend({
 		className:	'tool-focuspoint',
 		template:	wp.template('focuspoint'),
+		labelView:		null,
 		initialize: function(){
 			var self = this;
-			_.defaults( this.options, { 
-				focuspoint:{x:0,y:0}, 
+			_.defaults( this.options, {
+				focuspoint:{x:0,y:0},
 				enabled: false ,
 				cropRects:[]
 			} );
@@ -82,6 +87,7 @@
 			this.$el.on('click', function( event ) {
 				self.clickFocuspoint( event );
 			});
+			return this;
 		},
 		render:function(){
 			var self = this;
@@ -136,15 +142,15 @@
 		cropRects: [],
 		initialize: function( ){
 
-			_.defaults( this.options, { 
-				controller: this, 
-				focuspoint: {x:0,y:0}, 
-				src: false, 
-				image: false, 
+			_.defaults( this.options, {
+				controller: this,
+				focuspoint: {x:0,y:0},
+				src: false,
+				image: false,
 				enabled: false,
 			} );
 
-			var self 		= this;
+			var self = this;
 
 			if ( this.options.image !== false && (this.options.image.constructor.prototype == robocrop.view.Img.prototype ) ) {
 				this.image = this.options.image;
@@ -166,7 +172,7 @@
 				self.cropRects.push( rect );
 			});
 
-			this.focuspoint	= new FocusPoint({ 
+			this.focuspoint	= new FocusPoint({
 				controller: this.controller,
 				focuspoint: this.options.focuspoint,
 				enabled: 	this.options.enabled,
@@ -174,16 +180,18 @@
 			});
 
 			this.listenTo( this.focuspoint, 'change:focuspoint', this.valueChanged );
+			this.listenTo( this.image, 'load', this.setHeight );
+
+			this.views.set( [ this.image, this.focuspoint ] );
+
+			return this;
+		},
+		setHeight:function(){
+			this.$el.height( this.$el.parent().height() )
 		},
 		setEnabled: function( enabled ) {
 
 			return this.focuspoint.setEnabled( enabled )
-		},
-		render: function() {
-			View.prototype.render.apply(this,arguments);
-			var self = this;
-			this.views.set( [ this.image, this.focuspoint ] );
-			return this;
 		},
 		getFocuspoint: function() {
 			return this.focuspoint.getFocuspoint();
@@ -238,10 +246,11 @@
 			this.createContent();
 			this.createInstructions();
 			this.createButtons();
+			return this;
 		},
 // 		render: function() {
 // 			// frame layout
-// 
+//
 // 			robocrop.view.Modal.prototype.render.apply(this,arguments);
 // 		},
 		createTitle: function( ) {
@@ -256,7 +265,8 @@
 				src: '',
 				focuspoint:{ x:0, y:0 },
 				controller: this,
-				enabled: true
+				enabled: true,
+				toolbar:this.tools
 			});
 			this.content.set( [ this._content ] );
 		},
@@ -266,7 +276,7 @@
 				new wp.media.View({
 					el: $( '<div class="instructions">' + l10n.FocusPointInstructions + '</div>' )[0],
 					priority: -40
-				})
+				}),
 			] );
 		},
 		createButtons: function() {
