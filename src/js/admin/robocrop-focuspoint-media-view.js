@@ -187,7 +187,8 @@
 			return this;
 		},
 		setHeight:function(){
-			this.$el.height( this.$el.parent().height() )
+			var newHeight = Math.min( this.$el.parent().height(), this.image.$el.height() );
+			this.$el.height( newHeight )
 		},
 		setEnabled: function( enabled ) {
 
