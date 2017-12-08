@@ -2,6 +2,8 @@
 
 namespace Robocrop\Core;
 
+use Robocrop\Compat;
+
 class Core extends Module {
 
 	/**
@@ -9,13 +11,14 @@ class Core extends Module {
 	 */
 	protected function __construct() {
 		add_action( 'plugins_loaded' , array( $this , 'load_textdomain' ) );
+		add_action( 'plugins_loaded' , array( $this , 'init_compat' ) );
 		add_action( 'init' , array( $this , 'init' ) );
 //		add_action( 'wp_enqueue_scripts' , array( $this , 'wp_enqueue_style' ) );
 
 		register_activation_hook( ROBOCROP_FILE, array( __CLASS__ , 'activate' ) );
 		register_deactivation_hook( ROBOCROP_FILE, array( __CLASS__ , 'deactivate' ) );
 		register_uninstall_hook( ROBOCROP_FILE, array( __CLASS__ , 'uninstall' ) );
-		
+
 		parent::__construct();
 	}
 
@@ -29,10 +32,10 @@ class Core extends Module {
 		wp_enqueue_script( 'wp-robocrop-script', $this->get_asset_url( 'js/frontend.js' ), array( 'jquery' ) );
 	}
 
-	
+
 	/**
 	 *	Load text domain
-	 * 
+	 *
 	 *  @action plugins_loaded
 	 */
 	public function load_textdomain() {
@@ -40,8 +43,20 @@ class Core extends Module {
 	}
 
 	/**
+	 *	Init Compatibility module
+	 *
+	 *  @action plugins_loaded
+	 */
+	public function init_compat() {
+		if ( class_exists( '\RegenerateThumbnails' ) ) {
+			Compat\RegenerateThumbnails::instance();
+		}
+
+	}
+
+	/**
 	 *	Init hook.
-	 * 
+	 *
 	 *  @action init
 	 */
 	public function init() {

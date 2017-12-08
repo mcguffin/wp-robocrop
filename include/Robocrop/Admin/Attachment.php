@@ -29,13 +29,22 @@ class Attachment extends Core\Singleton {
 		$this->core			= Core\Core::instance();
 		$this->media_helper	= Core\MediaHelper::instance();
 
-		add_action( "add_attachment",		array( $this, 'add_attachment' ) ); 
+		add_action( "add_attachment",		array( $this, 'add_attachment' ) );
 
-		add_action( "edit_attachment",		array( $this, 'edit_attachment' ) ); 
+		add_action( "edit_attachment",		array( $this, 'edit_attachment' ) );
 
 		add_filter( 'wp_generate_attachment_metadata', array( $this, 'wp_generate_attachment_metadata'), 10, 2 );
 
 		add_filter( 'image_resize_dimensions', array( $this, 'image_resize_dimensions'), 10, 6 );
+
+		add_filter( 'attachment_thumbnail_args', array( $this, 'attachment_thumbnail_args' ), 10, 3 );
+
+	}
+
+	/**
+	 *	Filter a
+	 */
+	public function attachment_thumbnail_args( $image_attachment, $metadata, $uploaded ) {
 
 	}
 
@@ -63,7 +72,7 @@ class Attachment extends Core\Singleton {
 			$this->_crop_meta[ $attachment_ID ] = array(
 				'focuspoint'	=> $this->sanitize_focuspoint( json_decode( stripslashes( $_REQUEST['focuspoint'] ) ) ),
 			);
-			
+
 		} else {
 			// default focuspoint
 			$this->_crop_meta[ $attachment_ID ] = array(
@@ -73,9 +82,7 @@ class Attachment extends Core\Singleton {
 	}
 
 	/**
-	 *	On update attachment:
-	 *	Read cropdata from WP Ajax Request.
-	 *	We're expecting absolute coords (x, y, width and height in pixel) here.
+	 *	On update attachment.
 	 *
 	 *	@param int		$attachment_ID
 	 *	@param WP_Post	$attachment
@@ -87,6 +94,27 @@ class Attachment extends Core\Singleton {
 		if ( ! wp_attachment_is_image( $attachment_ID ) ) {
 			return;
 		}
+
+		$this->setup_crop_meta( $attachment_ID );
+
+		// trigger sizes regeneration
+		$fullsizepath = get_attached_file( $attachment_ID );
+
+		$metadata = wp_generate_attachment_metadata( $attachment_ID, $fullsizepath );
+		if ( ! is_wp_error( $metadata ) && !empty( $metadata ) ) {
+			// If this fails, then it just means that nothing was changed (old value == new value)
+			wp_update_attachment_metadata( $attachment_ID, $metadata );
+		}
+
+	}
+
+	/**
+	 *	Read cropdata from $_REQUEST
+	 *	We're expecting absolute coords (x, y, width and height in pixel) here.
+	 *
+	 *	@param int		$attachment_ID
+	 */
+	public function setup_crop_meta( $attachment_ID ) {
 
 		$this->_current_attachment_ID = $attachment_ID;
 
@@ -120,15 +148,6 @@ class Attachment extends Core\Singleton {
 					}
 				}
 			}
-		}
-
-		// trigger sizes regeneration
-		$fullsizepath = get_attached_file( $attachment_ID );
-
-		$metadata = wp_generate_attachment_metadata( $attachment_ID, $fullsizepath );
-		if ( ! is_wp_error( $metadata ) && !empty( $metadata ) ) {
-			// If this fails, then it just means that nothing was changed (old value == new value)
-			wp_update_attachment_metadata( $attachment_ID, $metadata );
 		}
 
 	}
@@ -249,7 +268,7 @@ class Attachment extends Core\Singleton {
 	 *	Sanitize focuspoint
 	 *	Default
 	 *
-	 *	@param	mixed	$focuspoint	
+	 *	@param	mixed	$focuspoint
 	 *	@return array	array( 'x' => (int) -1..1, 'y' => (int) -1..1 )
 	 *					default: array( 'x' => 0, 'y' => 0 )
 	 */
@@ -258,7 +277,7 @@ class Attachment extends Core\Singleton {
 			'x' => 0,
 			'y' => 0,
 		));
-		
+
 		return array(
 			'x' => min( max( $focuspoint['x'], -1), 1),
 			'y' => min( max( $focuspoint['y'], -1), 1),
