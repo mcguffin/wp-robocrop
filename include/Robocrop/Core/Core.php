@@ -13,6 +13,7 @@ class Core extends Module {
 		add_action( 'plugins_loaded' , array( $this , 'load_textdomain' ) );
 		add_action( 'plugins_loaded' , array( $this , 'init_compat' ) );
 		add_action( 'init' , array( $this , 'init' ) );
+		add_action( 'robocrop_upgraded', array( __CLASS__ , 'upgrade'), 10, 2 );
 //		add_action( 'wp_enqueue_scripts' , array( $this , 'wp_enqueue_style' ) );
 
 		register_activation_hook( ROBOCROP_FILE, array( __CLASS__ , 'activate' ) );
@@ -67,8 +68,6 @@ class Core extends Module {
 	 *	Fired on plugin activation
 	 */
 	public static function activate() {
-		$old_version = get_option( 'robocrop_version' );
-		update_option( 'robocrop_version', ROBOCROP_VERSION );
 	}
 
 	/**
@@ -82,6 +81,14 @@ class Core extends Module {
 	 */
 	public static function uninstall() {
 		delete_option( 'robocrop_version' );
+		delete_option( 'robocrop_ask_for_focuspoint' );
+	}
+
+	/**
+	 *	Fired on plugin deinstallation
+	 */
+	public static function upgrade( $new_version, $old_version ) {
+		update_option( 'robocrop_version', $new_version );
 	}
 
 }

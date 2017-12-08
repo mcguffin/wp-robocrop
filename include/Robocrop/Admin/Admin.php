@@ -26,6 +26,7 @@ class Admin extends Core\Module {
 
 		add_filter( 'wp_prepare_attachment_for_js' , array( $this , 'wp_prepare_attachment_for_js' ),10,3);
 
+		add_option( 'robocrop_version', false, true );
 	}
 
 
@@ -33,7 +34,13 @@ class Admin extends Core\Module {
 	 *	@action 'admin_init'
 	 */
 	function admin_init() {
-		$version = ROBOCROP_VERSION;
+
+		if ( ! $version = get_option('robocrop_version') ) {
+			$info = get_plugin_data( ROBOCROP_FILE );
+			$version = $info['Version'];
+			update_option('robocrop_version', $version );
+		}
+
 		$suffix =  defined('SCRIPT_DEBUG') && SCRIPT_DEBUG  ? '.min' : '';
 
 		wp_register_script( 'wp-robocrop' , $this->get_asset_url( 'js/admin/wp-robocrop'.$suffix.'.js' ) , array( 'jquery', 'media-grid' ) , $version );
@@ -56,7 +63,7 @@ class Admin extends Core\Module {
 			'options'		=> array(
 				'ask_for_focuspoint'		=> !! get_option( 'robocrop_ask_for_focuspoint' ),
 			),
-			'version'		=> ROBOCROP_VERSION,
+			'version'		=> get_option('robocrop_version'),
 		) );
 
 		wp_register_style( 'wp-robocrop-admin' , $this->get_asset_url( 'css/admin/admin'.$suffix.'.css' ) , array( ) , $version );
@@ -68,7 +75,7 @@ class Admin extends Core\Module {
 	 *	@action 'wp_enqueue_media'
 	 */
 	function wp_enqueue_media() {
-		if ( ! did_action('wp_enqueue_media') ) 
+		if ( ! did_action('wp_enqueue_media') )
 			wp_enqueue_media();
 		wp_enqueue_script( 'wp-robocrop' );
 
@@ -81,19 +88,9 @@ class Admin extends Core\Module {
 	function print_media_templates() {
 		// cropping tool
 		$rp = ROBOCROP_DIRECTORY . 'include' . DIRECTORY_SEPARATOR . '/template/{,*/,*/*/,*/*/*/}*.php';
-		foreach ( glob( $rp, GLOB_BRACE ) as $template_file ) {	
+		foreach ( glob( $rp, GLOB_BRACE ) as $template_file ) {
 			include $template_file;
 		}
-/*
-		include $this->get_asset_path( 'include/template/robocrop-tpl.php' );
-		include $this->get_asset_path( 'include/template/robocrop-modal.php' );
-		include $this->get_asset_path( 'include/template/robocrop-select-tpl.php' );
-		include $this->get_asset_path( 'include/template/robocrop-select-item-tpl.php' );
-
-		// focus point editor
-		include $this->get_asset_path( 'include/template/robocrop-ask-focuspoint-tpl.php' );
-		include $this->get_asset_path( 'include/template/robocrop-focuspoint-tpl.php' );
-*/
 	}
 
 	/**
@@ -143,4 +140,3 @@ class Admin extends Core\Module {
 	}
 
 }
-
