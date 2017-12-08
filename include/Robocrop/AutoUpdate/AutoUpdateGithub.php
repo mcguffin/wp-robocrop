@@ -2,6 +2,12 @@
 
 namespace Robocrop\AutoUpdate;
 
+if ( ! defined('ABSPATH') ) {
+	die('FU!');
+}
+
+use Robocrop\Core;
+
 class AutoUpdateGithub extends AutoUpdate {
 
 	private $github_repo = null;
@@ -22,13 +28,19 @@ class AutoUpdateGithub extends AutoUpdate {
 					return false;
 				}
 
-				$id = sprintf( 'github.com/%s', $this->get_github_repo() );
-				$version = preg_replace( '/^([^0-9]+)/ims', '', $release_info->tag_name );
-				return array(
-					'id'			=> $id,
-					'version'		=> $version,
-					'download_url'	=> $release_info->zipball_url
-				);
+				return $this->extract_info( $release_info->body, array(
+						'tested'		=> 'Tested up to',
+						'requires_php'	=> 'Requires PHP',
+						'requires'		=> 'Requires at least'
+					) ) + array(
+						'id'			=> sprintf( 'github.com/%s', $this->get_github_repo() ),
+						'version_tag'	=> $release_info->tag_name,
+						'version'		=> preg_replace( '/^([^0-9]+)/ims', '', $release_info->tag_name ),
+						'download_link'	=> $release_info->zipball_url,
+						'last_updated'	=> $release_info->published_at,
+						'notes'			=> $release_info->body,
+					);
+
 			}
 		}
 
@@ -36,6 +48,49 @@ class AutoUpdateGithub extends AutoUpdate {
 	}
 
 
+	/**
+	 *	@inheritdoc
+	 */
+	protected function get_plugin_sections() {
+		$repo = $this->get_github_repo();
+
+		$sections = array();
+
+		$release_info = $this->get_release_info();
+
+		// get plain github readme
+		$readme_url = sprintf('https://raw.githubusercontent.com/%s/%s/README.md', $repo, $release_info['version_tag'] );
+
+		$response = wp_remote_get( $readme_url );
+		$readme = wp_remote_retrieve_body($response);
+
+		// parse readme github mardown
+		$response = wp_remote_post('https://api.github.com/markdown/raw', array(
+			'headers'	=> array(
+				'Content-Type' => 'text/plain',
+			),
+			'body' => $readme,
+		));
+
+		if ( ! is_wp_error( $response ) ) {
+			$sections[ __('Description','gitupdate-test') ] = wp_remote_retrieve_body($response);
+		}
+
+
+		// parse release info github mardown
+		$response = wp_remote_post('https://api.github.com/markdown/raw', array(
+			'headers'	=> array(
+				'Content-Type' => 'text/plain',
+			),
+			'body' => $release_info['notes'],
+		));
+
+		if ( ! is_wp_error( $response ) ) {
+			$sections[ __('Notes','gitupdate-test') ] = wp_remote_retrieve_body( $response );
+		}
+
+		return $sections;
+	}
 	/**
 	 *	@return	string	github-owner/github-repo
 	 */
