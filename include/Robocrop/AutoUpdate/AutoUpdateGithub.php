@@ -15,7 +15,7 @@ class AutoUpdateGithub extends AutoUpdate {
 	/**
 	 *	@inheritdoc
 	 */
-	public function get_release_info() {
+	public function get_remote_release_info() {
 		if ( $release_info_url = $this->get_release_info_url() ) {
 
 			$response = wp_remote_get( $release_info_url, array() );
