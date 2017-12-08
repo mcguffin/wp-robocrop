@@ -2,7 +2,7 @@
 
 	var robocrop = wp.media.robocrop,
 		image_ratios = robocrop.image_ratios,
-		image_sizes  = robocrop.image_sizes,
+//		image_sizes  = robocrop.image_sizes,
 		options = robocrop.options,
 		imageInfos = {};
 
@@ -73,7 +73,7 @@
 				return _ret;
 			}
 
-			// stop uploader and generate cropdata 
+			// stop uploader and generate cropdata
 			this.uploader.uploader.bind('FilesAdded',function( up, files ) {
 				var fileData;
 
@@ -93,7 +93,7 @@
 					console.log("askfocus");
 				}
 			});
-			// send cropdata 
+			// send cropdata
 			this.uploader.uploader.bind('BeforeUpload',function( up, file ) {
 				var s, cropdata, focuspoint;
 
@@ -117,4 +117,3 @@
 	});
 
 })( jQuery );
-

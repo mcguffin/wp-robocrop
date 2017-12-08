@@ -29,24 +29,16 @@ class Attachment extends Core\Singleton {
 		$this->core			= Core\Core::instance();
 		$this->media_helper	= Core\MediaHelper::instance();
 
-		add_action( "add_attachment",		array( $this, 'add_attachment' ) );
+		add_action( 'add_attachment', array( $this, 'add_attachment' ) );
 
-		add_action( "edit_attachment",		array( $this, 'edit_attachment' ) );
+		add_action( 'edit_attachment', array( $this, 'edit_attachment' ) );
 
 		add_filter( 'wp_generate_attachment_metadata', array( $this, 'wp_generate_attachment_metadata'), 10, 2 );
 
 		add_filter( 'image_resize_dimensions', array( $this, 'image_resize_dimensions'), 10, 6 );
 
-		add_filter( 'attachment_thumbnail_args', array( $this, 'attachment_thumbnail_args' ), 10, 3 );
-
 	}
 
-	/**
-	 *	Filter a
-	 */
-	public function attachment_thumbnail_args( $image_attachment, $metadata, $uploaded ) {
-
-	}
 
 	/**
 	 *	On create attachment:
@@ -105,7 +97,6 @@ class Attachment extends Core\Singleton {
 			// If this fails, then it just means that nothing was changed (old value == new value)
 			wp_update_attachment_metadata( $attachment_ID, $metadata );
 		}
-
 	}
 
 	/**
@@ -171,18 +162,48 @@ class Attachment extends Core\Singleton {
 		} else if ( ! isset( $metadata['focuspoint'] ) ) {
 			$metadata['focuspoint'] = $this->sanitize_focuspoint( array() );
 		}
+		$orig_w = $metadata['width'];
+		$orig_h = $metadata['height'];
 
-		$focuspoint = $metadata['focuspoint'];
+		$remove_sizes = array();
 
-		if ( isset($metadata['sizes']) ) {
+		if ( isset( $metadata['sizes'] ) ) {
 			foreach ( $metadata['sizes'] as $sizeslug => $size ) {
-				if ( $sizes[ $sizeslug ]['crop'] && isset( $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
-					$metadata['sizes'][ $sizeslug ]['cropdata' ] = $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ];
+				$current_size = $sizes[$sizeslug];
+//
+				if ( $sizes[ $sizeslug ]['crop'] ) {
+					$cancrop = $this->can_crop( $orig_w, $orig_h, $current_size['width'], $current_size['height'] );
+					error_log(var_export($cancrop,true));
+					if ( ! $cancrop ) {
+						$remove_sizes[] = $sizeslug;
+					} else if ( isset( $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
+						$metadata['sizes'][ $sizeslug ]['cropdata' ] = $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ];
+					}
 				}
 			}
 		}
 
+		foreach ( $remove_sizes as $sizeslug ) {
+			unset($metadata['sizes'][ $sizeslug ]);
+		}
+
 		return $metadata;
+	}
+
+	/**
+	 *	Whether an image can be cropped to a specific size
+	 *
+	 *	@param	int		$orig_w
+	 *	@param	int		$orig_h
+	 *	@param	int		$dest_w
+	 *	@param	int		$dest_h
+	 *
+	 *	@return bool
+	 */
+	private function can_crop( $orig_w, $orig_h, $dest_w, $dest_h ) {
+		return	( $orig_w >= $dest_w ) || ( $orig_h >= $dest_h );
+
+
 	}
 
 	/**
@@ -200,7 +221,7 @@ class Attachment extends Core\Singleton {
 		$sizes		= $this->media_helper->get_image_sizes();
 		$size		= $sizes[ $sizeslug ];
 
-		$cropdata	=  $this->media_helper->crop_from_focuspoint( $orig_w, $orig_h, $size['width'], $size['height'], $focuspoint );
+		$cropdata	= $this->media_helper->crop_from_focuspoint( $orig_w, $orig_h, $size['width'], $size['height'], $focuspoint );
 
 		return $cropdata;
 	}
@@ -212,7 +233,7 @@ class Attachment extends Core\Singleton {
 	 */
 	public function image_resize_dimensions( $result, $orig_w, $orig_h, $dest_w, $dest_h, $crop ) {
 
-		if ( $crop ) {
+		if ( $crop && $this->can_crop( $orig_w, $orig_h, $dest_w, $dest_h )) {
 			$cropsize = false;
 
 			// get sizeslug and size

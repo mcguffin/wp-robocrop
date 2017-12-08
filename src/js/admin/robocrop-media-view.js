@@ -406,11 +406,25 @@
 			this.model.set( 'focuspoint', this.focuspointtool.getFocuspoint() );
 		},
 		_setCropSizes : function( cropdata, ratio ) {
-			var modelSizes = this.model.get('sizes')
+			var w = this.model.get('width'),
+				h = this.model.get('height'),
+				modelSizes = this.model.get('sizes'),
 				ratio = ratio || this.current_ratio;
+
 			_.each(ratio.sizes, function( sizename ) {
+				//*
+				var cancrop =	(w >= image_sizes[sizename].width) &&
+								(h >= image_sizes[sizename].height);
+
+				if ( cancrop && image_sizes[sizename].crop ) {
+					modelSizes[ sizename ].cropdata = cropdata;
+				} else if ( 'undefined' !== typeof modelSizes[ sizename ] ) {
+					delete( modelSizes[ sizename ] );
+				}
+				/*/
 				! modelSizes[ sizename ] && ( modelSizes[ sizename ] = {} );
 				modelSizes[ sizename ].cropdata = cropdata;
+				//*/
 			});
 			this.model.set( 'sizes', modelSizes );
 		},

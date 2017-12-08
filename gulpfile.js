@@ -1,12 +1,12 @@
 var gulp = require('gulp');
 var gulputil = require('gulp-util');
-var concat = require('gulp-concat');  
-var uglify = require('gulp-uglify');  
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var rename = require('gulp-rename');
 
-// 
+//
 // gulp.task('styles:dev', function() {
 // 	// dev
 //     return gulp.src('./src/scss/frontend.scss')
@@ -16,19 +16,19 @@ var rename = require('gulp-rename');
 // 		.pipe(rename('frontend.css'))
 //         .pipe( gulp.dest('./css/'));
 // });
-// 
-// 
+//
+//
 // gulp.task('styles:prod', function() {
 // 	// dev
 //     return gulp.src('./src/scss/frontend.scss')
-// 		.pipe( sass( { 
-// 			outputStyle: 'compressed', omitSourceMapUrl: true 
+// 		.pipe( sass( {
+// 			outputStyle: 'compressed', omitSourceMapUrl: true
 // 		} ).on('error', sass.logError) )
 // 		.pipe(rename('frontend.min.css'))
 // 		.pipe( gulp.dest('./css/'));
 // });
-// 
-// 
+//
+//
 // gulp.task('styles:admin:dev', function() {
 // 	// dev
 //     return gulp.src('./src/scss/admin/admin.scss')
@@ -44,16 +44,16 @@ gulp.task('styles', function() {
     return [
     	gulp.src('./src/scss/admin/admin.scss')
 			.pipe( sourcemaps.init() )
-			.pipe( sass( { 
-				outputStyle: 'compressed', 
-				omitSourceMapUrl: true  
+			.pipe( sass( {
+				outputStyle: 'compressed',
+				omitSourceMapUrl: true
 			} ).on('error', sass.logError) )
 			.pipe( sourcemaps.write() )
 			.pipe( rename('admin.min.css') )
 			.pipe( gulp.dest('./css/admin/') )
-			.pipe( sass( { 
-				outputStyle: 'expanded', 
-				omitSourceMapUrl: true  
+			.pipe( sass( {
+				outputStyle: 'expanded',
+				omitSourceMapUrl: true
 			} ).on('error', sass.logError) )
 			.pipe( sourcemaps.write() )
 			.pipe( rename('admin.css') )
@@ -68,11 +68,12 @@ gulp.task('scripts', function() {
 			'./src/js/admin/robocrop-media-view.js',
 			'./src/js/admin/robocrop-focuspoint-media-view.js',
 			'./src/js/admin/robocrop-wp-media-view.js',
-			'./src/js/admin/robocrop-focuspoint-wp-uploader.js' 
+			'./src/js/admin/robocrop-focuspoint-wp-uploader.js'
 		])
 		.pipe( sourcemaps.init() )
 		.pipe( uglify().on('error', gulputil.log )  )
 		.pipe( concat('wp-robocrop.js') )
+		.pipe( sourcemaps.write() )
 	    .pipe( gulp.dest('./js/admin/') )
 		.pipe( rename('wp-robocrop.min.js') )
 		.pipe( sourcemaps.write() )
@@ -86,4 +87,3 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', [ 'styles', 'scripts', 'watch' ] );
-
