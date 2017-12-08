@@ -5,7 +5,7 @@ Plugin Name: WP Robocrop
 Plugin URI: https://github.com/mcguffin/wp-robocrop
 Description: Focus point based image cropping in WordPress
 Author: Jörn Lund
-Version: 1.0.3
+Version: 1.0.4
 Github Repository: mcguffin/wp-robocrop
 Author URI: https://github.com/mcguffin/
 License: GPL3
