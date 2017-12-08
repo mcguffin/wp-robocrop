@@ -7,7 +7,7 @@
 		options			= robocrop.options,
 		cropBtnHTML		= '<button type="button" class="button robocrop-open">'+l10n.EditImageSizes+'</button>',
 		cropLinkHTML	= '<button type="button" class="button-link robocrop-open">'+l10n.EditImageSizes+'</button>';
- 
+
 	var robocropStateExtend = {
 		createStates: function() {
 			this._parentCreateStates.apply(this,arguments);
@@ -30,8 +30,8 @@
 		robocropOpen: function( event ) {
 			console.log();
 			var size = this.model.get('size'),
-				croptool = new robocrop.view.Frame.Crop( { 
-					controller: this.controller, 
+				croptool = new robocrop.view.Frame.Crop( {
+					controller: this.controller,
 					model: this.controller.image.attachment,
 					sizeToSelect: size
 				} );
@@ -46,15 +46,16 @@
 		_parentRender: wp.media.view.Attachment.Details.prototype.render,
 		render: function() {
 			this._parentRender.apply(this,arguments);
-			// media library screen
-			if ( this.model.get('type') === 'image' ) {
+
+			// media library screeN
+			if ( ['image/jpeg','image/png','image/gif'].indexOf( this.model.get('mime') ) >= 0 ) {
 				this.$('.attachment-actions').append(cropBtnHTML);
 				$( cropLinkHTML ).insertAfter( this.$el.find( 'a.edit-attachment' ) );
 			}
 		},
 		robocropOpen: function( event ) {
-			var croptool = new robocrop.view.Frame.Crop( { 
-					controller: this.controller, 
+			var croptool = new robocrop.view.Frame.Crop( {
+					controller: this.controller,
 					model: this.model
 				});
 			croptool.open();
