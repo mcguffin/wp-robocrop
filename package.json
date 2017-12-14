@@ -17,12 +17,13 @@
   },
   "homepage": "https://github.com/mcguffin/wp-robocrop#readme",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-sourcemaps": "^1.12.0",
-    "gulp-uglify": "^2.1.2",
-    "gulp-util": "^3.0.8"
+    "gulp": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-concat": "*",
+    "gulp-rename": "*",
+    "gulp-sass": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-uglify": "*",
+    "gulp-util": "*"
   }
 }
