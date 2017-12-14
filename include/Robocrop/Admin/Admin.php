@@ -26,7 +26,7 @@ class Admin extends Core\Module {
 
 		add_filter( 'wp_prepare_attachment_for_js' , array( $this , 'wp_prepare_attachment_for_js' ),10,3);
 
-		add_option( 'robocrop_version', false, true );
+		add_option( 'robocrop_version', false, '', true );
 	}
 
 
