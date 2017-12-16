@@ -13,7 +13,24 @@ class RegenerateThumbnails extends Core\Singleton {
 	 *	@inheritdoc
 	 */
 	protected function __construct() {
-		add_action('wp_ajax_regeneratethumbnail',array( $this,'ajax_regeneratethumbnail'), 1 );
+		// v1+
+		add_action('wp_ajax_regeneratethumbnail',array( $this,'prepare_request_data'), 1 );
+
+		// v3
+		add_filter('rest_pre_dispatch',array( $this,'rest_pre_dispatch'), 1, 3 );
+	}
+
+	/**
+	 *	Hook into regen-thumbs ajax_regeneratethumbnail
+	 *
+	 *	@action rest_pre_dispatch
+	 */
+	public function rest_pre_dispatch( $result, $wp_rest_server, $request ) {
+		if ( -1 !== strpos( '/regenerate-thumbnails', $request->get_route() ) ) {
+			$_REQUEST['id'] = preg_replace('/.*\/(\d+)$/imsU','\1',$request->get_route());
+			$this->prepare_request_data();
+		}
+		return $result;
 	}
 
 	/**
@@ -21,7 +38,7 @@ class RegenerateThumbnails extends Core\Singleton {
 	 *
 	 *	@action wp_ajax_regeneratethumbnail
 	 */
-	public function ajax_regeneratethumbnail() {
+	public function prepare_request_data() {
 		$attachment_id = (int) $_REQUEST['id'];
 		$prev_meta = wp_get_attachment_metadata( $attachment_id, true );
 
