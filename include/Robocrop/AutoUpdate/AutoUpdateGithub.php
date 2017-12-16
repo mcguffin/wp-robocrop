@@ -40,7 +40,6 @@ class AutoUpdateGithub extends AutoUpdate {
 						'last_updated'	=> $release_info->published_at,
 						'notes'			=> $release_info->body,
 					);
-
 			}
 		}
 

@@ -6,6 +6,7 @@
         "js": true
       }
     },
+	"autoupdate": {},
     "compat": {},
     "gulp": {},
     "settings": {

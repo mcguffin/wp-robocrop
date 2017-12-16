@@ -14,6 +14,10 @@ Known Browser Support
  - IE11
  - Safari 9.1+
 
+Compatibility
+-------------
+ - Works well with [Regenerate Thumbnails](https://wordpress.org/plugins/regenerate-thumbnails/) by [Alex Mills](https://alex.blog/)
+
 Known Issues
 ------------
  - Cropdata gets lost after using "Edit Original"

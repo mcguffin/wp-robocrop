@@ -1,0 +1,142 @@
+.robocrop-manage-sizes {
+	&.off {
+		+ .robocrop-sizes {
+			display:none;
+		}
+	}
+}
+
+
+.robocrop-sizes-table {
+	thead {
+		tr {
+			th {
+				&:first-of-type {
+					padding-left:10px;
+					width:33%;
+				}
+				&:last-of-type {
+					width:46px;
+				}
+				&.options {
+					width:15%;
+				}
+			}
+		}
+	}
+	.tools {
+		text-align:right;
+	}
+	tbody {
+		tr {
+			&:nth-of-type(even) {
+				background-color:$wp-gray-lighter;
+			}
+
+		}
+		td {
+			padding-left:0;
+			&:first-of-type {
+				padding-left:10px;
+			}
+			// padding-bottom:0;
+			vertical-align:top;
+			&.input {
+				// margin:0;
+				// padding:0;
+				span {
+					display:inline-block;
+				}
+				[type="number"] {
+//					height:auto;
+				}
+				[type="number"],[type="text"] {
+					width:100%;
+
+//					padding:10px 15px;
+				}
+			}
+			&.dimensions {
+				[type="number"] {
+					float:left;
+					margin:0;
+				}
+				[data-prop="width"] {
+					width:45%;
+					border-right-style:none;
+					box-shadow:inset 2px 1px 2px rgba( 0, 0, 0, 0.07 );
+				}
+				[data-prop="height"] {
+					width:55%;
+					border-left-style:none;
+					box-shadow:inset -2px 1px 2px rgba( 0, 0, 0, 0.07 );
+					padding-left:15px;
+					text-align:right;
+				}
+				.times {
+					display:inline-block;
+					float:left;
+					width: 0;
+					padding: 4px 0;
+					position: relative;
+//					left: -5px;
+					font-size: 20px;
+					line-height: 18px;
+					color:$wp-gray-dark;
+				}
+			}
+			&.options {
+				label {
+					display:block;
+					margin-bottom:10px;
+				}
+			}
+		}
+	}
+	a.remove {
+		display:inline-block;
+		width:24px;
+		height:24px;
+		border-radius:12px;
+		line-height:24px;
+		border:1px solid $wp-gray-dark;
+		color:$wp-gray-dark;
+		&:focus,
+		&:hover {
+			background-color:$wp-red;
+			color:#fff;
+		}
+	}
+	.scaled {
+		padding-top:5px;
+		table {
+			tr {
+				background-color:transparent;
+			}
+			th {
+				&.scaled-id,
+				&.scaled-factor {
+					width:50%;
+				}
+
+			}
+			td,th {
+				padding:0;
+				border-style:none;
+				& > input {
+					width:100%;
+					margin:0;
+				}
+				&.scaled-id,
+				&.scaled-factor {
+					width:50%;
+				}
+			}
+		}
+	}
+	.scaled-list {
+		margin-top:0;
+	}
+	.scaled-item {
+	}
+}

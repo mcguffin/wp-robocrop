@@ -18,7 +18,6 @@ function do_scss( src ) {
 		.pipe( gulp.dest( './css/' + dir ) )
         .pipe( sass( { outputStyle: 'compressed' } ).on('error', sass.logError) )
 		.pipe( rename( { suffix: '.min' } ) )
-        .pipe( sourcemaps.write() )
         .pipe( gulp.dest( './css/' + dir ) );
 
 }
@@ -49,6 +48,7 @@ function concat_js( src, dest ) {
 
 gulp.task('scss', function() {
 	return [
+		do_scss('settings/media')
 	];
 });
 
@@ -61,13 +61,16 @@ gulp.task('js', function() {
 
 
 gulp.task( 'js-admin', function(){
-	return concat_js( [
-		'./src/js/admin/robocrop-base.js',
-		'./src/js/admin/robocrop-media-view.js',
-		'./src/js/admin/robocrop-focuspoint-media-view.js',
-		'./src/js/admin/robocrop-wp-media-view.js',
-		'./src/js/admin/robocrop-focuspoint-wp-uploaders.js'
-	], 'admin/wp-robocrop.js');
+	return [
+		concat_js( [
+			'./src/js/admin/robocrop-base.js',
+			'./src/js/admin/robocrop-media-view.js',
+			'./src/js/admin/robocrop-focuspoint-media-view.js',
+			'./src/js/admin/robocrop-wp-media-view.js',
+			'./src/js/admin/robocrop-focuspoint-wp-uploaders.js'
+		], 'admin/wp-robocrop.js'),
+		do_js('settings/media')
+	];
 } );
 
 

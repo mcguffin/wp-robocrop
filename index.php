@@ -46,6 +46,8 @@ require_once ROBOCROP_DIRECTORY . 'include/vendor/autoload.php';
 
 Core\Core::instance();
 
+Core\MediaHelper::instance();
+
 if ( is_admin() ) {
 	Settings\SettingsMedia::instance();
 

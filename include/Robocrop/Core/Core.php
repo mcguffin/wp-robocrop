@@ -20,6 +20,7 @@ class Core extends Module {
 		register_deactivation_hook( ROBOCROP_FILE, array( __CLASS__ , 'deactivate' ) );
 		register_uninstall_hook( ROBOCROP_FILE, array( __CLASS__ , 'uninstall' ) );
 
+
 		parent::__construct();
 	}
 
@@ -29,8 +30,8 @@ class Core extends Module {
 	 *	@action wp_enqueue_scripts
 	 */
 	public function wp_enqueue_style() {
-		wp_enqueue_style( 'wp-robocrop-style', $this->get_asset_url( 'css/frontend.css' ) );
-		wp_enqueue_script( 'wp-robocrop-script', $this->get_asset_url( 'js/frontend.js' ), array( 'jquery' ) );
+		// wp_enqueue_style( 'wp-robocrop-style', $this->get_asset_url( 'css/frontend.css' ) );
+		// wp_enqueue_script( 'wp-robocrop-script', $this->get_asset_url( 'js/frontend.js' ), array( 'jquery' ) );
 	}
 
 
@@ -82,6 +83,8 @@ class Core extends Module {
 	public static function uninstall() {
 		delete_option( 'robocrop_version' );
 		delete_option( 'robocrop_ask_for_focuspoint' );
+		delete_option( 'robocrop_manage_sizes' );
+		delete_option( 'robocrop_sizes' );
 	}
 
 	/**

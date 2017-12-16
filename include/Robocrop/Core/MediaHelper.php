@@ -4,6 +4,70 @@ namespace Robocrop\Core;
 
 class MediaHelper extends Singleton {
 
+	private $original_image_sizes = null;
+	private $skip_filter = false;
+
+	/**
+	 *	@inheritdoc
+	 */
+	protected function __construct() {
+
+		if ( get_option( 'robocrop_manage_sizes' ) ) {
+			add_action( 'after_setup_theme', array( $this, 'add_image_sizes' ), 11 );
+			add_filter( 'image_size_names_choose', array( $this, 'image_size_names_choose' ) );
+		}
+	}
+
+	/**
+	 *	@action after_setup_theme
+	 */
+	public function add_image_sizes() {
+
+		if ( ( ! $sizes = get_option('robocrop_sizes') ) || ! is_array( $sizes ) ) {
+			return;
+		}
+		if ( is_null( $this->original_image_sizes ) ) {
+			$this->original_image_sizes = $this->get_image_sizes( false, true );
+		}
+		foreach ( array_keys( $this->original_image_sizes ) as $slug ) {
+			remove_image_size( $slug );
+		}
+		foreach ( get_option('robocrop_sizes') as $slug => $size ) {
+			/* @vars $name, $width, $height, $crop, $selectable */
+			extract( $size );
+			add_image_size( $key, $width, $height, $crop );
+			// add scaled sizes
+			if ( isset( $scaled ) ) {
+				foreach ( $scaled as $suffix => $factor ) {
+					$factor = floatval($factor);
+					if ( $factor && 1 !== $factor ) {
+						add_image_size( "{$key}-{$suffix}", $width * $factor, $height * $factor, $crop );
+					}
+				}
+			}
+		}
+
+	}
+
+	/**
+	 *	@filter image_size_names_choose
+	 */
+	public function image_size_names_choose( $names ) {
+		if ( $this->skip_filter || ! ( $sizes = get_option('robocrop_sizes') ) || ! is_array( $sizes ) ) {
+			return $names;
+		}
+
+		foreach ( $sizes as $slug => $size ) {
+			/* @vars $name, $width, $height, $crop, $selectable */
+			extract( $size );
+			if ( $selectable ) {
+				$names[ $slug ] = $name;
+			}
+		}
+		return $names;
+	}
+
+
 	/**
 	 *	Get image ratios and a ratio to size mapping.
 	 *
@@ -25,13 +89,13 @@ class MediaHelper extends Singleton {
 				$ratios[$ratio_key]['min_height'] = min( $ratios[$ratio_key]['min_height'], $size['height'] );
 			}
 		}
-		
+
 		return $ratios;
 	}
 
 	/**
-	 *	Get image size based on width and height
-	 *	
+	 *	Get image size by width and height
+	 *
 	 *	@param	$width	int Image width
 	 *	@param	$height	int Image height
 	 *	@param	$crop	bool|null	crop yes, no or don't care
@@ -45,44 +109,57 @@ class MediaHelper extends Singleton {
 				 $size['height'] == intval($height) &&
 				 (( ! is_null($crop) && $size['crop'] == $crop ) || is_null($crop))
 			) {
-				return array($key,$size);
+				return array( $key, $size );
 			}
 		}
 	}
 
 	/**
 	 *	Get all image sizes
-	 *	
+	 *
+	 *	@param	bool	$with_core	Include Core sizes thumbnail, medium, medium_large
+	 *
 	 *	@return assocative array with all image sizes, their names and labels
 	 */
-	public function get_image_sizes( ) {
+	public function get_image_sizes( $with_core = true, $unfiltered = false ) {
 
 		global $_wp_additional_image_sizes;
+
+		$this->skip_filter = $unfiltered;
+		if ( $unfiltered && ! is_null( $this->original_image_sizes ) ) {
+			return $this->original_image_sizes;
+		}
 
 		$sizes = array();
 
 		/**
 		 * Get rounding precision for image ratios.
-		 * E.g. 16/9 = 1.7777777.. will be rounded to 1.7778
+		 * E.g. 16/9 = 1.7777777.. will be rounded to 1.78
 		 *
 		 * @param int $precision decimal places after rounding
 		 */
 		$precision = apply_filters('robocrop_rounding_precision', 2 );
-		
-		// get size names
-		$size_names = apply_filters( 'image_size_names_choose', array(
+
+		$core_sizes = array( 'thumbnail', 'medium', 'medium_large', 'large', 'full' );
+
+		$core_size_names = array(
 			'thumbnail' => __( 'Thumbnail' ),
 			'medium'    => __( 'Medium' ),
 			'large'     => __( 'Large' ),
 			'full'      => __( 'Full Size' )
-		) );
-		
-		
-		$get_intermediate_image_sizes = get_intermediate_image_sizes();
+		);
+
+		// get size names
+		$size_names = apply_filters( 'image_size_names_choose', $core_size_names );
+
+		$intermediate_image_sizes = get_intermediate_image_sizes();
 
 		// Create the full array with sizes and crop info
-		foreach( $get_intermediate_image_sizes as $_size ) {
-			
+		foreach( $intermediate_image_sizes as $_size ) {
+			if ( ! $with_core && in_array( $_size, $core_sizes ) ) {
+				continue;
+			}
+
 			if ( in_array( $_size, array( 'thumbnail', 'medium', 'large' ) ) ) {
 				$w    = intval( get_option( $_size . '_size_w' ) );
 				$h    = intval( get_option( $_size . '_size_h' ) );
@@ -93,22 +170,24 @@ class MediaHelper extends Singleton {
 				$crop = (bool) $_wp_additional_image_sizes[ $_size ]['crop'];
 			}
 			$sizes[$_size] = array(
-				'name'	=> isset($size_names[$_size]) ? $size_names[$_size] : $_size,
-				'key'   => $_size,
-				'width'  => $w,
-				'height' => $h,
-				'crop'   => $crop,
-				'ratio'  => $w && $h ? round($w / $h, $precision ) : 0,
+				'name'			=> isset( $size_names[$_size] ) ? $size_names[$_size] : $_size,
+				'selectable'	=> isset( $size_names[$_size] ),
+				'key'			=> $_size,
+				'width'			=> $w,
+				'height'		=> $h,
+				'crop'			=> $crop,
+				'ratio'			=> $w && $h ? round($w / $h, $precision ) : 0,
+//				'scaled'		=> array(),
 			);
 		}
-		
+		$this->skip_filter = false;
 		return $sizes;
 	}
 
 
 	/**
 	 *	Get Crop geometry by focuspoint
-	 *	
+	 *
 	 *	@param	$orig_w		int Image width
 	 *	@param	$orig_h		int Image height
 	 *	@param	$dest_w		int Crop width
