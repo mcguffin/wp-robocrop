@@ -6,6 +6,14 @@ Focus point based image cropping in WordPress.
 Developed with WordPress 4.5.2 -
 Tested up to WordPress 4.9.1
 
+Installation
+------------
+ - Head over to the [releases](releases) tab
+ - Download 'wp-robocrop.zip'
+ - Install and activate it like any other WordPress plugin
+ - As long as the plugin is active, it will check for updates
+
+
 Known Browser Support
 ---------------------
  - Chrome 48+
