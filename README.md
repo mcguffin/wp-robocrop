@@ -8,7 +8,7 @@ Tested up to WordPress 4.9.1
 
 Installation
 ------------
- - Head over to the [releases](releases) tab
+ - Head over to [releases](../../releases)
  - Download 'wp-robocrop.zip'
  - Install and activate it like any other WordPress plugin
  - As long as the plugin is active, it will check for updates
