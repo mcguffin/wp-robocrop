@@ -416,6 +416,9 @@
 				var cancrop =	(w >= image_sizes[sizename].width) &&
 								(h >= image_sizes[sizename].height);
 
+				! modelSizes[ sizename ] && ( modelSizes[ sizename ] = {} );
+				modelSizes[ sizename ].cropdata = cropdata;
+
 				if ( cancrop && image_sizes[sizename].crop ) {
 					modelSizes[ sizename ].cropdata = cropdata;
 				} else if ( 'undefined' !== typeof modelSizes[ sizename ] ) {
