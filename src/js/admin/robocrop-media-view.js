@@ -410,20 +410,22 @@
 				h = this.model.get('height'),
 				modelSizes = this.model.get('sizes'),
 				ratio = ratio || this.current_ratio;
-
+			console.log(modelSizes)
 			_.each(ratio.sizes, function( sizename ) {
 				//*
 				var cancrop =	(w >= image_sizes[sizename].width) &&
 								(h >= image_sizes[sizename].height);
+
+				// set model size if not exists
+				! modelSizes[ sizename ] && ( modelSizes[ sizename ] = {} );
+				modelSizes[ sizename ].cropdata = cropdata;
 
 				if ( cancrop && image_sizes[sizename].crop ) {
 					modelSizes[ sizename ].cropdata = cropdata;
 				} else if ( 'undefined' !== typeof modelSizes[ sizename ] ) {
 					delete( modelSizes[ sizename ] );
 				}
-				/*/
-				! modelSizes[ sizename ] && ( modelSizes[ sizename ] = {} );
-				modelSizes[ sizename ].cropdata = cropdata;
+				//*/
 				//*/
 			});
 			this.model.set( 'sizes', modelSizes );
