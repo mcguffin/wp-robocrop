@@ -173,7 +173,7 @@ class Attachment extends Core\Singleton {
 //
 				if ( $sizes[ $sizeslug ]['crop'] ) {
 					$cancrop = $this->can_crop( $orig_w, $orig_h, $current_size['width'], $current_size['height'] );
-					error_log(var_export($cancrop,true));
+
 					if ( ! $cancrop ) {
 						$remove_sizes[] = $sizeslug;
 					} else if ( isset( $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
