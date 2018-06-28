@@ -41,7 +41,8 @@ class Core extends Module {
 	 *  @action plugins_loaded
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'wp-robocrop' , false, ROBOCROP_DIRECTORY . '/languages/' );
+		$path = pathinfo( dirname( ROBOCROP_FILE ), PATHINFO_FILENAME );
+		load_plugin_textdomain( 'wp-robocrop', false, $path . '/languages' );
 	}
 
 	/**
