@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Robocrop\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-15 18:52+0100\n"
-"PO-Revision-Date: 2016-05-15 18:52+0100\n"
+"POT-Creation-Date: 2018-06-28T06:35:28+00:00\n"
+"PO-Revision-Date: 2018-06-28 08:45+0200\n"
 "Last-Translator: Jörn Lund <joern@podpirate.org>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -11,107 +11,206 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Poedit 2.0.8\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
-"X-Poedit-Basepath: ../\n"
+"X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: node_modules"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
 
-#: include/class-wp-robocrop-admin.php:79
+#: include/Robocrop/Admin/Admin.php:51
 msgid "Edit Image sizes"
 msgstr "Bildgrößen bearb."
 
-#: include/class-wp-robocrop-admin.php:80
+#: include/Robocrop/Admin/Admin.php:52
 msgid "Robo Crop Image"
 msgstr "Robo Crop Image"
 
-#: include/class-wp-robocrop-admin.php:81
+#: include/Robocrop/Admin/Admin.php:53
 msgid "Okay"
 msgstr "Okay"
 
-#: include/class-wp-robocrop-admin.php:82
+#: include/Robocrop/Admin/Admin.php:54
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: include/class-wp-robocrop-admin.php:83
-#: include/template/robocrop-modal.php:11
+#: include/Robocrop/Admin/Admin.php:55
 msgid "Close"
 msgstr "Schließen"
 
-#: include/class-wp-robocrop-admin.php:84
+#: include/Robocrop/Admin/Admin.php:56
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: include/class-wp-robocrop-admin.php:85
-#: include/template/robocrop-modal.php:14
+#: include/Robocrop/Admin/Admin.php:57 include/template/robocrop-modal.php:14
 msgid "Attachment Details"
 msgstr "Anhang Details"
 
-#: include/class-wp-robocrop-admin.php:86
+#: include/Robocrop/Admin/Admin.php:58
 msgid "Set Focus Point"
 msgstr "Fokuspunkt setzen"
 
-#: include/class-wp-robocrop-admin.php:88
+#: include/Robocrop/Admin/Admin.php:60
 msgid "Click on the most important spot of the image."
 msgstr "Klicke auf den wichtigsten Punkt im Bild."
 
-#: include/class-wp-robocrop-admin.php:89
+#: include/Robocrop/Admin/Admin.php:61
 msgid "Cancel Upload"
 msgstr "Uplaod abbrechen"
 
-#: include/class-wp-robocrop-admin.php:395
-msgid "Thumbnail"
-msgstr "Vorschau"
-
-#: include/class-wp-robocrop-admin.php:396
-msgid "Medium"
-msgstr "Mittel"
-
-#: include/class-wp-robocrop-admin.php:397
-msgid "Large"
-msgstr "Groß"
-
-#: include/class-wp-robocrop-admin.php:398
-msgid "Full Size"
-msgstr "Volle Größe"
-
-#: include/class-wp-robocrop-settings.php:51
+#: include/Robocrop/Settings/SettingsMedia.php:143
 msgid "WP RoboCrop"
 msgstr "WP RoboCrop"
 
-#: include/class-wp-robocrop-settings.php:55
+#: include/Robocrop/Settings/SettingsMedia.php:149
 msgid "Upload with Focus Point"
 msgstr "Upload mit Fokuspunkt"
 
-#: include/class-wp-robocrop-settings.php:61
+#: include/Robocrop/Settings/SettingsMedia.php:155
 msgid ""
 "If checked you will be asked to set a focus point before an image gets "
 "uploaded"
 msgstr "Wenn ausgewählt wirst Du beim Bildupload nach dem Fokuspunkt gefragt."
 
-#: include/template/robocrop-modal.php:9
-msgid "Previous"
-msgstr "Vorheriges"
+#: include/Robocrop/Settings/SettingsMedia.php:164
+msgid "Custom Image Sizes"
+msgstr "Eigene Bildformate"
 
-#: include/template/robocrop-modal.php:10
-msgid "Next"
-msgstr "Nächstes"
+#: include/Robocrop/Settings/SettingsMedia.php:170
+msgid "Let Robocrop manage image sizes."
+msgstr "Robocrop soll die Bildformate verwalten"
+
+#: include/Robocrop/Settings/SettingsMedia.php:171
+msgid "If checked you will be able to manage all image sizes here."
+msgstr "Wenn ausgewählt wirst Du hier alle Bildformate berabeiten können "
+
+#: include/Robocrop/Settings/SettingsMedia.php:180
+msgid "Additional Sizes"
+msgstr "Zusätzliche Bildformate"
+
+#: include/Robocrop/Settings/SettingsMedia.php:186
+msgid "Add additional image sizes"
+msgstr "Weitere Bildgrößen hinzufügen"
 
 #: include/template/robocrop-select-tpl.php:12
 msgid "Image size"
 msgstr "Bildgröße"
 
 #: include/template/robocrop-tpl.php:11
-msgid "Crop by Focus Point"
-msgstr "Beschneide nach Fokuspunkt"
+msgid "Apply Focus Point"
+msgstr "Fokuspunkt anwenden"
 
 #: include/template/robocrop-tpl.php:12
-msgid "Crop All by Focus Point"
-msgstr "Beschneide alle nach Fokuspunkt"
+msgid "Apply to all sizes"
+msgstr "Auf alle Formate anwenden"
+
+#: include/views/settings/sizes.php:4 include/views/settings/sizes.php:42
+msgid "Name"
+msgstr "Name"
+
+#: include/views/settings/sizes.php:5
+msgid "Slug"
+msgstr "Slug"
+
+#: include/views/settings/sizes.php:6
+msgid "Dimensions"
+msgstr "Größen"
+
+#: include/views/settings/sizes.php:7
+msgid "Height"
+msgstr "Höhe"
+
+#: include/views/settings/sizes.php:8 include/views/settings/sizes.php:50
+msgid "Ratio"
+msgstr "Seitenverhältnis"
+
+#: include/views/settings/sizes.php:9 include/views/settings/sizes.php:55
+msgid "Crop"
+msgstr "Beschneiden"
+
+#: include/views/settings/sizes.php:10
+msgid "Options"
+msgstr "Optionen"
+
+#: include/views/settings/sizes.php:11
+msgid "Scaled Sizes"
+msgstr "Abformate"
+
+#: include/views/settings/sizes.php:17
+msgid "No custom image sizes yet"
+msgstr "Keine eigenen Bildgrößen bisher"
+
+#: include/views/settings/sizes.php:26
+msgid "Save to Theme"
+msgstr "Im Theme speichern"
+
+#: include/views/settings/sizes.php:29
+msgid "Load from Theme"
+msgstr "Vom Theme laden"
+
+#: include/views/settings/sizes.php:33
+msgid "Restore Dafaults"
+msgstr "Zurück zu den Standardeinstellungen"
+
+#: include/views/settings/sizes.php:34
+msgid "Add Size"
+msgstr "Format hinzufügen"
+
+#: include/views/settings/sizes.php:44
+msgid "Key"
+msgstr "Schlüssel"
+
+#: include/views/settings/sizes.php:59
+msgid "Selectable"
+msgstr "Auswählbar"
+
+#: include/views/settings/sizes.php:66
+msgid "ID"
+msgstr "ID"
+
+#: include/views/settings/sizes.php:67
+msgid "Factor"
+msgstr "Faktor"
+
+#: include/views/settings/sizes.php:73
+msgid "No scaled sizes"
+msgstr "Keine Abformate"
+
+#: include/views/settings/sizes.php:79
+msgid "Add"
+msgstr "Hinzuf."
+
+#: include/views/settings/sizes.php:87
+msgid "Remove Size"
+msgstr "Format Entfernen"
+
+#: include/views/settings/sizes.php:99
+msgid "Remove"
+msgstr "Entfernen"
+
+#~ msgid "Thumbnail"
+#~ msgstr "Vorschau"
+
+#~ msgid "Medium"
+#~ msgstr "Mittel"
+
+#~ msgid "Large"
+#~ msgstr "Groß"
+
+#~ msgid "Full Size"
+#~ msgstr "Volle Größe"
+
+#~ msgid "Previous"
+#~ msgstr "Vorheriges"
+
+#~ msgid "Next"
+#~ msgstr "Nächstes"
+
+#~ msgid "Crop All by Focus Point"
+#~ msgstr "Beschneide alle nach Fokuspunkt"
 
 #~ msgid "Auto"
 #~ msgstr "Autom."

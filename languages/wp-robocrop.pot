@@ -1,104 +1,100 @@
+# Copyright (C) 2018 joern
+# This file is distributed under the GNU General Public License v2 or later.
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Robocrop\n"
+"Project-Id-Version: WP Robocrop v1.1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-25 15:16+0100\n"
-"PO-Revision-Date: 2016-03-20 23:36+0100\n"
-"Last-Translator: Jörn Lund <joern@podpirate.org>\n"
+"POT-Creation-Date: 2018-06-28T06:35:28+00:00\n"
+"PO-Revision-Date: 2018-06-28T06:35:28+00:00\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: WP Make Pot\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
-"_n_noop:1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
-"X-Poedit-Basepath: ../\n"
+"_n_noop:1,2;_c;_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;"
+"esc_html_x:1,2c\n"
 "X-Textdomain-Support: yes\n"
-"Language-Team: \n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Basepath: ./\n"
+"Last-Translator: \n"
+"X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 
-#: include/Robocrop/Admin/Admin.php:41
+#: include/Robocrop/Admin/Admin.php:51
 msgid "Edit Image sizes"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:42
+#: include/Robocrop/Admin/Admin.php:52
 msgid "Robo Crop Image"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:43
+#: include/Robocrop/Admin/Admin.php:53
 msgid "Okay"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:44
+#: include/Robocrop/Admin/Admin.php:54
 msgid "Save Changes"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:45
-#: include/template/robocrop-modal.php:11
+#: include/Robocrop/Admin/Admin.php:55
 msgid "Close"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:46
+#: include/Robocrop/Admin/Admin.php:56
 msgid "Reset"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:47
+#: include/Robocrop/Admin/Admin.php:57
 #: include/template/robocrop-modal.php:14
 msgid "Attachment Details"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:48
+#: include/Robocrop/Admin/Admin.php:58
 msgid "Set Focus Point"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:50
+#: include/Robocrop/Admin/Admin.php:60
 msgid "Click on the most important spot of the image."
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:51
+#: include/Robocrop/Admin/Admin.php:61
 msgid "Cancel Upload"
 msgstr ""
 
-#: include/Robocrop/Core/MediaHelper.php:74
-msgid "Thumbnail"
-msgstr ""
-
-#: include/Robocrop/Core/MediaHelper.php:75
-msgid "Medium"
-msgstr ""
-
-#: include/Robocrop/Core/MediaHelper.php:76
-msgid "Large"
-msgstr ""
-
-#: include/Robocrop/Core/MediaHelper.php:77
-msgid "Full Size"
-msgstr ""
-
-#: include/Robocrop/Settings/SettingsMedia.php:34
+#: include/Robocrop/Settings/SettingsMedia.php:143
 msgid "WP RoboCrop"
 msgstr ""
 
-#: include/Robocrop/Settings/SettingsMedia.php:39
+#: include/Robocrop/Settings/SettingsMedia.php:149
 msgid "Upload with Focus Point"
 msgstr ""
 
-#: include/Robocrop/Settings/SettingsMedia.php:45
-msgid ""
-"If checked you will be asked to set a focus point before an image gets "
-"uploaded"
+#: include/Robocrop/Settings/SettingsMedia.php:155
+msgid "If checked you will be asked to set a focus point before an image gets uploaded"
 msgstr ""
 
-#: include/template/robocrop-modal.php:9
-msgid "Previous"
+#: include/Robocrop/Settings/SettingsMedia.php:164
+msgid "Custom Image Sizes"
 msgstr ""
 
-#: include/template/robocrop-modal.php:10
-msgid "Next"
+#: include/Robocrop/Settings/SettingsMedia.php:170
+msgid "Let Robocrop manage image sizes."
+msgstr ""
+
+#: include/Robocrop/Settings/SettingsMedia.php:171
+msgid "If checked you will be able to manage all image sizes here."
+msgstr ""
+
+#: include/Robocrop/Settings/SettingsMedia.php:180
+msgid "Additional Sizes"
+msgstr ""
+
+#: include/Robocrop/Settings/SettingsMedia.php:186
+msgid "Add additional image sizes"
 msgstr ""
 
 #: include/template/robocrop-select-tpl.php:12
@@ -106,9 +102,97 @@ msgid "Image size"
 msgstr ""
 
 #: include/template/robocrop-tpl.php:11
-msgid "Crop by Focus Point"
+msgid "Apply Focus Point"
 msgstr ""
 
 #: include/template/robocrop-tpl.php:12
-msgid "Crop All by Focus Point"
+msgid "Apply to all sizes"
 msgstr ""
+
+#: include/views/settings/sizes.php:4
+#: include/views/settings/sizes.php:42
+msgid "Name"
+msgstr ""
+
+#: include/views/settings/sizes.php:5
+msgid "Slug"
+msgstr ""
+
+#: include/views/settings/sizes.php:6
+msgid "Dimensions"
+msgstr ""
+
+#: include/views/settings/sizes.php:7
+msgid "Height"
+msgstr ""
+
+#: include/views/settings/sizes.php:8
+#: include/views/settings/sizes.php:50
+msgid "Ratio"
+msgstr ""
+
+#: include/views/settings/sizes.php:9
+#: include/views/settings/sizes.php:55
+msgid "Crop"
+msgstr ""
+
+#: include/views/settings/sizes.php:10
+msgid "Options"
+msgstr ""
+
+#: include/views/settings/sizes.php:11
+msgid "Scaled Sizes"
+msgstr ""
+
+#: include/views/settings/sizes.php:17
+msgid "No custom image sizes yet"
+msgstr ""
+
+#: include/views/settings/sizes.php:26
+msgid "Save to Theme"
+msgstr ""
+
+#: include/views/settings/sizes.php:29
+msgid "Load from Theme"
+msgstr ""
+
+#: include/views/settings/sizes.php:33
+msgid "Restore Dafaults"
+msgstr ""
+
+#: include/views/settings/sizes.php:34
+msgid "Add Size"
+msgstr ""
+
+#: include/views/settings/sizes.php:44
+msgid "Key"
+msgstr ""
+
+#: include/views/settings/sizes.php:59
+msgid "Selectable"
+msgstr ""
+
+#: include/views/settings/sizes.php:66
+msgid "ID"
+msgstr ""
+
+#: include/views/settings/sizes.php:67
+msgid "Factor"
+msgstr ""
+
+#: include/views/settings/sizes.php:73
+msgid "No scaled sizes"
+msgstr ""
+
+#: include/views/settings/sizes.php:79
+msgid "Add"
+msgstr ""
+
+#: include/views/settings/sizes.php:87
+msgid "Remove Size"
+msgstr ""
+
+#: include/views/settings/sizes.php:99
+msgid "Remove"
+msgstr ""
+
