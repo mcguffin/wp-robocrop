@@ -54,7 +54,7 @@ if ( is_admin() ) {
 	Admin\Admin::instance();
 }
 
-if ( is_admin() || defined( 'DOING_AJAX' ) ) {
+if ( is_admin() || defined( 'DOING_AJAX' ) || ( defined('REST_REQUEST') && REST_REQUEST ) ) {
 
 	// don't WP-Update actual repos!
 	if ( ! file_exists( ROBOCROP_DIRECTORY . '/.git/' ) ) {
