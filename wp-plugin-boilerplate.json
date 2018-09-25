@@ -6,7 +6,7 @@
         "js": true
       }
     },
-	"autoupdate": {},
+    "autoupdate": {},
     "compat": {},
     "gulp": {},
     "settings": {

@@ -3,7 +3,7 @@
 namespace Robocrop\Settings;
 use Robocrop\Core;
 
-abstract class Settings extends Core\Module {
+abstract class Settings extends Core\PluginComponent {
 
 	/**
 	 *	Constructor
@@ -29,13 +29,13 @@ abstract class Settings extends Core\Module {
 		@list( $option_name, $label, $description ) = array_values($args);
 
 		$option_value = get_option( $option_name );
-		
+
 		?><label>
 			<input type="hidden" name="<?php echo $option_name ?>" value="0" />
 			<input type="checkbox" <?php checked( boolval( $option_value ), true, true ); ?> name="<?php echo $option_name ?>" value="1" />
 			<?php echo $label ?>
 		</label>
-		<?php 
+		<?php
 			if ( ! empty( $description ) ) {
 				printf( '<p class="description">%s</p>', $description );
 			}

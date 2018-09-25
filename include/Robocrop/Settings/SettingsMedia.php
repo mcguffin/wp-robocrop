@@ -73,10 +73,10 @@ array(
 )
 */
 		add_option( 'robocrop_ask_for_focuspoint', true, '', true );
-
 		add_option( 'robocrop_sizes', array(), '', true );
 		add_option( 'robocrop_manage_sizes', false, '', true );
 		add_option( 'robocrop_save_sizes', false, '', true );
+
 		add_action( "load-options-media.php", array( $this, 'enqueue_assets') );
 
 		parent::__construct();
@@ -98,6 +98,7 @@ array(
 	 */
 	public function enqueue_assets() {
 		$suffix = SCRIPT_DEBUG ? '' : '.min';
+		$core = Core\Core::instance();
 		$media = Core\MediaHelper::instance();
 
 		$theme_sizes_file	= $this->get_theme_json_file();
@@ -109,8 +110,8 @@ array(
 		}
 
 		wp_enqueue_media();
-		wp_enqueue_style( 'wp-robocrop-settings', $this->get_asset_url( "css/settings/media{$suffix}.css" ) );
-		wp_enqueue_script( 'wp-robocrop-settings', $this->get_asset_url( "js/settings/media{$suffix}.js" ), array( 'jquery' ) );
+		wp_enqueue_style( 'wp-robocrop-settings', $core->get_asset_url( "css/settings/media{$suffix}.css" ) );
+		wp_enqueue_script( 'wp-robocrop-settings', $core->get_asset_url( "js/settings/media{$suffix}.js" ), array( 'jquery' ) );
 		wp_localize_script('wp-robocrop-settings','wp_robocrop_settings',array(
 			'options'	=> array(
 				'sizes'					=> array(
@@ -196,12 +197,14 @@ array(
 	 */
 	public function sizes_ui( $args ) {
 
+		$core = Core\Core::instance();
+
 		@list( $option_name, $label, $description ) = array_values( $args );
 
 		$sizes = get_option( $option_name );
 
 		include implode( DIRECTORY_SEPARATOR,
-			array( ROBOCROP_DIRECTORY, 'include', 'views', 'settings', 'sizes.php' )
+			array( $core->get_plugin_dir(), 'include', 'views', 'settings', 'sizes.php' )
 	 	);
 	}
 
@@ -267,4 +270,37 @@ array(
 		}
 		return $sanitized;
 	}
+
+	/**
+	 *	@inheritdoc
+	 */
+	public function activate(){
+
+	}
+
+	/**
+	 *	@inheritdoc
+	 */
+
+	public function deactivate(){
+
+	}
+
+	/**
+	 *	@inheritdoc
+	 */
+	public function upgrade( $new_version, $old_version ){
+
+	}
+
+	/**
+	 *	@inheritdoc
+	 */
+	public function uninstall() {
+		delete_option( 'robocrop_version' );
+		delete_option( 'robocrop_ask_for_focuspoint' );
+		delete_option( 'robocrop_manage_sizes' );
+		delete_option( 'robocrop_sizes' );
+	}
+
 }

@@ -4,7 +4,7 @@ namespace Robocrop\Admin;
 use Robocrop\Core;
 
 
-class Admin extends Core\Module {
+class Admin extends Core\Singleton {
 
 	private $core;
 
@@ -35,15 +35,11 @@ class Admin extends Core\Module {
 	 */
 	function admin_init() {
 
-		if ( ! $version = get_option('robocrop_version') ) {
-			$info = get_plugin_data( ROBOCROP_FILE );
-			$version = $info['Version'];
-			update_option('robocrop_version', $version );
-		}
+		$version = $this->core->get_version();
 
 		$suffix =  defined('SCRIPT_DEBUG') && SCRIPT_DEBUG  ? '.min' : '';
 
-		wp_register_script( 'wp-robocrop' , $this->get_asset_url( 'js/admin/wp-robocrop'.$suffix.'.js' ) , array( 'jquery', 'media-grid' ) , $version );
+		wp_register_script( 'wp-robocrop' , $this->core->get_asset_url( 'js/admin/wp-robocrop'.$suffix.'.js' ) , array( 'jquery', 'media-grid' ) , $version );
 		wp_localize_script( 'wp-robocrop' , 'robocrop' , array(
 			'image_ratios' => $this->media_helper->get_image_ratios(),
 			'image_sizes'  => $this->media_helper->get_image_sizes(),
@@ -66,7 +62,7 @@ class Admin extends Core\Module {
 			'version'		=> get_option('robocrop_version'),
 		) );
 
-		wp_register_style( 'wp-robocrop-admin' , $this->get_asset_url( 'css/admin/admin'.$suffix.'.css' ) , array( ) , $version );
+		wp_register_style( 'wp-robocrop-admin' , $this->core->get_asset_url( 'css/admin/admin'.$suffix.'.css' ) , array( ) , $version );
 	}
 
 
@@ -87,7 +83,7 @@ class Admin extends Core\Module {
 	 */
 	function print_media_templates() {
 		// cropping tool
-		$rp = ROBOCROP_DIRECTORY . 'include' . DIRECTORY_SEPARATOR . '/template/{,*/,*/*/,*/*/*/}*.php';
+		$rp = $this->core->get_plugin_dir() . 'include' . DIRECTORY_SEPARATOR . '/template/{,*/,*/*/,*/*/*/}*.php';
 		foreach ( glob( $rp, GLOB_BRACE ) as $template_file ) {
 			include $template_file;
 		}

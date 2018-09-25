@@ -7,6 +7,9 @@ Description: Focus point based image cropping in WordPress
 Author: Jörn Lund
 Version: 1.1.5
 Github Repository: mcguffin/wp-robocrop
+Github Plugin URI: mcguffin/wp-robocrop
+Requires WP: 4.8
+Requires PHP: 5.6
 Author URI: https://github.com/mcguffin/
 License: GPL3
 
@@ -39,12 +42,9 @@ Command line args were: `"WP Robocrop" core+css+js admin+css+js settings:media g
 
 namespace Robocrop;
 
-define( 'ROBOCROP_FILE', __FILE__ );
-define( 'ROBOCROP_DIRECTORY', plugin_dir_path(__FILE__) );
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'include/autoload.php';
 
-require_once ROBOCROP_DIRECTORY . 'include/vendor/autoload.php';
-
-Core\Core::instance();
+Core\Core::instance( __FILE__ );
 
 Core\MediaHelper::instance();
 
@@ -56,11 +56,17 @@ if ( is_admin() ) {
 
 if ( is_admin() || defined( 'DOING_AJAX' ) || ( defined('REST_REQUEST') && REST_REQUEST ) ) {
 
-	// don't WP-Update actual repos!
-	if ( ! file_exists( ROBOCROP_DIRECTORY . '/.git/' ) ) {
-		AutoUpdate\AutoUpdateGithub::instance()->init(__FILE__);
+	if ( ! file_exists( plugin_dir_path(__FILE__) . '/.git/' ) ) {
+
+		// not a git. Check if https://github.com/afragen/github-updater is active. (function is_plugin_active not available yet)
+		$active_plugins = get_option('active_plugins');
+		if ( $sitewide_plugins = get_site_option('active_sitewide_plugins') ) {
+			$active_plugins = array_merge( $active_plugins, array_keys( $sitewide_plugins ) );
+		}
+
+		if ( ! in_array( 'github-updater/github-updater.php', $active_plugins ) ) {
+			// not github updater. Init our our own...
+			AutoUpdate\AutoUpdateGithub::instance();
+		}
 	}
-
-	Admin\Attachment::instance();
-
 }

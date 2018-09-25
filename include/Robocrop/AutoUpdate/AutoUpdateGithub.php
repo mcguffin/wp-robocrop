@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *	@package Robocrop\AutoUpdate
+ *	@version 1.0.0
+ *	2018-09-22
+ */
 namespace Robocrop\AutoUpdate;
 
 if ( ! defined('ABSPATH') ) {
