@@ -47,39 +47,31 @@ function concat_js( src, dest ) {
 
 
 gulp.task('scss', function() {
-	return [
-		do_scss('settings/media')
-	];
-});
-
-
-gulp.task('js', function() {
-    return [
-    ];
-
+	return do_scss('settings/media');
 });
 
 
 gulp.task( 'js-admin', function(){
-	return [
-		concat_js( [
+	return concat_js( [
 			'./src/js/admin/robocrop-base.js',
 			'./src/js/admin/robocrop-media-view.js',
 			'./src/js/admin/robocrop-focuspoint-media-view.js',
 			'./src/js/admin/robocrop-wp-media-view.js',
-			'./src/js/admin/robocrop-focuspoint-wp-uploaders.js'
-		], 'admin/wp-robocrop.js'),
-		do_js('settings/media')
-	];
+			'./src/js/admin/robocrop-focuspoint-wp-uploader.js'
+		], 'admin/wp-robocrop.js');
 } );
+gulp.task( 'js-settings', function(){
+	return do_js('settings/media');
+});
 
 
-gulp.task('build', ['scss','js','js-admin'] );
+gulp.task('build', gulp.parallel( 'scss', 'js-admin', 'js-settings' ) );
 
 
 gulp.task('watch', function() {
 	// place code for your default task here
-	gulp.watch('./src/scss/**/*.scss',[ 'scss' ]);
-	gulp.watch('./src/js/**/*.js',[ 'js', 'js-admin' ]);
+	gulp.watch('./src/scss/**/*.scss', gulp.parallel('scss') );
+	gulp.watch('./src/js/**/*.js', gulp.parallel('js-admin', 'js-settings') );
 });
-gulp.task('default', ['build','watch']);
+
+gulp.task('default', gulp.parallel('build','watch'));
