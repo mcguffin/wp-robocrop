@@ -2,7 +2,6 @@
 
 	var robocrop = wp.media.robocrop,
 		image_ratios = robocrop.image_ratios,
-//		image_sizes  = robocrop.image_sizes,
 		options = robocrop.options,
 		imageInfos = {};
 

@@ -28,7 +28,6 @@
 			this.$el.find('.actions').append(cropBtnHTML);
 		},
 		robocropOpen: function( event ) {
-			console.log();
 			var size = this.model.get('size'),
 				croptool = new robocrop.view.Frame.Crop( {
 					controller: this.controller,

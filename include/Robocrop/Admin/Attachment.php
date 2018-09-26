@@ -157,6 +157,7 @@ class Attachment extends Core\Singleton {
 		$sizes = $this->media_helper->get_image_sizes();
 
 		if ( isset( $this->_crop_meta[ $attachment_ID ]['focuspoint'] ) ) {
+
 			// keep old value when updating from somewhere else
 			$metadata['focuspoint'] = $this->_crop_meta[ $attachment_ID ]['focuspoint'];
 		} else if ( ! isset( $metadata['focuspoint'] ) ) {
@@ -179,6 +180,7 @@ class Attachment extends Core\Singleton {
 					} else if ( isset( $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
 						$metadata['sizes'][ $sizeslug ]['cropdata' ] = $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ];
 					}
+
 				}
 			}
 		}
@@ -232,7 +234,6 @@ class Attachment extends Core\Singleton {
 	 *	@filter 'image_resize_dimensions'
 	 */
 	public function image_resize_dimensions( $result, $orig_w, $orig_h, $dest_w, $dest_h, $crop ) {
-
 		if ( $crop && $this->can_crop( $orig_w, $orig_h, $dest_w, $dest_h )) {
 			$cropsize = false;
 
@@ -251,16 +252,16 @@ class Attachment extends Core\Singleton {
 	 *	@return bool|array
 	 */
 	private function get_current_cropdata( $sizeslug, $orig_w = 0, $orig_h = 0 ) {
-
 		if ( isset( $this->_crop_meta[ $this->_current_attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
 
 			// explicit cropdata available
 			return $this->_crop_meta[ $this->_current_attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ];
 
 		} else if ( $orig_w && $orig_h && isset( $this->_crop_meta[ $this->_current_attachment_ID ][ 'focuspoint' ] ) ) {
-
 			// focuspoint available
-			return $this->generate_cropdata( $sizeslug, $this->_crop_meta[ $this->_current_attachment_ID ][ 'focuspoint' ], $orig_w, $orig_h );
+			// set cropdata
+			$this->_crop_meta[ $this->_current_attachment_ID ][ 'sizes' ][ $sizeslug ]['cropdata'] = $this->generate_cropdata( $sizeslug, $this->_crop_meta[ $this->_current_attachment_ID ][ 'focuspoint' ], $orig_w, $orig_h );
+			return $this->_crop_meta[ $this->_current_attachment_ID ][ 'sizes' ][ $sizeslug ]['cropdata'];
 
 		}
 		return false;

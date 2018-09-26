@@ -513,7 +513,7 @@
 			this._title = new wp.media.View({
 				tagName: 'h1'
 			});
-			this._title.$el.text( l10n.AttachmentDetails );
+			this._title.$el.text( l10n.AttachmentDetails ); // "Crop image sizes"
 			this.title.set( [ this._title ] );
 		},
 		createContent: function() {

@@ -17,6 +17,7 @@ class Admin extends Core\Singleton {
 
 		$this->core			= Core\Core::instance();
 		$this->media_helper	= Core\MediaHelper::instance();
+		Attachment::instance();
 
 		add_action( 'admin_init', array( $this , 'admin_init' ) );
 
@@ -71,8 +72,11 @@ class Admin extends Core\Singleton {
 	 *	@action 'wp_enqueue_media'
 	 */
 	function wp_enqueue_media() {
-		if ( ! did_action('wp_enqueue_media') )
+
+		if ( ! did_action('wp_enqueue_media') ) {
 			wp_enqueue_media();
+		}
+
 		wp_enqueue_script( 'wp-robocrop' );
 
 		wp_enqueue_style( 'wp-robocrop-admin' );
@@ -119,10 +123,14 @@ class Admin extends Core\Singleton {
 	 *	@filter 'wp_prepare_attachment_for_js'
 	 */
 	function wp_prepare_attachment_for_js( $response, $attachment, $meta ) {
-		if ( isset($response['sizes'],$meta['sizes'] ) ) {
-			foreach ( $meta['sizes'] as $size => $sizedata ) {
+		if ( isset( $response['sizes'], $meta['sizes'] ) ) {
+			foreach ( $meta['sizes'] as $sizeslug => $sizedata ) {
 				if ( isset( $sizedata['cropdata'] ) ) {
-					$response['sizes'][$size]['cropdata'] = array_map('intval',$sizedata['cropdata']);
+					if ( ! isset( $response['sizes'][ $sizeslug ] ) ) {
+						$response['sizes'][ $sizeslug ] = $sizedata;
+					} else {
+						$response['sizes'][ $sizeslug ]['cropdata'] = array_map( 'intval', $sizedata['cropdata'] );
+					}
 				}
 			}
 		}
