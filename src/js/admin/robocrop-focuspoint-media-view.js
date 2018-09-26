@@ -29,7 +29,7 @@
 				ratio: null
 			} );
 
-			this.options.label = this.options.ratio.name + ' : 1';
+			this.options.label = this.options.ratio.name;
 
 			this.controller = this.options.controller;
 			this.listenTo( this.controller.image, 'load', this.imageLoaded );
@@ -285,7 +285,7 @@
 
 			this.buttons.set( [
 				new wp.media.view.Button({
-					text: l10n.CancelUpload,
+					text: l10n.Cancel,
 					className: 'cancel-upload'
 				}),
 				new wp.media.view.Button({
@@ -293,7 +293,7 @@
 					className: 'reset'
 				}),
 				new wp.media.view.Button({
-					text: l10n.Okay,
+					text: l10n.Upload,
 					className: 'button-primary proceed'
 				})
 			] );

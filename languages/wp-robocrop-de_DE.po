@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Robocrop\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28T06:35:28+00:00\n"
-"PO-Revision-Date: 2018-06-28 08:45+0200\n"
+"POT-Creation-Date: 2018-09-26T07:47:57+00:00\n"
+"PO-Revision-Date: 2018-09-26 09:50+0200\n"
 "Last-Translator: Jörn Lund <joern@podpirate.org>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -21,77 +21,86 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 
-#: include/Robocrop/Admin/Admin.php:51
+#: include/Robocrop/Admin/Admin.php:48
 msgid "Edit Image sizes"
 msgstr "Bildgrößen bearb."
 
-#: include/Robocrop/Admin/Admin.php:52
+#: include/Robocrop/Admin/Admin.php:49
 msgid "Robo Crop Image"
 msgstr "Robo Crop Image"
 
-#: include/Robocrop/Admin/Admin.php:53
+#: include/Robocrop/Admin/Admin.php:50
 msgid "Okay"
 msgstr "Okay"
 
-#: include/Robocrop/Admin/Admin.php:54
+# @ cheese
+#: include/Robocrop/Admin/Admin.php:51
+msgid "Upload"
+msgstr "Upload"
+
+#: include/Robocrop/Admin/Admin.php:52
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: include/Robocrop/Admin/Admin.php:55
+#: include/Robocrop/Admin/Admin.php:53
 msgid "Close"
 msgstr "Schließen"
 
-#: include/Robocrop/Admin/Admin.php:56
+#: include/Robocrop/Admin/Admin.php:54
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: include/Robocrop/Admin/Admin.php:55
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: include/Robocrop/Admin/Admin.php:57 include/template/robocrop-modal.php:14
+#: include/Robocrop/Admin/Admin.php:56 include/template/robocrop-modal.php:14
 msgid "Attachment Details"
 msgstr "Anhang Details"
 
-#: include/Robocrop/Admin/Admin.php:58
+#: include/Robocrop/Admin/Admin.php:57
 msgid "Set Focus Point"
 msgstr "Fokuspunkt setzen"
 
-#: include/Robocrop/Admin/Admin.php:60
+#: include/Robocrop/Admin/Admin.php:59
 msgid "Click on the most important spot of the image."
 msgstr "Klicke auf den wichtigsten Punkt im Bild."
 
-#: include/Robocrop/Admin/Admin.php:61
+#: include/Robocrop/Admin/Admin.php:60
 msgid "Cancel Upload"
 msgstr "Uplaod abbrechen"
 
-#: include/Robocrop/Settings/SettingsMedia.php:143
+#: include/Robocrop/Settings/SettingsMedia.php:144
 msgid "WP RoboCrop"
 msgstr "WP RoboCrop"
 
-#: include/Robocrop/Settings/SettingsMedia.php:149
+#: include/Robocrop/Settings/SettingsMedia.php:150
 msgid "Upload with Focus Point"
 msgstr "Upload mit Fokuspunkt"
 
-#: include/Robocrop/Settings/SettingsMedia.php:155
+#: include/Robocrop/Settings/SettingsMedia.php:156
 msgid ""
 "If checked you will be asked to set a focus point before an image gets "
 "uploaded"
-msgstr "Wenn ausgewählt wirst Du beim Bildupload nach dem Fokuspunkt gefragt."
+msgstr "Wenn ausgewählt kannst Du beim Bildupload den Fokuspunkt auswählen"
 
-#: include/Robocrop/Settings/SettingsMedia.php:164
+#: include/Robocrop/Settings/SettingsMedia.php:165
 msgid "Custom Image Sizes"
 msgstr "Eigene Bildformate"
 
-#: include/Robocrop/Settings/SettingsMedia.php:170
-msgid "Let Robocrop manage image sizes."
-msgstr "Robocrop soll die Bildformate verwalten"
-
 #: include/Robocrop/Settings/SettingsMedia.php:171
-msgid "If checked you will be able to manage all image sizes here."
-msgstr "Wenn ausgewählt wirst Du hier alle Bildformate berabeiten können "
+msgid "Let Robocrop manage image sizes."
+msgstr "Robocrop soll die Bildformate verwalten."
 
-#: include/Robocrop/Settings/SettingsMedia.php:180
+#: include/Robocrop/Settings/SettingsMedia.php:172
+msgid "If checked you will be able to manage all image sizes here."
+msgstr "Wenn ausgewählt kannst Du hier alle Bildformate bearbeiten."
+
+#: include/Robocrop/Settings/SettingsMedia.php:181
 msgid "Additional Sizes"
 msgstr "Zusätzliche Bildformate"
 
-#: include/Robocrop/Settings/SettingsMedia.php:186
+#: include/Robocrop/Settings/SettingsMedia.php:187
 msgid "Add additional image sizes"
 msgstr "Weitere Bildgrößen hinzufügen"
 
@@ -175,19 +184,19 @@ msgstr "ID"
 msgid "Factor"
 msgstr "Faktor"
 
-#: include/views/settings/sizes.php:73
+#: include/views/settings/sizes.php:74
 msgid "No scaled sizes"
 msgstr "Keine Abformate"
 
-#: include/views/settings/sizes.php:79
+#: include/views/settings/sizes.php:81
 msgid "Add"
 msgstr "Hinzuf."
 
-#: include/views/settings/sizes.php:87
+#: include/views/settings/sizes.php:89
 msgid "Remove Size"
 msgstr "Format Entfernen"
 
-#: include/views/settings/sizes.php:99
+#: include/views/settings/sizes.php:101
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -225,10 +234,6 @@ msgstr "Entfernen"
 # @ cheese
 #~ msgid "Try again"
 #~ msgstr "Nochmal"
-
-# @ cheese
-#~ msgid "Upload"
-#~ msgstr "Upload"
 
 # @ cheese
 #~ msgid "Record"
