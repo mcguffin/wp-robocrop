@@ -105,6 +105,17 @@ WP RoboCrop
 			border-color:#ccc;
 			padding-right:17px;
 		}
+		& + label {
+			& > strong {
+				display:block;
+				.format-indicator {
+					background-color: $wp-gray-dark;
+					width:1em;
+					height:1em;
+					float:right;
+				}
+			}
+		}
 	}
 	.sizename {
 		&:before {

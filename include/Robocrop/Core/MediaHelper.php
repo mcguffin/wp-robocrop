@@ -80,17 +80,18 @@ class MediaHelper extends Singleton {
 		foreach ( $all_sizes as $key => $size ) {
 			if ( $size['crop'] ) {
 				$ratio = $size['ratio'];
-				$ratio_key = strval( $ratio );
+				$ratio_key = strval( $ratio ) . '_';
+				$prec = apply_filters('robocrop_rounding_precision', 2 );
 				if ( ! isset( $ratios[$ratio_key] ) ) {
 					if ( $size['width'] >= $size['height'] ) { // landscape, square
-						$ratio_name = "{$ratio_key} : 1";
+						$ratio_name = sprintf( '%s : 1',
+							round( $size['width'] / $size['height'], $prec )
+						);
+
 					} else { // portrait
 
 						$ratio_name = sprintf( '1 : %s',
-							round(
-								$size['height'] / $size['width'],
-								apply_filters('robocrop_rounding_precision', 2 )
-							)
+							round( $size['height'] / $size['width'], $prec )
 						);
 					}
 					$ratios[$ratio_key] = array('sizes'=> array(), 'name' => $ratio_name, 'ratio' => $ratio, 'min_width' => 9999, 'min_height' => 9999 );
@@ -101,7 +102,7 @@ class MediaHelper extends Singleton {
 			}
 		}
 		ksort( $ratios, SORT_NUMERIC );
-		return $ratios;
+		return array_reverse($ratios);
 	}
 
 	/**

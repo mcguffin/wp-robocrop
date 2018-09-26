@@ -46,7 +46,10 @@ function concat_js( src, dest ) {
 }
 
 
-gulp.task('scss', function() {
+gulp.task('scss-admin', function() {
+	return do_scss('admin/admin');
+});
+gulp.task('scss-settings', function() {
 	return do_scss('settings/media');
 });
 
@@ -63,15 +66,17 @@ gulp.task( 'js-admin', function(){
 gulp.task( 'js-settings', function(){
 	return do_js('settings/media');
 });
+gulp.task('js', gulp.parallel( 'js-admin', 'js-settings' ) );
+gulp.task('scss', gulp.parallel( 'scss-admin', 'scss-settings' ) );
 
 
-gulp.task('build', gulp.parallel( 'scss', 'js-admin', 'js-settings' ) );
+gulp.task('build', gulp.parallel( 'scss', 'js' ) );
 
 
 gulp.task('watch', function() {
 	// place code for your default task here
-	gulp.watch('./src/scss/**/*.scss', gulp.parallel('scss') );
-	gulp.watch('./src/js/**/*.js', gulp.parallel('js-admin', 'js-settings') );
+	gulp.watch('./src/scss/**/*.scss', gulp.parallel( 'scss' ) );
+	gulp.watch('./src/js/**/*.js', gulp.parallel( 'js' ) );
 });
 
 gulp.task('default', gulp.parallel('build','watch'));

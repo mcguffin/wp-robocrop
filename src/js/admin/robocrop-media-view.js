@@ -42,7 +42,7 @@
 		className: 'robocrop-select',
 		template: wp.template('robocrop-select'),
 		events: {
-			'click [name="robocrop-select-ratio"]': 'selectRatio',
+			'change [name="robocrop-select-ratio"]': 'selectRatio',
 		},
 		initialize: function() {
 			wp.Backbone.View.prototype.initialize.apply(this,arguments);
@@ -83,7 +83,7 @@
 				self.views.add(new robocrop.view.RobocropRatioSelectItem({
 					ratiokey:	key,
 					sizenames:	names.join(''),
-					ratio: 		key,
+					ratio: 		ratio.ratio,
 					title:		ratio.name,
 					enabled: 	(self.model.get('width')  >= ratio.min_width) &&
 								(self.model.get('height') >= ratio.min_height)
@@ -100,11 +100,13 @@
 			return this.$el.find('[name="robocrop-select-ratio"]:checked').val();
 		},
 		selectRatio: function( event ) {
-			if ( this.options.ratios[ this.getSelected() ] ) {
+
+			if ( !! this.options.ratios[ this.getSelected() ] ) {
 				this.trigger('select-ratio');
-			} else if ( this.options.tools[ this.getSelected() ] ) {
+			} else if ( !! this.options.tools[ this.getSelected() ] ) {
 				this.trigger('select-tool');
 			}
+
 			this.trigger('select');
 		}
 	});
@@ -120,7 +122,14 @@
 		ratio:0,
 		enabled:null,
 		render: function() {
-			wp.Backbone.View.prototype.render.apply(this,arguments);
+			wp.Backbone.View.prototype.render.apply( this, arguments );
+			// set indicator size
+			if ( this.options.ratio > 1 ) {
+				this.$el.find('.format-indicator').height( (1 / this.options.ratio) + 'em' )
+			} else if ( this.options.ratio < 1 ) {
+				this.$el.find('.format-indicator').width( this.options.ratio + 'em' )
+			}
+			// disable unavailable sizes
 			this.$el.find('input[type="radio"]').prop('disabled', ! this.options.enabled )
 		}
 	});
