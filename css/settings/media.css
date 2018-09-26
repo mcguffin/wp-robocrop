@@ -17,14 +17,14 @@
 .robocrop-manage-sizes.off + .robocrop-sizes {
   display: none; }
 
-.robocrop-sizes-table thead tr th:first-of-type {
+.robocrop-sizes-table > thead > tr th:first-of-type {
   padding-left: 10px;
   width: 33%; }
 
-.robocrop-sizes-table thead tr th:last-of-type {
+.robocrop-sizes-table > thead > tr th:last-of-type {
   width: 46px; }
 
-.robocrop-sizes-table thead tr th.options {
+.robocrop-sizes-table > thead > tr th.options {
   width: 15%; }
 
 .robocrop-sizes-table .tools {
@@ -40,6 +40,8 @@
     padding-left: 10px; }
   .robocrop-sizes-table tbody td.input span {
     display: inline-block; }
+  .robocrop-sizes-table tbody td.input [data-prop="name"] {
+    font-weight: 700; }
   .robocrop-sizes-table tbody td.input [type="number"], .robocrop-sizes-table tbody td.input [type="text"] {
     width: 100%; }
   .robocrop-sizes-table tbody td.dimensions [type="number"] {
@@ -97,3 +99,6 @@
 
 .robocrop-sizes-table .scaled-list {
   margin-top: 0; }
+
+.robocrop-sizes-table .scaled-item + .no-scaled-item {
+  display: none; }

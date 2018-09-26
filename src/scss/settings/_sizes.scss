@@ -8,8 +8,8 @@
 
 
 .robocrop-sizes-table {
-	thead {
-		tr {
+	& > thead {
+		& > tr {
 			th {
 				&:first-of-type {
 					padding-left:10px;
@@ -32,7 +32,6 @@
 			&:nth-of-type(even) {
 				background-color:$wp-gray-lighter;
 			}
-
 		}
 		td {
 			padding-left:0;
@@ -47,12 +46,15 @@
 				span {
 					display:inline-block;
 				}
+				[data-prop="name"] {
+					font-weight:700;
+					// font-size:1.33em;
+				}
 				[type="number"] {
 //					height:auto;
 				}
 				[type="number"],[type="text"] {
 					width:100%;
-
 //					padding:10px 15px;
 				}
 			}
@@ -138,5 +140,8 @@
 		margin-top:0;
 	}
 	.scaled-item {
+		& + .no-scaled-item {
+			display:none;
+		}
 	}
 }

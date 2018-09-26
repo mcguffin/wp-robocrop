@@ -69,9 +69,11 @@
 				</tr>
 			</thead>
 			<tbody class="scaled-list">
-				<td colspan="3" class="scaled-placeholder">
-					<em><?php _e( 'No scaled sizes', 'wp-robocrop' ); ?></em>
-				</td>
+				<tr class="no-scaled-item">
+					<td colspan="3" class="scaled-placeholder">
+						<em><?php _e( 'No scaled sizes', 'wp-robocrop' ); ?></em>
+					</td>
+				</tr>
 			</tbody>
 			<tfoot>
 				<tr>

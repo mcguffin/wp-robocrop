@@ -90,7 +90,8 @@
 					key:'scaled',
 					size_key:this.model.key
 				});
-			}
+			},
+			'change [data-prop="width"],[data-prop="height"]' : 'updateRatio'
 		},
 		initialize:function(){
 			wp.media.View.prototype.initialize.apply(this,arguments);
@@ -100,6 +101,9 @@
 			var self = this;
 			wp.media.View.prototype.render.apply(this,arguments);
 			this.$scaledList = this.$('.scaled .scaled-list');
+			this.$ratio = this.$('.ratio');
+			this.$widthInp = this.$('[data-prop="width"]');
+			this.$heightInp = this.$('[data-prop="height"]');
 			_.each(this.options.model, function( val, prop) {
 				var $inp = self.$('[data-prop="'+prop+'"]'),
 					scaled;
@@ -117,16 +121,29 @@
 					});
 				}
 			});
+			this.updateRatio();
 			return this;
+		},
+		updateRatio: function(e) {
+			var ratio,
+				w = parseInt(this.$widthInp.val()),
+				h = parseInt(this.$heightInp.val()),
+				rnd = function(num) {
+					var prec = Math.pow(10,opt.rounding_precision);
+					return (Math.round(num * prec) / prec).toString(10);
+				};
+			ratio = w >= h ? '1 : ' + rnd( w / h ) : rnd( h / w ) + ' : 1';
+
+			this.$ratio.text( ratio );
 		},
 		addScaled:function(data){
 			var scaled = new SizeScaledView({
 				model:data
 			});
 
-			scaled.render().$el.appendTo(this.$scaledList);
+			scaled.render().$el.insertBefore( this.$scaledList.children().last() );
 		},
-		prepare:function(){
+		prepare:function() {
 			return this.options.model;
 		}
 	});

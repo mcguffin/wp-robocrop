@@ -249,7 +249,7 @@ array(
 				'sizes'		=> $return,
 				'updated'	=> time(),
 			);
-			file_put_contents( $this->get_theme_json_file(), json_encode( $data ) );
+			file_put_contents( $this->get_theme_json_file(), json_encode( $data, JSON_PRETTY_PRINT ) );
 		}
 
 		return $return;

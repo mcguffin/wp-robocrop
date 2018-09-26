@@ -82,14 +82,25 @@ class MediaHelper extends Singleton {
 				$ratio = $size['ratio'];
 				$ratio_key = strval( $ratio );
 				if ( ! isset( $ratios[$ratio_key] ) ) {
-					$ratios[$ratio_key] = array('sizes'=> array(), 'name' => $ratio_key, 'ratio' => $ratio, 'min_width' => 9999, 'min_height' => 9999 );
+					if ( $size['width'] >= $size['height'] ) { // landscape, square
+						$ratio_name = "{$ratio_key} : 1";
+					} else { // portrait
+
+						$ratio_name = sprintf( '1 : %s',
+							round(
+								$size['height'] / $size['width'],
+								apply_filters('robocrop_rounding_precision', 2 )
+							)
+						);
+					}
+					$ratios[$ratio_key] = array('sizes'=> array(), 'name' => $ratio_name, 'ratio' => $ratio, 'min_width' => 9999, 'min_height' => 9999 );
 				}
 				$ratios[$ratio_key]['sizes'][]    = $key;
 				$ratios[$ratio_key]['min_width']  = min( $ratios[$ratio_key]['min_width'],  $size['width'] );
 				$ratios[$ratio_key]['min_height'] = min( $ratios[$ratio_key]['min_height'], $size['height'] );
 			}
 		}
-
+		ksort( $ratios, SORT_NUMERIC );
 		return $ratios;
 	}
 

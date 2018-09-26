@@ -84,7 +84,7 @@
 					ratiokey:	key,
 					sizenames:	names.join(''),
 					ratio: 		key,
-					title:		key + ' : 1',
+					title:		ratio.name,
 					enabled: 	(self.model.get('width')  >= ratio.min_width) &&
 								(self.model.get('height') >= ratio.min_height)
 				}))
