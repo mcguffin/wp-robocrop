@@ -99,13 +99,6 @@ WP RoboCrop
     width: 301px;
     border-color: #ccc;
     padding-right: 17px; }
-  .robocrop-select-item input[type="radio"] + label > strong {
-    display: block; }
-    .robocrop-select-item input[type="radio"] + label > strong .format-indicator {
-      background-color: #cccccc;
-      width: 1em;
-      height: 1em;
-      float: right; }
 
 .robocrop-select-item .sizename:before {
   content: ', '; }
@@ -123,7 +116,14 @@ WP RoboCrop
   box-sizing: border-box;
   border-bottom: 1px solid #ccc; }
   .robocrop-select-item label strong {
-    font-size: 20px; }
+    font-size: 20px;
+    display: block; }
+
+.robocrop-select-item .format-indicator {
+  background-color: #cccccc;
+  width: 1em;
+  height: 1em;
+  float: right; }
 
 .attachment-info .robocrop-attachment {
   display: block;
