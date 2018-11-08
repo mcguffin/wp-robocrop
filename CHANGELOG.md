@@ -5,6 +5,6 @@ WP Robocrop Changelog
 -----
  - Introduce Changelog
  - Fix: Sizes not generated when ocuspoint is selected
- - Improve UI: Size names
+ - Improve UI: Size names, size-thumbnail
  - Improve Settings UI
- 
+ -
