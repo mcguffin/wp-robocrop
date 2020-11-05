@@ -80,3 +80,4 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', gulp.parallel('build','watch'));
+gulp.task('dev', gulp.parallel( 'build', 'watch' ) );

@@ -1,10 +1,19 @@
 {
   "name": "wp-robocrop",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "description": "Focus point based image cropping in WordPress.",
   "main": "js/wp-robocrop.combined.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "dev": "gulp dev",
+      "dashicons": "node ./src/run/dashicons.js",
+      "i18n": "node src/run/json-i18n.js acf-dropzone",
+      "rollback": "git reset --hard HEAD~ && git push origin +master",
+      "init": "mkdir -p json/acf && mkdir -p json/post-type && mkdir -p json/taxonomy && mkdir -p src/php",
+      "test": "node ./src/run/test.js",
+      "dev-test": "./src/run/dev-test.sh",
+      "postinstall": "composer install",
+      "audit": "./vendor/squizlabs/php_codesniffer/bin/phpcs . --report=code --standard=./phpcs-security.ruleset.xml -n -s > ./phpcs-report.txt || exit 0",
+      "ver": "echo \"<?php return $(jq .version < ./package.json);\" > include/version.php"
   },
   "repository": {
     "type": "git",
@@ -25,5 +34,29 @@
     "gulp-sourcemaps": "^1.9.1",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.8"
+  },
+  "wporg": {
+    "steps": [
+      "build",
+      "git"
+    ],
+    "type": "plugin",
+    "build": {
+      "prebuild": [
+        "wp i18n make-pot . languages/wp-robocrop.pot --domain=wp-robocrop --exclude=tmp"
+      ],
+      "build": [
+          "gulp build",
+          "npm run ver"
+      ]
+    },
+    "git": {
+      "host": "github.com",
+      "user": "mcguffin"
+    },
+    "wporg": {
+      "assets": ".wporg",
+      "svn_user": "podpirate"
+    }
   }
 }
