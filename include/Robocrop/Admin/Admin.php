@@ -38,7 +38,7 @@ class Admin extends Core\Singleton {
 
 		$version = $this->core->get_version();
 
-		$suffix =  defined('SCRIPT_DEBUG') && SCRIPT_DEBUG  ? '.min' : '';
+		$suffix =  defined('SCRIPT_DEBUG') && SCRIPT_DEBUG  ? '' : '.min';
 
 		wp_register_script( 'wp-robocrop' , $this->core->get_asset_url( 'js/admin/wp-robocrop'.$suffix.'.js' ) , array( 'jquery', 'media-grid' ) , $version );
 		wp_localize_script( 'wp-robocrop' , 'robocrop' , array(
