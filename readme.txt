@@ -3,7 +3,7 @@ Contributors: WP Robocrop
 Donate link:
 Tags: image, crop, focus point
 Requires at least: 3.8
-Tested up to: 4.9.1
+Tested up to: 5.5
 Requires PHP: 5.6
 Stable tag: 1.2.2
 License: GPLv2 or later
