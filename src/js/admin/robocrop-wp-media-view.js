@@ -55,8 +55,10 @@
 		robocropOpen: function( event ) {
 			var croptool = new robocrop.view.Frame.Crop( {
 					controller: this.controller,
-					model: this.model
+					model: this.model,
+					state: 'robocrop',
 				});
+
 			croptool.open();
 		},
 		_parentCreateStates: wp.media.view.Attachment.Details.prototype.createStates

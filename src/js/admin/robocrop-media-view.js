@@ -505,25 +505,29 @@
 		initialize: function( options ) {
 			robocrop.view.Frame.prototype.initialize.apply( this, arguments );
 
-			this.createTitle();
+			this.createStates();
 			this.createContent();
 			this.createButtons();
 
 			this.on('close', this.dismiss, this );
 			this.listenTo( this._content, 'saved', this.modelSync );
 		},
+		createStates: function() {
+			this.states.add([
+				new wp.media.controller.State({
+					id: 'robocrop',
+					model:   this.model,
+					library: this.library,
+					view: this,
+					title: l10n.AttachmentDetails,
+				})
+			]);
+		},
 		modelSync: function(){
 			this.$('.robocrop-save, .robocrop-cancel').prop( 'disabled', false );
 		},
 		dismiss:function(){
 			this._content.dismiss();
-		},
-		createTitle: function( ) {
-			this._title = new wp.media.View({
-				tagName: 'h1'
-			});
-			this._title.$el.text( l10n.AttachmentDetails ); // "Crop image sizes"
-			this.title.set( [ this._title ] );
 		},
 		createContent: function() {
 			var opts = _.extend({
@@ -535,7 +539,7 @@
 		},
 		createButtons: function() {
 			var info, btn;
-
+		
 			this.buttons.set( [
 				new wp.media.view.Button({
 					text: l10n.Close,
