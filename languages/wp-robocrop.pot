@@ -1,76 +1,99 @@
-# Copyright (C) 2018 joern
-# This file is distributed under the GNU General Public License v2 or later.
-#, fuzzy
+# Copyright (C) 2020 Jörn Lund
+# This file is distributed under the same license as the WP Robocrop plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Robocrop v1.1.5\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-26T07:47:57+00:00\n"
-"PO-Revision-Date: 2018-09-26T07:47:57+00:00\n"
-"Language-Team: \n"
+"Project-Id-Version: WP Robocrop 1.2.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-robocrop\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: WP Make Pot\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
-"_n_noop:1,2;_c;_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
-"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;"
-"esc_html_x:1,2c\n"
-"X-Textdomain-Support: yes\n"
-"X-Poedit-Basepath: ./\n"
-"Last-Translator: \n"
-"X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"POT-Creation-Date: 2020-11-09T09:49:59+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: wp-robocrop\n"
+
+#. Plugin Name of the plugin
+msgid "WP Robocrop"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/mcguffin/wp-robocrop"
+msgstr ""
+
+#. Description of the plugin
+msgid "Focus point based image cropping in WordPress"
+msgstr ""
+
+#. Author of the plugin
+msgid "Jörn Lund"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://github.com/mcguffin/"
+msgstr ""
 
 #: include/Robocrop/Admin/Admin.php:48
-msgid "Edit Image sizes"
+msgid "Attachment"
 msgstr ""
 
 #: include/Robocrop/Admin/Admin.php:49
-msgid "Robo Crop Image"
-msgstr ""
-
-#: include/Robocrop/Admin/Admin.php:50
-msgid "Okay"
-msgstr ""
-
-#: include/Robocrop/Admin/Admin.php:51
-msgid "Upload"
-msgstr ""
-
-#: include/Robocrop/Admin/Admin.php:52
-msgid "Save Changes"
-msgstr ""
-
-#: include/Robocrop/Admin/Admin.php:53
-msgid "Close"
-msgstr ""
-
-#: include/Robocrop/Admin/Admin.php:54
-msgid "Cancel"
-msgstr ""
-
-#: include/Robocrop/Admin/Admin.php:55
-msgid "Reset"
-msgstr ""
-
-#: include/Robocrop/Admin/Admin.php:56
 #: include/template/robocrop-modal.php:14
 msgid "Attachment Details"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:57
-msgid "Set Focus Point"
+#: include/Robocrop/Admin/Admin.php:50
+msgid "Cancel"
 msgstr ""
 
-#: include/Robocrop/Admin/Admin.php:59
+#: include/Robocrop/Admin/Admin.php:51
+msgid "Cancel Upload"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:52
+msgid "Close"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:53
+msgid "Edit Image sizes"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:55
 msgid "Click on the most important spot of the image."
 msgstr ""
 
+#: include/Robocrop/Admin/Admin.php:56
+msgid "Image sizes"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:57
+msgid "Okay"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:58
+msgid "Reset"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:59
+msgid "Robo Crop Image"
+msgstr ""
+
 #: include/Robocrop/Admin/Admin.php:60
-msgid "Cancel Upload"
+msgid "Save Changes"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:61
+#: include/views/settings/sizes.php:11
+msgid "Scaled Sizes"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:62
+msgid "Set Focus Point"
+msgstr ""
+
+#: include/Robocrop/Admin/Admin.php:63
+msgid "Upload"
 msgstr ""
 
 #: include/Robocrop/Settings/SettingsMedia.php:144
@@ -148,10 +171,6 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: include/views/settings/sizes.php:11
-msgid "Scaled Sizes"
-msgstr ""
-
 #: include/views/settings/sizes.php:17
 msgid "No custom image sizes yet"
 msgstr ""
@@ -203,4 +222,3 @@ msgstr ""
 #: include/views/settings/sizes.php:101
 msgid "Remove"
 msgstr ""
-

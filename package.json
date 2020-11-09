@@ -1,19 +1,19 @@
 {
   "name": "wp-robocrop",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Focus point based image cropping in WordPress.",
   "main": "js/wp-robocrop.combined.min.js",
   "scripts": {
-      "dev": "gulp dev",
-      "dashicons": "node ./src/run/dashicons.js",
-      "i18n": "node src/run/json-i18n.js acf-dropzone",
-      "rollback": "git reset --hard HEAD~ && git push origin +master",
-      "init": "mkdir -p json/acf && mkdir -p json/post-type && mkdir -p json/taxonomy && mkdir -p src/php",
-      "test": "node ./src/run/test.js",
-      "dev-test": "./src/run/dev-test.sh",
-      "postinstall": "composer install",
-      "audit": "./vendor/squizlabs/php_codesniffer/bin/phpcs . --report=code --standard=./phpcs-security.ruleset.xml -n -s > ./phpcs-report.txt || exit 0",
-      "ver": "echo \"<?php return $(jq .version < ./package.json);\" > include/version.php"
+    "dev": "gulp dev",
+    "dashicons": "node ./src/run/dashicons.js",
+    "i18n": "node src/run/json-i18n.js acf-dropzone",
+    "rollback": "git reset --hard HEAD~ && git push origin +master",
+    "init": "mkdir -p json/acf && mkdir -p json/post-type && mkdir -p json/taxonomy && mkdir -p src/php",
+    "test": "node ./src/run/test.js",
+    "dev-test": "./src/run/dev-test.sh",
+    "postinstall": "composer install",
+    "audit": "./vendor/squizlabs/php_codesniffer/bin/phpcs . --report=code --standard=./phpcs-security.ruleset.xml -n -s > ./phpcs-report.txt || exit 0",
+    "ver": "echo \"<?php return $(jq .version < ./package.json);\" > include/version.php"
   },
   "repository": {
     "type": "git",
@@ -38,16 +38,18 @@
   "wporg": {
     "steps": [
       "build",
-      "git"
+      "git",
+      "github"
     ],
     "type": "plugin",
     "build": {
+      "versionedFiles": null,
       "prebuild": [
         "wp i18n make-pot . languages/wp-robocrop.pot --domain=wp-robocrop --exclude=tmp"
       ],
       "build": [
-          "gulp build",
-          "npm run ver"
+        "gulp build",
+        "npm run ver"
       ]
     },
     "git": {
