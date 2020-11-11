@@ -35,7 +35,10 @@
 				}
 				if ( !! askFocusImages.length ) {
 					fileItem = askFocusImages.shift();
-					askModal = new robocrop.view.Frame.Focuspoint({ controller: $(this) });
+					askModal = new robocrop.view.Frame.Focuspoint({ 
+						controller: $(this),
+						state: 'robocrop',
+					});
 					askModal.on('proceed',function() {
 						imageInfos[fileItem.file.name] = {
 							focuspoint:	askModal.getFocuspoint(),

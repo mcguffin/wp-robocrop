@@ -145,6 +145,13 @@ class Admin extends Core\Singleton {
 		} else {
 			$response['focuspoint'] = array( 'x' => 0, 'y' => 0 );
 		}
+
+		if ( function_exists( 'wp_get_original_image_url' ) ) {
+			$response['original_url'] = wp_get_original_image_url( $attachment->ID );
+		} else {
+			$response['original_url'] = wp_get_attachment_url( $attachment->ID );
+		}
+		
 		return $response;
 	}
 

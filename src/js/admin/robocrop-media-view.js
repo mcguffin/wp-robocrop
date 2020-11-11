@@ -147,7 +147,8 @@
 		initialize: function( options ) {
 		//	wp.media.view.EditImage.prototype.initialize.apply( this, arguments );
 			this._croppers 		= {};
-			this.image 			= new robocrop.view.Img( {src: this.model.get('url') } );
+
+			this.image 			= new robocrop.view.Img( {src: this.model.get('original_url') } );
 
 			this.controller 	= options.controller;
 			this.focuspointtool	= new robocrop.view.focuspoint.ImageFocusPointSelect({ image: this.image, focuspoint: {x:0,y:0}, src: this.model.get('url') });
@@ -314,7 +315,7 @@
 			this.current_ratio = this.image_ratios[ratiokey];
 
 			areaSelectOptions = {
-				aspectRatio:	this.current_ratio.ratio + ':1',
+			//	aspectRatio:	this.current_ratio.ratio + ':1',
 				minWidth:		this.current_ratio.min_width,
 				minHeight:		this.current_ratio.min_height
 			};
@@ -348,6 +349,7 @@
 			}
 
 			this.$areaSelect().setOptions( areaSelectOptions );
+
 			if ( ! this.image.$el.get(0).complete ) {
 				this.image.$el.on('load',function() {
 					self.selectCrop(rect);
@@ -392,13 +394,13 @@
 		},
 		selectCrop:function( rect ) {
 			// draw crop UI element.
-			var factor = this._image_scale_factor(),
-				points = robocrop.rectToPointCoords( rect ),
+			var points = robocrop.rectToPointCoords( rect ),
 				$areaSelect = this.$areaSelect();
 
 			$areaSelect.setSelection( points.x1, points.y1, points.x2, points.y2, false );
 			$areaSelect.setOptions( {show:true} );
 			$areaSelect.update();
+
 			return this;
 		},
 		$areaSelect : function(){

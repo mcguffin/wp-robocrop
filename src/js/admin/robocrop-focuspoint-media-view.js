@@ -12,6 +12,7 @@
 
 	robocrop.view.focuspoint = {};
 
+	
 	CropRect = robocrop.view.focuspoint.CropRect = View.extend({
 		template: wp.template('croprect'),
 		className:	'tool-croprect',
@@ -120,11 +121,14 @@
 		setFocuspoint: function( focuspoint ) {
 			var self = this;
 
-			this.focuspoint = focuspoint;
+			focuspoint.x = parseFloat(focuspoint.x)
+			focuspoint.y = parseFloat(focuspoint.y)
 
+			this.focuspoint = focuspoint;
+			
 			this.$el.find('.focuspoint').css({
-				left: 	((focuspoint.x + 1) * 50)+'%',
-				bottom:	((focuspoint.y + 1) * 50)+'%'
+				left: 	( ( focuspoint.x + 1 ) * 50)+'%',
+				bottom:	( ( focuspoint.y + 1 ) * 50)+'%'
 			});
 
 			_.each( this.options.cropRects, function(rect){
@@ -243,7 +247,8 @@
 			if ( this.modal ) {
 				this.modal.on('escape', this.cancelUpload, this );
 			}
-			this.createTitle();
+			// this.createTitle();
+			this.createStates();
 			this.createContent();
 			this.createInstructions();
 			this.createButtons();
@@ -254,12 +259,23 @@
 //
 // 			robocrop.view.Modal.prototype.render.apply(this,arguments);
 // 		},
-		createTitle: function( ) {
-			this._title = new wp.media.View({
-				tagName: 'h1'
-			});
-			this._title.$el.text( this.options.title );
-			this.title.set( [ this._title ] );
+		// createTitle: function( ) {
+		// 	this._title = new wp.media.View({
+		// 		tagName: 'h1'
+		// 	});
+		// 	this._title.$el.text( this.options.title );
+		// 	this.title.set( [ this._title ] );
+		// },
+		createStates: function() {
+			this.states.add([
+				new wp.media.controller.State({
+					id: 'robocrop',
+					model:   this.model,
+					library: this.library,
+					view: this,
+					title: l10n.AttachmentDetails,
+				})
+			]);
 		},
 		createContent: function() {
 			this._content = new robocrop.view.focuspoint.ImageFocusPointSelect({

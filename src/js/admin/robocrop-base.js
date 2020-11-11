@@ -73,19 +73,19 @@
 
 		pointToRectCoords:function( points ) {
 			return {
-				x: points.x1,
-				y: points.y1,
-				width:  points.x2 - points.x1,
-				height: points.y2 - points.y1
+				x: parseFloat(points.x1),
+				y: parseFloat(points.y1),
+				width:  parseFloat(points.x2) - parseFloat(points.x1),
+				height: parseFloat(points.y2) - parseFloat(points.y1)
 			}
 		},
 
 		rectToPointCoords:function( rect ) {
 			return {
-				x1: rect.x,
-				y1: rect.y,
-				x2: (rect.maxX ? rect.maxX : rect.x+rect.width),
-				y2: (rect.maxY ? rect.maxY : rect.y+rect.height),
+				x1: parseFloat(rect.x),
+				y1: parseFloat(rect.y),
+				x2: (rect.maxX ? parseFloat(rect.maxX) : parseFloat(rect.x) + parseFloat(rect.width)),
+				y2: (rect.maxY ? parseFloat(rect.maxY) : parseFloat(rect.y) + parseFloat(rect.height)),
 			};
 		},
 

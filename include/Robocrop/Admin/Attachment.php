@@ -89,11 +89,15 @@ class Attachment extends Core\Singleton {
 
 		$this->setup_crop_meta( $attachment_ID );
 
-		// trigger sizes regeneration
-		$fullsizepath = get_attached_file( $attachment_ID );
+		if ( function_exists( 'wp_get_original_image_path' ) ) {
+			$fullsizepath = wp_get_original_image_path( $attachment_ID );
+		} else {
+			$fullsizepath = get_attached_file( $attachment_ID );
+		}
 
+		// trigger sizes regeneration
 		$metadata = wp_generate_attachment_metadata( $attachment_ID, $fullsizepath );
-		if ( ! is_wp_error( $metadata ) && !empty( $metadata ) ) {
+		if ( ! is_wp_error( $metadata ) && ! empty( $metadata ) ) {
 			// If this fails, then it just means that nothing was changed (old value == new value)
 			wp_update_attachment_metadata( $attachment_ID, $metadata );
 		}
@@ -180,7 +184,6 @@ class Attachment extends Core\Singleton {
 					} else if ( isset( $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ] ) ) {
 						$metadata['sizes'][ $sizeslug ]['cropdata' ] = $this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata' ];
 					}
-
 				}
 			}
 		}
@@ -203,7 +206,7 @@ class Attachment extends Core\Singleton {
 	 *	@return bool
 	 */
 	private function can_crop( $orig_w, $orig_h, $dest_w, $dest_h ) {
-		return	( $orig_w >= $dest_w ) || ( $orig_h >= $dest_h );
+		return ( $orig_w >= $dest_w ) && ( $orig_h >= $dest_h );
 
 
 	}
@@ -234,6 +237,7 @@ class Attachment extends Core\Singleton {
 	 *	@filter 'image_resize_dimensions'
 	 */
 	public function image_resize_dimensions( $result, $orig_w, $orig_h, $dest_w, $dest_h, $crop ) {
+
 		if ( $crop && $this->can_crop( $orig_w, $orig_h, $dest_w, $dest_h )) {
 			$cropsize = false;
 
