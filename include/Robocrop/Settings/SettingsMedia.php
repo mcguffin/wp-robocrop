@@ -110,8 +110,8 @@ array(
 		}
 
 		wp_enqueue_media();
-		wp_enqueue_style( 'wp-robocrop-settings', $core->get_asset_url( "css/settings/media{$suffix}.css" ) );
-		wp_enqueue_script( 'wp-robocrop-settings', $core->get_asset_url( "js/settings/media{$suffix}.js" ), array( 'jquery' ) );
+		wp_enqueue_style( 'wp-robocrop-settings', $core->get_asset_url( "css/settings/media{$suffix}.css" ), array(), $core->get_version() );
+		wp_enqueue_script( 'wp-robocrop-settings', $core->get_asset_url( "js/settings/media{$suffix}.js" ), array( 'jquery' ), $core->get_version() );
 		wp_localize_script('wp-robocrop-settings','wp_robocrop_settings',array(
 			'options'	=> array(
 				'sizes'					=> array(

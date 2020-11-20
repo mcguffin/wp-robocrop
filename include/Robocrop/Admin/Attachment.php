@@ -62,7 +62,7 @@ class Attachment extends Core\Singleton {
 		if ( isset( $_REQUEST['focuspoint'] ) ) {
 			// user set focuspoint
 			$this->_crop_meta[ $attachment_ID ] = array(
-				'focuspoint'	=> $this->sanitize_focuspoint( json_decode( stripslashes( $_REQUEST['focuspoint'] ) ) ),
+				'focuspoint'	=> $this->sanitize_focuspoint( json_decode( wp_unslash( $_REQUEST['focuspoint'] ) ) ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			);
 
 		} else {
@@ -121,12 +121,12 @@ class Attachment extends Core\Singleton {
 
 				// focuspoint from attachment
 				if ( isset( $_REQUEST[ 'attachments' ][ $attachment_ID ][ 'focuspoint' ] ) ) {
-					$this->_crop_meta[ $attachment_ID ][ 'focuspoint' ] = $this->sanitize_focuspoint( $_REQUEST[ 'attachments' ][ $attachment_ID ][ 'focuspoint' ] );
+					$this->_crop_meta[ $attachment_ID ][ 'focuspoint' ] = $this->sanitize_focuspoint( wp_unslash( $_REQUEST[ 'attachments' ][ $attachment_ID ][ 'focuspoint' ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				}
-
+				$attachment_sizes = wp_unslash( $_REQUEST[ 'attachments' ][ $attachment_ID ]['sizes'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				// store crop information from user request
-				foreach ( $_REQUEST[ 'attachments' ][ $attachment_ID ]['sizes'] as $sizeslug => $req_size ) {
-					if ( isset( $req_size['cropdata'] ) ) {
+				foreach ( $attachment_sizes as $sizeslug => $req_size ) {
+					if ( is_array( $req_size ) && isset( $req_size['cropdata'] ) ) {
 
 						// sanitize cropdata
 						$size_cropdata = array_map( 'floatval', $req_size['cropdata'] );

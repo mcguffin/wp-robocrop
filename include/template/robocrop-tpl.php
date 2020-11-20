@@ -8,8 +8,8 @@ if ( ! defined('ABSPATH') )
 		<div class="robocrop-sidebar">
 			<div class="select-ratio"></div>
 			<div class="box actions">
-				<button class="button robocrop-autocrop-current"><?php _e('Apply Focus Point','wp-robocrop'); ?></button>
-				<button class="button robocrop-autocrop-all"><?php _e('Apply to all sizes','wp-robocrop'); ?></button>
+				<button class="button robocrop-autocrop-current"><?php esc_html_e('Apply Focus Point','wp-robocrop'); ?></button>
+				<button class="button robocrop-autocrop-all"><?php esc_html_e('Apply to all sizes','wp-robocrop'); ?></button>
 			</div>
 		</div>
 

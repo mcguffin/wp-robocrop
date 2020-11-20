@@ -39,6 +39,9 @@ class RegenerateThumbnails extends Core\Singleton {
 	 *	@action wp_ajax_regeneratethumbnail
 	 */
 	public function prepare_request_data() {
+		if ( ! isset( $_REQUEST['id'] ) ) {
+			return;
+		}
 		$attachment_id = (int) $_REQUEST['id'];
 		$prev_meta = wp_get_attachment_metadata( $attachment_id, true );
 
