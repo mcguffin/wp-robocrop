@@ -315,7 +315,7 @@
 			this.current_ratio = this.image_ratios[ratiokey];
 
 			areaSelectOptions = {
-			//	aspectRatio:	this.current_ratio.ratio + ':1',
+				aspectRatio:	this.current_ratio.ratio + ':1',
 				minWidth:		this.current_ratio.min_width,
 				minHeight:		this.current_ratio.min_height
 			};
