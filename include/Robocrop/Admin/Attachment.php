@@ -55,8 +55,6 @@ class Attachment extends Core\Singleton {
 			return;
 		}
 
-		$sizes = $this->media_helper->get_image_sizes();
-
 		$this->_current_attachment_ID = $attachment_ID;
 
 		if ( isset( $_REQUEST['focuspoint'] ) ) {
@@ -87,14 +85,16 @@ class Attachment extends Core\Singleton {
 			return;
 		}
 
-		$this->setup_crop_meta( $attachment_ID );
+		if ( ! $this->setup_crop_meta( $attachment_ID ) ) {
+			return;
+		}
 
 		if ( function_exists( 'wp_get_original_image_path' ) ) {
 			$fullsizepath = wp_get_original_image_path( $attachment_ID );
 		} else {
 			$fullsizepath = get_attached_file( $attachment_ID );
 		}
-
+		
 		// trigger sizes regeneration
 		$metadata = wp_generate_attachment_metadata( $attachment_ID, $fullsizepath );
 		if ( ! is_wp_error( $metadata ) && ! empty( $metadata ) ) {
@@ -108,6 +108,7 @@ class Attachment extends Core\Singleton {
 	 *	We're expecting absolute coords (x, y, width and height in pixel) here.
 	 *
 	 *	@param int		$attachment_ID
+	 *	@return boolean Whether there is 
 	 */
 	public function setup_crop_meta( $attachment_ID ) {
 
@@ -142,9 +143,10 @@ class Attachment extends Core\Singleton {
 						$this->_crop_meta[ $attachment_ID ]['sizes'][ $sizeslug ]['cropdata'] = $size_cropdata;
 					}
 				}
+				return true;
 			}
 		}
-
+		return false;
 	}
 
 	/**
