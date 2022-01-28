@@ -3,6 +3,7 @@
 /*
 Plugin Name: WP Robocrop
 Plugin URI: https://github.com/mcguffin/wp-robocrop
+Bitbucket Plugin URI: https://github.com/mcguffin/wp-robocrop.git
 Description: Focus point based image cropping in WordPress
 Author: Jörn Lund
 Version: 1.2.4
