@@ -1,6 +1,6 @@
 {
   "name": "wp-robocrop",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Focus point based image cropping in WordPress.",
   "main": "js/wp-robocrop.combined.min.js",
   "scripts": {
@@ -35,7 +35,9 @@
     "gulp-uglify": "*",
     "sass": "*"
   },
-  "browserslist": ["last 2 versions"],
+  "browserslist": [
+    "last 2 versions"
+  ],
   "wporg": {
     "steps": [
       "build",
