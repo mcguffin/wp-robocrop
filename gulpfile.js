@@ -1,9 +1,8 @@
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var gulp = require('gulp');
-var gulputil = require('gulp-util');
 var rename = require('gulp-rename');
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')( require( 'sass' ) );
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 
@@ -11,10 +10,8 @@ function do_scss( src ) {
 	var dir = src.substring( 0, src.lastIndexOf('/') );
 	return gulp.src( './src/scss/' + src + '.scss' )
 		.pipe( sourcemaps.init() )
-		.pipe( sass( { outputStyle: 'nested' } ).on('error', sass.logError) )
-		.pipe( autoprefixer({
-			browsers:['last 2 versions']
-		}) )
+		.pipe( sass( { outputStyle: 'expanded' } ).on('error', sass.logError) )
+		.pipe( autoprefixer() )
 		.pipe( gulp.dest( './css/' + dir ) )
         .pipe( sass( { outputStyle: 'compressed' } ).on('error', sass.logError) )
 		.pipe( rename( { suffix: '.min' } ) )
@@ -27,7 +24,7 @@ function do_js( src ) {
 	return gulp.src( './src/js/' + src + '.js' )
 		.pipe( sourcemaps.init() )
 		.pipe( gulp.dest( './js/' + dir ) )
-		.pipe( uglify().on('error', gulputil.log ) )
+		.pipe( uglify() )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( sourcemaps.write() )
 		.pipe( gulp.dest( './js/' + dir ) );
@@ -39,7 +36,7 @@ function concat_js( src, dest ) {
 		.pipe( concat( dest ) )
 		.pipe( sourcemaps.write() )
 		.pipe( gulp.dest( './js/' ) )
-		.pipe( uglify().on('error', gulputil.log ) )
+		.pipe( uglify() )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulp.dest( './js/' ) );
 
