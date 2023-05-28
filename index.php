@@ -53,3 +53,21 @@ if ( is_admin() ) {
 
 	Admin\Admin::instance();
 }
+
+
+
+// Enable WP auto update
+add_filter( 'update_plugins_github.com', function( $update, $plugin_data, $plugin_file, $locales ) {
+
+	if ( ! preg_match( "@{$plugin_file}$@", __FILE__ ) ) { // not our plugin
+		return $update;
+	}
+
+	$response = wp_remote_get( $plugin_data['UpdateURI'] );
+
+	if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) > 200 ) { // response error
+		return $update;
+	}
+
+	return json_decode( wp_remote_retrieve_body( $response ), true, 512 );
+}, 10, 4 );
