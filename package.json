@@ -48,7 +48,7 @@
     "build": {
       "versionedFiles": null,
       "prebuild": [
-        "wp i18n make-pot . languages/wp-robocrop.pot --domain=wp-robocrop --exclude=tmp"
+        "wp i18n make-pot . languages/wp-robocrop.pot --domain=wp-robocrop --exclude=./tmp,./test"
       ],
       "build": [
         "gulp build",

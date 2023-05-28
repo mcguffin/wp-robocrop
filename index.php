@@ -14,6 +14,7 @@ License: GPL3
 
 Text Domain: wp-robocrop
 Domain Path: /languages/
+Update URI: https://github.com/mcguffin/wp-robocrop/raw/master/.wp-release-info.json
 */
 
 /*  Copyright 2017  Jörn Lund
